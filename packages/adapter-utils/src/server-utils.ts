@@ -1,6 +1,7 @@
 import { spawn, type ChildProcess } from "node:child_process";
 import { constants as fsConstants, promises as fs, type Dirent } from "node:fs";
 import path from "node:path";
+import { StringDecoder } from "node:string_decoder";
 import type {
   AdapterSkillEntry,
   AdapterSkillSnapshot,
@@ -634,8 +635,10 @@ async function resolveSpawnTarget(
   if (/\.(cmd|bat)$/i.test(executable)) {
     // Always use cmd.exe for .cmd/.bat wrappers. Some environments override
     // ComSpec to PowerShell, which breaks cmd-specific flags like /d /s /c.
+    // Force UTF-8 console code page so Hangul/CJK stdout is not mojibaked
+    // through CP949 on Korean Windows.
     const shell = resolveWindowsCmdShell(env);
-    const commandLine = [quoteForCmd(executable), ...args.map(quoteForCmd)].join(" ");
+    const commandLine = `chcp 65001 > nul && ${[quoteForCmd(executable), ...args.map(quoteForCmd)].join(" ")}`;
     return {
       command: shell,
       args: ["/d", "/s", "/c", commandLine],
@@ -1096,6 +1099,15 @@ export async function runChildProcess(
     }
 
     const mergedEnv = ensurePathInEnv(rawMerged);
+    // Force UTF-8 output on Windows to prevent CP949/EUC-KR encoding corruption
+    if (process.platform === "win32") {
+      mergedEnv.PYTHONIOENCODING = mergedEnv.PYTHONIOENCODING ?? "utf-8";
+      mergedEnv.PYTHONUTF8 = mergedEnv.PYTHONUTF8 ?? "1";
+      mergedEnv.LANG = mergedEnv.LANG ?? "en_US.UTF-8";
+      mergedEnv.NODE_OPTIONS = mergedEnv.NODE_OPTIONS
+        ? `${mergedEnv.NODE_OPTIONS} --input-type=module`
+        : undefined;
+    }
     void resolveSpawnTarget(command, args, opts.cwd, mergedEnv)
       .then((target) => {
         const child = spawn(target.command, target.args, {
@@ -1121,6 +1133,11 @@ export async function runChildProcess(
         let stdout = "";
         let stderr = "";
         let logChain: Promise<void> = Promise.resolve();
+        // Stateful UTF-8 decoders: multibyte chars (e.g. Hangul = 3 bytes) can
+        // straddle stream chunk boundaries. Naive Buffer.toString("utf-8") per
+        // chunk drops the trailing partial byte and corrupts the character.
+        const stdoutDecoder = new StringDecoder("utf8");
+        const stderrDecoder = new StringDecoder("utf8");
 
         const timeout =
           opts.timeoutSec > 0
@@ -1134,7 +1151,8 @@ export async function runChildProcess(
             : null;
 
         child.stdout?.on("data", (chunk: unknown) => {
-          const text = String(chunk);
+          const text = chunk instanceof Buffer ? stdoutDecoder.write(chunk) : String(chunk);
+          if (!text) return;
           stdout = appendWithCap(stdout, text);
           logChain = logChain
             .then(() => opts.onLog("stdout", text))
@@ -1142,7 +1160,8 @@ export async function runChildProcess(
         });
 
         child.stderr?.on("data", (chunk: unknown) => {
-          const text = String(chunk);
+          const text = chunk instanceof Buffer ? stderrDecoder.write(chunk) : String(chunk);
+          if (!text) return;
           stderr = appendWithCap(stderr, text);
           logChain = logChain
             .then(() => opts.onLog("stderr", text))
@@ -1173,6 +1192,20 @@ export async function runChildProcess(
         child.on("close", (code: number | null, signal: NodeJS.Signals | null) => {
           if (timeout) clearTimeout(timeout);
           runningProcesses.delete(runId);
+          const stdoutTail = stdoutDecoder.end();
+          if (stdoutTail) {
+            stdout = appendWithCap(stdout, stdoutTail);
+            logChain = logChain
+              .then(() => opts.onLog("stdout", stdoutTail))
+              .catch((err) => onLogError(err, runId, "failed to append stdout log chunk"));
+          }
+          const stderrTail = stderrDecoder.end();
+          if (stderrTail) {
+            stderr = appendWithCap(stderr, stderrTail);
+            logChain = logChain
+              .then(() => opts.onLog("stderr", stderrTail))
+              .catch((err) => onLogError(err, runId, "failed to append stderr log chunk"));
+          }
           void logChain.finally(() => {
             resolve({
               exitCode: code,
