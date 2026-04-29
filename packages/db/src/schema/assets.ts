@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, integer, timestamp, index, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, integer, timestamp, index, uniqueIndex, jsonb } from "drizzle-orm/pg-core";
 import { companies } from "./companies.js";
 import { agents } from "./agents.js";
 
@@ -15,6 +15,9 @@ export const assets = pgTable(
     originalFilename: text("original_filename"),
     createdByAgentId: uuid("created_by_agent_id").references(() => agents.id),
     createdByUserId: text("created_by_user_id"),
+    extractedText: text("extracted_text"),
+    extractionStatus: text("extraction_status").notNull().default("pending"),
+    extractionMeta: jsonb("extraction_meta"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

@@ -59,6 +59,7 @@ import {
   normalizeContentType,
   SVG_CONTENT_TYPE,
 } from "../attachment-types.js";
+import { extractFile } from "../services/file-extractor/index.js";
 import { queueIssueAssignmentWakeup } from "../services/issue-assignment-wakeup.js";
 import {
   applyIssueExecutionPolicyTransition,
@@ -66,19 +67,7 @@ import {
   parseIssueExecutionState,
 } from "../services/issue-execution-policy.js";
 
-/**
- * multer decodes multipart filenames as latin1 per RFC 7578.
- * Browsers send UTF-8, so non-ASCII names (e.g. Korean) get mangled.
- * Re-encode as latin1 bytes then decode as UTF-8 to recover the original name.
- */
-function fixMulterFilename(raw: string): string {
-  if (!raw) return raw;
-  try {
-    return Buffer.from(raw, "latin1").toString("utf8");
-  } catch {
-    return raw;
-  }
-}
+import { fixMulterFilename } from "../encoding-utils.js";
 
 const MAX_ISSUE_COMMENT_LIMIT = 500;
 const updateIssueRouteSchema = updateIssueSchema.extend({
@@ -329,6 +318,42 @@ export function issueRoutes(
     storage: multer.memoryStorage(),
     limits: { fileSize: MAX_ATTACHMENT_BYTES, files: 1 },
   });
+
+  async function runFileExtraction(input: {
+    assetId: string;
+    buffer: Buffer;
+    contentType: string;
+    originalFilename: string | null;
+  }): Promise<void> {
+    try {
+      await svc.setAttachmentExtraction(input.assetId, {
+        status: "processing",
+        text: null,
+        meta: null,
+      });
+      const result = await extractFile({
+        buffer: input.buffer,
+        contentType: input.contentType,
+        filename: input.originalFilename,
+      });
+      await svc.setAttachmentExtraction(input.assetId, {
+        status: result.status,
+        text: result.text,
+        meta: result.meta as unknown as Record<string, unknown>,
+      });
+    } catch (err) {
+      logger.warn({ err, assetId: input.assetId }, "file extraction failed");
+      try {
+        await svc.setAttachmentExtraction(input.assetId, {
+          status: "failed",
+          text: null,
+          meta: { error: err instanceof Error ? err.message : String(err) },
+        });
+      } catch (innerErr) {
+        logger.error({ err: innerErr, assetId: input.assetId }, "failed to record extraction failure");
+      }
+    }
+  }
 
   function withContentPath<T extends { id: string }>(attachment: T) {
     return {
@@ -2735,6 +2760,14 @@ export function issueRoutes(
         contentType: attachment.contentType,
         byteSize: attachment.byteSize,
       },
+    });
+
+    // Async file extraction — does not block the upload response
+    void runFileExtraction({
+      assetId: attachment.assetId,
+      buffer: file.buffer,
+      contentType: stored.contentType,
+      originalFilename: stored.originalFilename,
     });
 
     res.status(201).json(withContentPath(attachment));

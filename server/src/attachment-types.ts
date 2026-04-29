@@ -27,6 +27,18 @@ export const DEFAULT_ALLOWED_TYPES: readonly string[] = [
   "application/json",
   "text/csv",
   "text/html",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/msword",
+  "application/vnd.ms-excel",
+  "application/vnd.ms-powerpoint",
+  "application/x-hwp",
+  "application/haansofthwp",
+  "application/vnd.hancom.hwpx",
+  "application/x-hwpx",
+  "application/zip",
+  "application/octet-stream",
 ];
 
 export const DEFAULT_ATTACHMENT_CONTENT_TYPE = "application/octet-stream";

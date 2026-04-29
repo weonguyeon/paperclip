@@ -255,6 +255,8 @@ export interface IssueAttachment {
   originalFilename: string | null;
   createdByAgentId: string | null;
   createdByUserId: string | null;
+  extractionStatus?: string | null;
+  extractionMeta?: Record<string, unknown> | null;
   createdAt: Date;
   updatedAt: Date;
   contentPath: string;

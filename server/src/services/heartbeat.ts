@@ -10,9 +10,11 @@ import {
   agentRuntimeState,
   agentTaskSessions,
   agentWakeupRequests,
+  assets,
   companySkills as companySkillsTable,
   heartbeatRunEvents,
   heartbeatRuns,
+  issueAttachments,
   issueComments,
   issues,
   projects,
@@ -92,6 +94,9 @@ const MANAGED_WORKSPACE_GIT_CLONE_TIMEOUT_MS = 10 * 60 * 1000;
 const MAX_INLINE_WAKE_COMMENTS = 8;
 const MAX_INLINE_WAKE_COMMENT_BODY_CHARS = 4_000;
 const MAX_INLINE_WAKE_COMMENT_BODY_TOTAL_CHARS = 12_000;
+const MAX_INLINE_WAKE_ATTACHMENTS = 12;
+const MAX_INLINE_WAKE_ATTACHMENT_TEXT_CHARS = 8_000;
+const MAX_INLINE_WAKE_ATTACHMENT_TOTAL_CHARS = 32_000;
 const execFile = promisify(execFileCallback);
 const ACTIVE_HEARTBEAT_RUN_STATUSES = ["queued", "running"] as const;
 const SESSIONED_LOCAL_ADAPTERS = new Set([
@@ -1232,7 +1237,6 @@ async function buildPaperclipWakePayload(input: {
           .where(and(eq(issues.id, issueId), eq(issues.companyId, input.companyId)))
           .then((rows) => rows[0] ?? null)
       : null);
-  if (commentIds.length === 0 && Object.keys(executionStage).length === 0 && !issueSummary) return null;
 
   const commentRows =
     commentIds.length === 0
@@ -1298,6 +1302,69 @@ async function buildPaperclipWakePayload(input: {
     });
   }
 
+  const attachmentRows = issueId
+    ? await input.db
+        .select({
+          id: issueAttachments.id,
+          assetId: issueAttachments.assetId,
+          contentType: assets.contentType,
+          byteSize: assets.byteSize,
+          originalFilename: assets.originalFilename,
+          extractedText: assets.extractedText,
+          extractionStatus: assets.extractionStatus,
+          extractionMeta: assets.extractionMeta,
+          createdAt: issueAttachments.createdAt,
+        })
+        .from(issueAttachments)
+        .innerJoin(assets, eq(issueAttachments.assetId, assets.id))
+        .where(
+          and(
+            eq(issueAttachments.companyId, input.companyId),
+            eq(issueAttachments.issueId, issueId),
+          ),
+        )
+        .orderBy(asc(issueAttachments.createdAt))
+    : [];
+
+  const attachments: Array<Record<string, unknown>> = [];
+  let attachmentTotalCharsRemaining = MAX_INLINE_WAKE_ATTACHMENT_TOTAL_CHARS;
+  let attachmentsTruncated = false;
+  let attachmentsSkipped = 0;
+
+  for (const row of attachmentRows) {
+    if (attachments.length >= MAX_INLINE_WAKE_ATTACHMENTS) {
+      attachmentsTruncated = true;
+      attachmentsSkipped += attachmentRows.length - attachments.length;
+      break;
+    }
+    const fullText = row.extractedText ?? "";
+    const allowed = Math.min(MAX_INLINE_WAKE_ATTACHMENT_TEXT_CHARS, attachmentTotalCharsRemaining);
+    const trimmed = allowed > 0 && fullText.length > 0 ? fullText.slice(0, allowed) : "";
+    const textTruncated = trimmed.length < fullText.length;
+    if (textTruncated) attachmentsTruncated = true;
+    attachmentTotalCharsRemaining -= trimmed.length;
+    attachments.push({
+      id: row.id,
+      assetId: row.assetId,
+      filename: row.originalFilename,
+      contentType: row.contentType,
+      byteSize: row.byteSize,
+      extractionStatus: row.extractionStatus,
+      extractionMeta: row.extractionMeta,
+      extractedText: trimmed.length > 0 ? trimmed : null,
+      extractedTextTruncated: textTruncated,
+    });
+  }
+
+  if (
+    commentIds.length === 0 &&
+    Object.keys(executionStage).length === 0 &&
+    !issueSummary &&
+    attachments.length === 0
+  ) {
+    return null;
+  }
+
   return {
     reason: readNonEmptyString(input.contextSnapshot.wakeReason),
     issue: issueSummary
@@ -1319,7 +1386,14 @@ async function buildPaperclipWakePayload(input: {
       includedCount: comments.length,
       missingCount: missingCommentCount,
     },
-    truncated,
+    attachments,
+    attachmentWindow: {
+      totalCount: attachmentRows.length,
+      includedCount: attachments.length,
+      skippedCount: attachmentsSkipped,
+      truncated: attachmentsTruncated,
+    },
+    truncated: truncated || attachmentsTruncated,
     fallbackFetchNeeded: truncated || missingCommentCount > 0,
   };
 }

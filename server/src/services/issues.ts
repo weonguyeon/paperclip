@@ -2311,6 +2311,8 @@ export function issueService(db: Db) {
           originalFilename: assets.originalFilename,
           createdByAgentId: assets.createdByAgentId,
           createdByUserId: assets.createdByUserId,
+          extractionStatus: assets.extractionStatus,
+          extractionMeta: assets.extractionMeta,
           createdAt: issueAttachments.createdAt,
           updatedAt: issueAttachments.updatedAt,
         })
@@ -2335,6 +2337,8 @@ export function issueService(db: Db) {
           originalFilename: assets.originalFilename,
           createdByAgentId: assets.createdByAgentId,
           createdByUserId: assets.createdByUserId,
+          extractionStatus: assets.extractionStatus,
+          extractionMeta: assets.extractionMeta,
           createdAt: issueAttachments.createdAt,
           updatedAt: issueAttachments.updatedAt,
         })
@@ -2373,6 +2377,38 @@ export function issueService(db: Db) {
         await tx.delete(assets).where(eq(assets.id, existing.assetId));
         return existing;
       }),
+
+    setAttachmentExtraction: async (assetId: string, input: {
+      status: string;
+      text: string | null;
+      meta: Record<string, unknown> | null;
+    }) => {
+      await db
+        .update(assets)
+        .set({
+          extractedText: input.text,
+          extractionStatus: input.status,
+          extractionMeta: input.meta ?? null,
+          updatedAt: new Date(),
+        })
+        .where(eq(assets.id, assetId));
+    },
+
+    listAttachmentExtractedContent: async (issueId: string) =>
+      db
+        .select({
+          id: issueAttachments.id,
+          assetId: issueAttachments.assetId,
+          contentType: assets.contentType,
+          originalFilename: assets.originalFilename,
+          extractedText: assets.extractedText,
+          extractionStatus: assets.extractionStatus,
+          extractionMeta: assets.extractionMeta,
+        })
+        .from(issueAttachments)
+        .innerJoin(assets, eq(issueAttachments.assetId, assets.id))
+        .where(eq(issueAttachments.issueId, issueId))
+        .orderBy(issueAttachments.createdAt),
 
     findMentionedAgents: async (companyId: string, body: string) => {
       const re = /\B@([^\s@,!?.]+)/g;

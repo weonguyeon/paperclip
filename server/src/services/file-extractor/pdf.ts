@@ -1,0 +1,50 @@
+import { EXTRACTED_TEXT_HARD_LIMIT, type ExtractionInput, type ExtractionResult } from "./types.js";
+
+export async function extractPdf({ buffer }: ExtractionInput): Promise<ExtractionResult> {
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const data = new Uint8Array(buffer);
+  const loadingTask = pdfjs.getDocument({
+    data,
+    disableFontFace: true,
+    isEvalSupported: false,
+    useSystemFonts: false,
+  });
+  const doc = await loadingTask.promise;
+  try {
+    const pages: string[] = [];
+    let total = 0;
+    for (let i = 1; i <= doc.numPages; i += 1) {
+      const page = await doc.getPage(i);
+      const content = await page.getTextContent();
+      const items = content.items as Array<{ str?: string }>;
+      const pageText = items
+        .map((item) => (typeof item.str === "string" ? item.str : ""))
+        .join(" ")
+        .replace(/\s+\n/g, "\n")
+        .trim();
+      pages.push(pageText);
+      total += pageText.length;
+      page.cleanup();
+      if (total > EXTRACTED_TEXT_HARD_LIMIT) break;
+    }
+    const joined = pages
+      .map((p, idx) => `--- Page ${idx + 1} ---\n${p}`)
+      .join("\n\n");
+    const truncated = joined.length > EXTRACTED_TEXT_HARD_LIMIT;
+    const text = truncated ? joined.slice(0, EXTRACTED_TEXT_HARD_LIMIT) : joined;
+    const trimmed = text.replace(/\s/g, "");
+    return {
+      status: trimmed.length === 0 ? "skipped" : "done",
+      text: trimmed.length === 0 ? null : text,
+      meta: {
+        extractor: "pdfjs-dist",
+        kind: trimmed.length === 0 ? "binary" : "text",
+        pages: doc.numPages,
+        charCount: text.length,
+        truncated,
+      },
+    };
+  } finally {
+    await doc.destroy();
+  }
+}
