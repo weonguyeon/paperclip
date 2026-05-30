@@ -13,8 +13,8 @@ export function InstanceExperimentalSettings() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Instance Settings" },
-      { label: "Experimental" },
+      { label: "인스턴스 설정" },
+      { label: "실험적 기능" },
     ]);
   }, [setBreadcrumbs]);
 
@@ -39,7 +39,7 @@ export function InstanceExperimentalSettings() {
   });
 
   if (experimentalQuery.isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading experimental settings...</div>;
+    return <div className="text-sm text-muted-foreground">실험적 설정 로딩 중...</div>;
   }
 
   if (experimentalQuery.error) {
@@ -47,7 +47,7 @@ export function InstanceExperimentalSettings() {
       <div className="text-sm text-destructive">
         {experimentalQuery.error instanceof Error
           ? experimentalQuery.error.message
-          : "Failed to load experimental settings."}
+          : "실험적 설정을 불러오지 못했습니다."}
       </div>
     );
   }
@@ -60,10 +60,10 @@ export function InstanceExperimentalSettings() {
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
-          <h1 className="text-lg font-semibold">Experimental</h1>
+          <h1 className="text-lg font-semibold">실험적 기능</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Opt into features that are still being evaluated before they become default behavior.
+          기본 동작으로 확정되기 전 평가 중인 기능을 선택적으로 활성화합니다.
         </p>
       </div>
 

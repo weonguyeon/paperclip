@@ -154,7 +154,7 @@ export function OrgChart() {
   }, [agents]);
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "Org Chart" }]);
+    setBreadcrumbs([{ label: "조직도" }]);
   }, [setBreadcrumbs]);
 
   // Layout computation
@@ -247,7 +247,7 @@ export function OrgChart() {
   }, [zoom, pan]);
 
   if (!selectedCompanyId) {
-    return <EmptyState icon={Network} message="Select a company to view the org chart." />;
+    return <EmptyState icon={Network} message="조직도를 보려면 회사를 선택하세요." />;
   }
 
   if (isLoading) {

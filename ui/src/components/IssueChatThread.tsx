@@ -1361,7 +1361,7 @@ function IssueChatFeedbackButtons({
           <Textarea
             value={downvoteReason}
             onChange={(event) => setDownvoteReason(event.target.value)}
-            placeholder="Add a short note"
+            placeholder="간단한 메모 추가"
             className="min-h-20 resize-y bg-background text-sm"
             disabled={isSaving}
           />
@@ -1730,7 +1730,8 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
     if (!file) return;
     setAttaching(true);
     try {
-      if (onImageUpload) {
+      const isImage = file.type.startsWith("image/");
+      if (isImage && onImageUpload) {
         const url = await onImageUpload(file);
         const safeName = file.name.replace(/[[\]]/g, "\\$&");
         const markdown = `![${safeName}](${url})`;
@@ -1778,7 +1779,7 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
             <input
               ref={attachInputRef}
               type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
+              accept="image/*,application/pdf,.pdf,.docx,.xlsx,.xlsm,.pptx,.hwp,.hwpx,.txt,.md,.csv,.json"
               className="hidden"
               onChange={handleAttachFile}
             />
@@ -1787,7 +1788,7 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
               size="icon-sm"
               onClick={() => attachInputRef.current?.click()}
               disabled={attaching}
-              title="Attach image"
+              title="파일 첨부 (PDF, Word, Excel, PPT, HWP, 이미지 등)"
             >
               <Paperclip className="h-4 w-4" />
             </Button>

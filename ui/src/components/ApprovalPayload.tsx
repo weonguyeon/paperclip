@@ -2,10 +2,10 @@ import { UserPlus, Lightbulb, ShieldAlert, ShieldCheck } from "lucide-react";
 import { formatCents } from "../lib/utils";
 
 export const typeLabel: Record<string, string> = {
-  hire_agent: "Hire Agent",
-  approve_ceo_strategy: "CEO Strategy",
-  budget_override_required: "Budget Override",
-  request_board_approval: "Board Approval",
+  hire_agent: "에이전트 고용",
+  approve_ceo_strategy: "CEO 전략",
+  budget_override_required: "예산 초과",
+  request_board_approval: "이사회 승인",
 };
 
 function firstNonEmptyString(...values: unknown[]): string | null {

@@ -347,7 +347,7 @@ function IssueDetailLoadingState({
               ) : (
                 <span className="inline-flex items-center gap-1 text-xs text-muted-foreground opacity-50 px-1 -mx-1 py-0.5">
                   <Hexagon className="h-3 w-3 shrink-0" />
-                  No project
+                  프로젝트 없음
                 </span>
               )}
             </>
@@ -431,7 +431,7 @@ function InboxMobileToolbar({
             navigate(backHref);
           }
         }}
-        aria-label="Back to inbox"
+        aria-label="수신함으로 돌아가기"
       >
         <ArrowLeft className="h-5 w-5" />
       </Button>
@@ -443,7 +443,7 @@ function InboxMobileToolbar({
             size="icon-sm"
             onClick={onArchive}
             disabled={archivePending}
-            aria-label="Archive from inbox"
+            aria-label="수신함에서 보관"
           >
             <Archive className="h-5 w-5" />
           </Button>
@@ -451,7 +451,7 @@ function InboxMobileToolbar({
 
         <Popover open={menuOpen} onOpenChange={setMenuOpen}>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="More actions">
+            <Button variant="ghost" size="icon-sm" aria-label="더 보기">
               <MoreVertical className="h-5 w-5" />
             </Button>
           </PopoverTrigger>
@@ -663,7 +663,7 @@ const IssueDetailChatTab = memo(function IssueDetailChatTab({
             disabled={commentsLoadingOlder}
             onClick={onLoadOlderComments}
           >
-            {commentsLoadingOlder ? "Loading earlier comments..." : "Load earlier comments"}
+            {commentsLoadingOlder ? "이전 댓글 로딩 중..." : "이전 댓글 불러오기"}
           </Button>
         </div>
       ) : null}
@@ -809,9 +809,9 @@ function IssueDetailActivityTab({
       )}
       {linkedRuns && linkedRuns.length > 0 && (
         <div className="mb-3 px-3 py-2 rounded-lg border border-border">
-          <div className="text-sm font-medium text-muted-foreground mb-1">Cost Summary</div>
+          <div className="text-sm font-medium text-muted-foreground mb-1">비용 요약</div>
           {!issueCostSummary.hasCost && !issueCostSummary.hasTokens ? (
-            <div className="text-xs text-muted-foreground">No cost data yet.</div>
+            <div className="text-xs text-muted-foreground">비용 데이터 없음.</div>
           ) : (
             <div className="flex flex-wrap gap-3 text-xs text-muted-foreground tabular-nums">
               {issueCostSummary.hasCost && (
@@ -821,10 +821,10 @@ function IssueDetailActivityTab({
               )}
               {issueCostSummary.hasTokens && (
                 <span>
-                  Tokens {formatTokens(issueCostSummary.totalTokens)}
+                  토큰 {formatTokens(issueCostSummary.totalTokens)}
                   {issueCostSummary.cached > 0
-                    ? ` (in ${formatTokens(issueCostSummary.input)}, out ${formatTokens(issueCostSummary.output)}, cached ${formatTokens(issueCostSummary.cached)})`
-                    : ` (in ${formatTokens(issueCostSummary.input)}, out ${formatTokens(issueCostSummary.output)})`}
+                    ? ` (입력 ${formatTokens(issueCostSummary.input)}, 출력 ${formatTokens(issueCostSummary.output)}, 캐시 ${formatTokens(issueCostSummary.cached)})`
+                    : ` (입력 ${formatTokens(issueCostSummary.input)}, 출력 ${formatTokens(issueCostSummary.output)})`}
                 </span>
               )}
             </div>
@@ -832,7 +832,7 @@ function IssueDetailActivityTab({
         </div>
       )}
       {!activity || activity.length === 0 ? (
-        <p className="text-xs text-muted-foreground">No activity yet.</p>
+        <p className="text-xs text-muted-foreground">아직 활동 없음.</p>
       ) : (
         <div className="space-y-1.5">
           {activity.slice(0, 20).map((evt) => (
@@ -1237,8 +1237,8 @@ export function IssueDetail() {
         queryClient.setQueryData(queryKeys.issues.list(context.selectedCompanyId), context.previousList);
       }
       pushToast({
-        title: "Issue update failed",
-        body: err instanceof Error ? err.message : "Unable to save issue changes",
+        title: "이슈 업데이트 실패",
+        body: err instanceof Error ? err.message : "이슈 변경사항을 저장할 수 없습니다",
         tone: "error",
       });
     },
@@ -1263,8 +1263,8 @@ export function IssueDetail() {
     },
     onError: (err) => {
       pushToast({
-        title: "Issue update failed",
-        body: err instanceof Error ? err.message : "Unable to save sub-issue changes",
+        title: "이슈 업데이트 실패",
+        body: err instanceof Error ? err.message : "하위 이슈 변경사항을 저장할 수 없습니다",
         tone: "error",
       });
     },
@@ -1292,14 +1292,14 @@ export function IssueDetail() {
         queryClient.invalidateQueries({ queryKey: queryKeys.approvals.list(resolvedCompanyId) });
       }
       pushToast({
-        title: variables.action === "approve" ? "Approval approved" : "Approval rejected",
+        title: variables.action === "approve" ? "승인됨" : "거부됨",
         tone: "success",
       });
     },
     onError: (err, variables) => {
       pushToast({
-        title: variables.action === "approve" ? "Approval failed" : "Rejection failed",
-        body: err instanceof Error ? err.message : "Unable to update approval",
+        title: variables.action === "approve" ? "승인 실패" : "거부 실패",
+        body: err instanceof Error ? err.message : "승인을 업데이트할 수 없습니다",
         tone: "error",
       });
     },
@@ -1359,8 +1359,8 @@ export function IssueDetail() {
           return;
         } catch (err) {
           pushToast({
-            title: "Cancel failed",
-            body: err instanceof Error ? err.message : "Unable to cancel the queued comment",
+            title: "취소 실패",
+            body: err instanceof Error ? err.message : "대기 중인 댓글을 취소할 수 없습니다",
             tone: "error",
           });
         }
@@ -1386,8 +1386,8 @@ export function IssueDetail() {
         queryClient.setQueryData(queryKeys.issues.detail(issueId!), context.previousIssue);
       }
       pushToast({
-        title: "Comment failed",
-        body: err instanceof Error ? err.message : "Unable to post comment",
+        title: "댓글 실패",
+        body: err instanceof Error ? err.message : "댓글을 게시할 수 없습니다",
         tone: "error",
       });
     },
@@ -1472,8 +1472,8 @@ export function IssueDetail() {
           return;
         } catch (err) {
           pushToast({
-            title: "Cancel failed",
-            body: err instanceof Error ? err.message : "Unable to cancel the queued comment",
+            title: "취소 실패",
+            body: err instanceof Error ? err.message : "대기 중인 댓글을 취소할 수 없습니다",
             tone: "error",
           });
         }
@@ -1501,8 +1501,8 @@ export function IssueDetail() {
         queryClient.setQueryData(queryKeys.issues.detail(issueId!), context.previousIssue);
       }
       pushToast({
-        title: "Comment failed",
-        body: err instanceof Error ? err.message : "Unable to post comment",
+        title: "댓글 실패",
+        body: err instanceof Error ? err.message : "댓글을 게시할 수 없습니다",
         tone: "error",
       });
     },
@@ -1560,8 +1560,8 @@ export function IssueDetail() {
       invalidateIssueDetail();
       invalidateIssueRunState();
       pushToast({
-        title: "Interrupt requested",
-        body: "The active run is stopping so queued comments can continue next.",
+        title: "중단 요청됨",
+        body: "활성 실행이 중지되어 대기 중인 댓글이 다음에 계속됩니다.",
         tone: "success",
       });
     },
@@ -1570,8 +1570,8 @@ export function IssueDetail() {
       queryClient.setQueryData(queryKeys.issues.liveRuns(issueId!), context?.previousLiveRuns);
       queryClient.setQueryData(queryKeys.issues.activeRun(issueId!), context?.previousActiveRun);
       pushToast({
-        title: "Interrupt failed",
-        body: err instanceof Error ? err.message : "Unable to interrupt the active run",
+        title: "중단 실패",
+        body: err instanceof Error ? err.message : "활성 실행을 중단할 수 없습니다",
         tone: "error",
       });
     },
@@ -1586,8 +1586,8 @@ export function IssueDetail() {
       invalidateIssueThreadLazily();
       invalidateIssueCollections();
       pushToast({
-        title: "Queued comment canceled",
-        body: "The queued message was restored to the composer.",
+        title: "대기 댓글 취소됨",
+        body: "대기 중인 메시지가 작성창으로 복원되었습니다.",
         tone: "success",
       });
     },
@@ -1668,11 +1668,11 @@ export function IssueDetail() {
         title:
           variables.sharingPreferenceAtSubmit === "prompt"
             ? variables.allowSharing
-              ? "Feedback saved. Future votes will share"
-              : "Feedback saved. Future votes will stay local"
+              ? "피드백 저장됨. 향후 투표가 공유됩니다"
+              : "피드백 저장됨. 향후 투표는 로컬에 유지됩니다"
             : variables.allowSharing
-              ? "Feedback saved and sharing enabled"
-              : "Feedback saved",
+              ? "피드백 저장됨 및 공유 활성화"
+              : "피드백 저장됨",
         tone: "success",
       });
     },
@@ -1681,8 +1681,8 @@ export function IssueDetail() {
         queryClient.setQueryData(queryKeys.issues.feedbackVotes(issueId!), context.previousVotes);
       }
       pushToast({
-        title: "Failed to save feedback",
-        body: err instanceof Error ? err.message : "Unknown error",
+        title: "피드백 저장 실패",
+        body: err instanceof Error ? err.message : "알 수 없는 오류",
         tone: "error",
       });
     },
@@ -1699,7 +1699,7 @@ export function IssueDetail() {
       invalidateIssueDetail();
     },
     onError: (err) => {
-      setAttachmentError(err instanceof Error ? err.message : "Upload failed");
+      setAttachmentError(err instanceof Error ? err.message : "업로드 실패");
     },
   });
 
@@ -1724,7 +1724,7 @@ export function IssueDetail() {
       queryClient.invalidateQueries({ queryKey: queryKeys.issues.documents(issueId!) });
     },
     onError: (err) => {
-      setAttachmentError(err instanceof Error ? err.message : "Document import failed");
+      setAttachmentError(err instanceof Error ? err.message : "문서 가져오기 실패");
     },
   });
 
@@ -1736,7 +1736,7 @@ export function IssueDetail() {
       invalidateIssueDetail();
     },
     onError: (err) => {
-      setAttachmentError(err instanceof Error ? err.message : "Delete failed");
+      setAttachmentError(err instanceof Error ? err.message : "삭제 실패");
     },
   });
 
@@ -1745,12 +1745,12 @@ export function IssueDetail() {
     onSuccess: () => {
       invalidateIssueCollections();
       navigate(sourceBreadcrumb.href.startsWith("/inbox") ? sourceBreadcrumb.href : "/inbox", { replace: true });
-      pushToast({ title: "Issue archived from inbox", tone: "success" });
+      pushToast({ title: "이슈가 수신함에서 보관됨", tone: "success" });
     },
     onError: (err) => {
       pushToast({
-        title: "Archive failed",
-        body: err instanceof Error ? err.message : "Unable to archive this issue from the inbox",
+        title: "보관 실패",
+        body: err instanceof Error ? err.message : "수신함에서 이슈를 보관할 수 없습니다",
         tone: "error",
       });
     },
@@ -1996,7 +1996,7 @@ export function IssueDetail() {
     const md = `# ${issue.identifier}: ${title}\n\n${body}`.trimEnd();
     await navigator.clipboard.writeText(md);
     setCopied(true);
-    pushToast({ title: "Copied to clipboard", tone: "success" });
+    pushToast({ title: "클립보드에 복사됨", tone: "success" });
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -2146,10 +2146,10 @@ export function IssueDetail() {
         )}
       >
         <Paperclip className="h-3.5 w-3.5 mr-1.5" />
-        {uploadAttachment.isPending || importMarkdownDocument.isPending ? "Uploading..." : (
+        {uploadAttachment.isPending || importMarkdownDocument.isPending ? "업로드 중..." : (
           <>
-            <span className="hidden sm:inline">Upload attachment</span>
-            <span className="sm:hidden">Upload</span>
+            <span className="hidden sm:inline">첨부파일 업로드</span>
+            <span className="sm:hidden">업로드</span>
           </>
         )}
       </Button>
@@ -2188,7 +2188,7 @@ export function IssueDetail() {
       {issue.hiddenAt && (
         <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           <EyeOff className="h-4 w-4 shrink-0" />
-          This issue is hidden
+          이 이슈는 숨겨져 있습니다
         </div>
       )}
 
@@ -2210,7 +2210,7 @@ export function IssueDetail() {
                 <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-400" />
               </span>
-              Live
+              라이브
             </span>
           )}
 
@@ -2220,7 +2220,7 @@ export function IssueDetail() {
               className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 border border-violet-500/30 px-2 py-0.5 text-[10px] font-medium text-violet-600 dark:text-violet-400 shrink-0 hover:bg-violet-500/20 transition-colors"
             >
               <Repeat className="h-3 w-3" />
-              Routine
+              루틴
             </Link>
           )}
 
@@ -2266,7 +2266,7 @@ export function IssueDetail() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={copyIssueToClipboard}
-                title="Copy issue as markdown"
+                title="마크다운으로 이슈 복사"
               >
                 {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
               </Button>
@@ -2274,7 +2274,7 @@ export function IssueDetail() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={() => setMobilePropsOpen(true)}
-                title="Properties"
+                title="속성"
               >
                 <SlidersHorizontal className="h-4 w-4" />
               </Button>
@@ -2298,7 +2298,7 @@ export function IssueDetail() {
                 panelVisible ? "opacity-0 pointer-events-none w-0 overflow-hidden" : "opacity-100",
               )}
               onClick={() => setPanelVisible(true)}
-              title="Show properties"
+              title="속성 표시"
             >
               <SlidersHorizontal className="h-4 w-4" />
             </Button>
@@ -2321,7 +2321,7 @@ export function IssueDetail() {
                 }}
               >
                 <EyeOff className="h-3 w-3" />
-                Hide this Issue
+                이슈 숨기기
               </button>
             </PopoverContent>
             </Popover>
@@ -2340,7 +2340,7 @@ export function IssueDetail() {
           onSave={(description) => updateIssue.mutateAsync({ description })}
           as="p"
           className="text-[15px] leading-7 text-foreground"
-          placeholder="Add a description..."
+          placeholder="설명 추가..."
           multiline
           mentions={mentionOptions}
           imageUploadHandler={async (file) => {
@@ -2468,7 +2468,7 @@ export function IssueDetail() {
         onDrop={(evt) => void handleAttachmentDrop(evt)}
       >
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-sm font-medium text-muted-foreground">Attachments</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">첨부파일</h3>
           {attachmentUploadButton}
         </div>
 
@@ -2500,7 +2500,7 @@ export function IssueDetail() {
                     className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/60"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <p className="text-xs text-white font-medium">Delete?</p>
+                    <p className="text-xs text-white font-medium">삭제할까요?</p>
                     <div className="flex gap-1.5">
                       <button
                         type="button"
@@ -2512,7 +2512,7 @@ export function IssueDetail() {
                         }}
                         disabled={deleteAttachment.isPending}
                       >
-                        Yes
+                        예
                       </button>
                       <button
                         type="button"
@@ -2522,7 +2522,7 @@ export function IssueDetail() {
                           setConfirmDeleteId(null);
                         }}
                       >
-                        No
+                        아니오
                       </button>
                     </div>
                   </div>
@@ -2534,7 +2534,7 @@ export function IssueDetail() {
                       e.stopPropagation();
                       setConfirmDeleteId(attachment.id);
                     }}
-                    title="Delete attachment"
+                    title="첨부파일 삭제"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -2546,33 +2546,65 @@ export function IssueDetail() {
 
         {nonImageAttachments.length > 0 && (
           <div className="space-y-2">
-            {nonImageAttachments.map((attachment) => (
-              <div key={attachment.id} className="border border-border rounded-md p-2">
-                <div className="flex items-center justify-between gap-2">
-                  <a
-                    href={attachment.contentPath}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs hover:underline truncate"
-                    title={attachment.originalFilename ?? attachment.id}
-                  >
-                    {attachment.originalFilename ?? attachment.id}
-                  </a>
-                  <button
-                    type="button"
-                    className="text-muted-foreground hover:text-destructive"
-                    onClick={() => deleteAttachment.mutate(attachment.id)}
-                    disabled={deleteAttachment.isPending}
-                    title="Delete attachment"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+            {nonImageAttachments.map((attachment) => {
+              const status = attachment.extractionStatus ?? null;
+              const statusLabel =
+                status === "done"
+                  ? "추출 완료"
+                  : status === "processing"
+                  ? "추출 중..."
+                  : status === "pending"
+                  ? "추출 대기"
+                  : status === "skipped"
+                  ? "Vision 처리"
+                  : status === "failed"
+                  ? "추출 실패"
+                  : null;
+              const statusClass =
+                status === "done"
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                  : status === "processing" || status === "pending"
+                  ? "bg-amber-500/15 text-amber-700 dark:text-amber-300"
+                  : status === "skipped"
+                  ? "bg-sky-500/15 text-sky-700 dark:text-sky-300"
+                  : status === "failed"
+                  ? "bg-destructive/15 text-destructive"
+                  : "";
+              return (
+                <div key={attachment.id} className="border border-border rounded-md p-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <a
+                      href={attachment.contentPath}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs hover:underline truncate"
+                      title={attachment.originalFilename ?? attachment.id}
+                    >
+                      {attachment.originalFilename ?? attachment.id}
+                    </a>
+                    <div className="flex items-center gap-1.5">
+                      {statusLabel ? (
+                        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${statusClass}`}>
+                          {statusLabel}
+                        </span>
+                      ) : null}
+                      <button
+                        type="button"
+                        className="text-muted-foreground hover:text-destructive"
+                        onClick={() => deleteAttachment.mutate(attachment.id)}
+                        disabled={deleteAttachment.isPending}
+                        title="첨부파일 삭제"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    {attachment.contentType} · {(attachment.byteSize / 1024).toFixed(1)} KB
+                  </p>
                 </div>
-                <p className="text-[11px] text-muted-foreground">
-                  {attachment.contentType} · {(attachment.byteSize / 1024).toFixed(1)} KB
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
         </div>
@@ -2597,11 +2629,11 @@ export function IssueDetail() {
         <TabsList variant="line" className="w-full justify-start gap-1">
           <TabsTrigger value="chat" className="gap-1.5">
             <MessageSquare className="h-3.5 w-3.5" />
-            Chat
+            채팅
           </TabsTrigger>
           <TabsTrigger value="activity" className="gap-1.5">
             <ActivityIcon className="h-3.5 w-3.5" />
-            Activity
+            활동
           </TabsTrigger>
           {issuePluginTabItems.map((item) => (
             <TabsTrigger key={item.value} value={item.value}>
@@ -2680,7 +2712,7 @@ export function IssueDetail() {
       <Sheet open={mobilePropsOpen} onOpenChange={setMobilePropsOpen}>
         <SheetContent side="bottom" className="max-h-[85dvh] pb-[env(safe-area-inset-bottom)]">
           <SheetHeader>
-            <SheetTitle className="text-sm">Properties</SheetTitle>
+            <SheetTitle className="text-sm">속성</SheetTitle>
           </SheetHeader>
           <ScrollArea className="flex-1 overflow-y-auto">
             <div className="px-4 pb-4">
