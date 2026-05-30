@@ -18,7 +18,10 @@ function cellToString(value: unknown): string {
 export async function extractXlsx({ buffer }: ExtractionInput): Promise<ExtractionResult> {
   const ExcelJS = (await import("exceljs")).default;
   const wb = new ExcelJS.Workbook();
-  await wb.xlsx.load(buffer);
+  // exceljs bundles an older non-generic Buffer type; @types/node now models
+  // Buffer as Buffer<ArrayBufferLike>. Bridge them with a type-only cast to
+  // exceljs's own expected parameter type (runtime behavior is unchanged).
+  await wb.xlsx.load(buffer as unknown as Parameters<typeof wb.xlsx.load>[0]);
   const sheets: string[] = [];
   const sections: string[] = [];
   let totalChars = 0;

@@ -40,3 +40,10 @@ pnpm exec tsx src/index.ts
 - 업로드 직후 비동기 추출 → `extractionStatus`로 진행 표시
 - 에이전트 wake payload `attachments[]`로 텍스트 주입 (이슈당 12개·항목당 8KB·총 32KB 한도)
 - 이미지 추출은 **Vision passthrough 마커**만, OCR 안 함
+
+## 인코딩 원칙 (한글 깨짐 방지)
+
+- **JSON 본문은 `express.json()`이 이미 UTF-8로 정상 디코딩한다** (RFC 8259). 한글·CJK는 그대로 들어온다. 검증 완료: Node fetch로 `한글 café Müller 🚀` POST→DB→GET 전 구간 정확히 일치.
+- **요청 본문에 `latin1→utf8` 휴리스틱 재디코딩 미들웨어를 절대 추가하지 말 것.** 정상 UTF-8을 다시 디코딩하면 악센트 라틴 문자(`Müller`, `café`)·이름 데이터를 오히려 깨뜨린다. (과거 `normalizeUtf8` 미들웨어가 이 문제 + `charset` 옵션 타입에러로 빌드 차단 → 제거함)
+- **실제 mojibake가 나는 유일한 지점은 multipart 파일명**(multer가 RFC 7578대로 latin1 디코딩). → `server/src/encoding-utils.ts`의 `fixMulterFilename`로만 처리. U+FFFD 가드로 진짜 latin1 파일명은 보존.
+- 터미널에서 `curl`로 한글 POST 테스트 시 깨져 보이는 건 **Windows 콘솔 CP949 아티팩트**이지 서버 문제가 아니다. 검증은 Node `fetch`(보장된 UTF-8 바이트)로 할 것.

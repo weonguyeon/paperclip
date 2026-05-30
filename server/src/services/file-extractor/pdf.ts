@@ -6,9 +6,11 @@ export async function extractPdf({ buffer }: ExtractionInput): Promise<Extractio
   const loadingTask = pdfjs.getDocument({
     data,
     disableFontFace: true,
+    // isEvalSupported is a valid runtime option (disables eval for security) but
+    // is missing from the legacy build's DocumentInitParameters typings.
     isEvalSupported: false,
     useSystemFonts: false,
-  });
+  } as Parameters<typeof pdfjs.getDocument>[0]);
   const doc = await loadingTask.promise;
   try {
     const pages: string[] = [];

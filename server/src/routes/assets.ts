@@ -10,15 +10,7 @@ import { isAllowedContentType, MAX_ATTACHMENT_BYTES } from "../attachment-types.
 import { assertCompanyAccess, getActorInfo } from "./authz.js";
 const SVG_CONTENT_TYPE = "image/svg+xml";
 
-/** Re-decode multer's latin1-decoded filename as UTF-8 to fix non-ASCII names. */
-function fixMulterFilename(raw: string): string {
-  if (!raw) return raw;
-  try {
-    return Buffer.from(raw, "latin1").toString("utf8");
-  } catch {
-    return raw;
-  }
-}
+import { fixMulterFilename } from "../encoding-utils.js";
 const ALLOWED_COMPANY_LOGO_CONTENT_TYPES = new Set([
   "image/png",
   "image/jpeg",

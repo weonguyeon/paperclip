@@ -129,10 +129,16 @@ export async function createApp(
   app.use(express.json({
     // Company import/export payloads can inline full portable packages.
     limit: "10mb",
+    // NOTE: express.json() already decodes the request body as UTF-8 per the
+    // JSON spec (RFC 8259), so Korean and other multibyte text arrives intact.
+    // We deliberately do NOT post-process bodies with a latin1->utf8 heuristic:
+    // that mangles legitimately accented Latin-1 text (e.g. names like "Müller",
+    // "café") and is unnecessary for correctly-decoded JSON.
     verify: (req, _res, buf) => {
       (req as unknown as { rawBody: Buffer }).rawBody = buf;
     },
   }));
+
   app.use(httpLogger);
   const privateHostnameGateEnabled = shouldEnablePrivateHostnameGuard({
     deploymentMode: opts.deploymentMode,
