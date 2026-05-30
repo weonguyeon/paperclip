@@ -109,7 +109,7 @@ function buildJobItem(
     key: `command:${command.id}`,
     title: command.name,
     kind: "job",
-    statusLabel: "run once",
+    statusLabel: "1회 실행",
     lifecycle: null,
     healthStatus: null,
     command: command.command,
@@ -121,7 +121,7 @@ function buildJobItem(
     workspaceCommandId: command.id,
     runtimeServiceId: null,
     serviceIndex: null,
-    disabledReason: command.disabledReason ?? (!command.command ? "This job is missing a command." : null),
+    disabledReason: command.disabledReason ?? (!command.command ? "이 잡에 실행 명령이 지정되지 않았습니다." : null),
   };
 }
 
@@ -166,7 +166,7 @@ export function buildWorkspaceRuntimeControlSections(input: {
       workspaceCommandId: null,
       runtimeServiceId: runtimeService.id,
       serviceIndex: runtimeService.configIndex ?? null,
-      disabledReason: "This runtime service no longer matches a configured workspace command.",
+      disabledReason: "이 런타임 서비스는 현재 구성된 워크스페이스 명령과 더 이상 일치하지 않습니다.",
     }));
 
   return {
@@ -231,12 +231,12 @@ function CommandActionButtons({
         const request = buildRequest(item, action);
         const Icon = action === "stop" ? Square : action === "restart" ? RotateCcw : Play;
         const label = action === "run"
-          ? "Run"
+          ? "실행"
           : action === "start"
-            ? "Start"
+            ? "시작"
             : action === "stop"
-              ? "Stop"
-              : "Restart";
+              ? "중지"
+              : "재시작";
         const showSpinner = isPending && requestMatchesPending(pendingRequest, request);
         const disabled =
           isPending
@@ -321,7 +321,7 @@ function CommandSection({
                       <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                   ) : null}
-                  {item.port ? <div>Port {item.port}</div> : null}
+                  {item.port ? <div>포트 {item.port}</div> : null}
                   {item.command ? <div className="break-all font-mono">{item.command}</div> : null}
                   {item.cwd ? <div className="break-all font-mono">{item.cwd}</div> : null}
                   {item.disabledReason ? <div>{item.disabledReason}</div> : null}
@@ -354,8 +354,8 @@ export function WorkspaceRuntimeControls({
   items,
   isPending = false,
   pendingRequest = null,
-  serviceEmptyMessage = "No services are configured for this workspace.",
-  jobEmptyMessage = "No one-shot jobs are configured for this workspace.",
+  serviceEmptyMessage = "이 워크스페이스에 구성된 서비스가 없습니다.",
+  jobEmptyMessage = "이 워크스페이스에 구성된 1회성 잡이 없습니다.",
   emptyMessage,
   disabledHint = null,
   onAction,
@@ -379,7 +379,7 @@ export function WorkspaceRuntimeControls({
     <div className={cn("space-y-4", className)}>
       <div className="rounded-xl border border-border/70 bg-background/60 p-3">
         <div className="space-y-1">
-          <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Workspace commands</div>
+          <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">워크스페이스 명령</div>
           <div className="flex flex-wrap items-center gap-2">
             <span
               className={cn(
@@ -390,12 +390,12 @@ export function WorkspaceRuntimeControls({
               )}
             >
               <Activity className="h-3.5 w-3.5" />
-              {runningCount > 0 ? `${runningCount} services running` : "No services running"}
+              {runningCount > 0 ? `서비스 ${runningCount}개 실행 중` : "실행 중인 서비스 없음"}
             </span>
             <span className="text-xs text-muted-foreground">
               {resolvedSections.jobs.length > 0
-                ? `${resolvedSections.jobs.length} job${resolvedSections.jobs.length === 1 ? "" : "s"} available to run on demand.`
-                : "Each command can be controlled independently."}
+                ? `필요 시 실행 가능한 잡 ${resolvedSections.jobs.length}개 있음.`
+                : "각 명령을 개별적으로 제어할 수 있습니다."}
             </span>
           </div>
           {visibleDisabledHint ? <p className="text-xs text-muted-foreground">{visibleDisabledHint}</p> : null}
@@ -403,8 +403,8 @@ export function WorkspaceRuntimeControls({
       </div>
 
       <CommandSection
-        title="Services"
-        description="Long-running commands that Paperclip can supervise for this workspace."
+        title="서비스"
+        description="Paperclip이 이 워크스페이스에서 관리하는 장기 실행 명령입니다."
         items={resolvedSections.services}
         emptyMessage={resolvedServiceEmptyMessage}
         disabledHint={visibleDisabledHint}
@@ -414,8 +414,8 @@ export function WorkspaceRuntimeControls({
       />
 
       <CommandSection
-        title="Jobs"
-        description="One-shot commands that run now and exit when they finish."
+        title="잡"
+        description="즉시 실행 후 완료되면 종료되는 1회성 명령입니다."
         items={resolvedSections.jobs}
         emptyMessage={jobEmptyMessage}
         isPending={isPending}
@@ -425,8 +425,8 @@ export function WorkspaceRuntimeControls({
 
       {resolvedSections.otherServices.length > 0 ? (
         <CommandSection
-          title="Untracked services"
-          description="Running services that no longer match the current workspace command config."
+          title="미추적 서비스"
+          description="현재 워크스페이스 명령 설정과 더 이상 일치하지 않는 실행 중인 서비스입니다."
           items={resolvedSections.otherServices}
           emptyMessage=""
           isPending={isPending}

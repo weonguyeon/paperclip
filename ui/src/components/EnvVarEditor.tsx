@@ -145,7 +145,7 @@ export function EnvVarEditor({
     if (!key || plain.length === 0) return;
 
     const suggested = defaultSecretName(key) || "secret";
-    const name = window.prompt("Secret name", suggested)?.trim();
+    const name = window.prompt("시크릿 이름", suggested)?.trim();
     if (!name) return;
 
     try {
@@ -153,7 +153,7 @@ export function EnvVarEditor({
       const created = await onCreateSecret(name, plain);
       updateRow(index, { source: "secret", secretId: created.id });
     } catch (error) {
-      setSealError(error instanceof Error ? error.message : "Failed to create secret");
+      setSealError(error instanceof Error ? error.message : "시크릿 생성 실패");
     }
   }
 
@@ -169,7 +169,7 @@ export function EnvVarEditor({
           <div key={index} className="flex items-center gap-1.5">
             <input
               className={cn(inputClass, "flex-[2]")}
-              placeholder="KEY"
+              placeholder="키"
               value={row.key}
               onChange={(event) => updateRow(index, { key: event.target.value })}
             />
@@ -183,8 +183,8 @@ export function EnvVarEditor({
                 })
               }
             >
-              <option value="plain">Plain</option>
-              <option value="secret">Secret</option>
+              <option value="plain">일반</option>
+              <option value="secret">시크릿</option>
             </select>
             {row.source === "secret" ? (
               <>
@@ -193,7 +193,7 @@ export function EnvVarEditor({
                   value={row.secretId}
                   onChange={(event) => updateRow(index, { secretId: event.target.value })}
                 >
-                  <option value="">Select secret...</option>
+                  <option value="">시크릿 선택...</option>
                   {secrets.map((secret) => (
                     <option key={secret.id} value={secret.id}>
                       {secret.name}
@@ -205,16 +205,16 @@ export function EnvVarEditor({
                   className="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground hover:bg-accent/50 transition-colors shrink-0"
                   onClick={() => sealRow(index)}
                   disabled={!row.key.trim() || !row.plainValue}
-                  title="Create secret from current plain value"
+                  title="현재 일반 값으로 시크릿 생성"
                 >
-                  New
+                  신규
                 </button>
               </>
             ) : (
               <>
                 <input
                   className={cn(inputClass, "flex-[3]")}
-                  placeholder="value"
+                  placeholder="값"
                   value={row.plainValue}
                   onChange={(event) => updateRow(index, { plainValue: event.target.value })}
                 />
@@ -223,9 +223,9 @@ export function EnvVarEditor({
                   className="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground hover:bg-accent/50 transition-colors shrink-0"
                   onClick={() => sealRow(index)}
                   disabled={!row.key.trim() || !row.plainValue}
-                  title="Store value as secret and replace with reference"
+                  title="값을 시크릿으로 저장하고 참조로 교체"
                 >
-                  Seal
+                  봉인
                 </button>
               </>
             )}
@@ -245,7 +245,7 @@ export function EnvVarEditor({
       })}
       {sealError && <p className="text-[11px] text-destructive">{sealError}</p>}
       <p className="text-[11px] text-muted-foreground/60">
-        PAPERCLIP_* variables are injected automatically at runtime.
+        PAPERCLIP_* 변수는 런타임에 자동으로 주입됩니다.
       </p>
     </div>
   );

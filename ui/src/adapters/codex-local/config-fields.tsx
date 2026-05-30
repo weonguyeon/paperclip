@@ -15,7 +15,7 @@ import {
 const inputClass =
   "w-full rounded-md border border-border px-2.5 py-1.5 bg-transparent outline-none text-sm font-mono placeholder:text-muted-foreground/40";
 const instructionsFileHint =
-  "Absolute path to a markdown file (e.g. AGENTS.md) that defines this agent's behavior. Injected into the system prompt at runtime. Note: Codex may still auto-apply repo-scoped AGENTS.md files from the workspace.";
+  "에이전트 동작을 정의하는 마크다운 파일(예: AGENTS.md)의 절대 경로입니다. 런타임에 시스템 프롬프트에 주입됩니다. 참고: Codex는 워크스페이스 내 저장소 범위의 AGENTS.md 파일을 자동 적용할 수 있습니다.";
 
 export function CodexLocalConfigFields({
   mode,
@@ -43,7 +43,7 @@ export function CodexLocalConfigFields({
   return (
     <>
       {!hideInstructionsFile && (
-        <Field label="Agent instructions file" hint={instructionsFileHint}>
+        <Field label="에이전트 지시 파일" hint={instructionsFileHint}>
           <div className="flex items-center gap-2">
             <DraftInput
               value={
@@ -69,7 +69,7 @@ export function CodexLocalConfigFields({
         </Field>
       )}
       <ToggleField
-        label="Bypass sandbox"
+        label="샌드박스 우회"
         hint={help.dangerouslyBypassSandbox}
         checked={
           isCreate
@@ -87,7 +87,7 @@ export function CodexLocalConfigFields({
         }
       />
       <ToggleField
-        label="Enable search"
+        label="검색 활성화"
         hint={help.search}
         checked={
           isCreate
@@ -101,7 +101,7 @@ export function CodexLocalConfigFields({
         }
       />
       <ToggleField
-        label="Fast mode"
+        label="빠른 모드"
         hint={help.fastMode}
         checked={fastModeEnabled}
         onChange={(v) =>
@@ -113,8 +113,8 @@ export function CodexLocalConfigFields({
       {fastModeEnabled && (
         <div className="rounded-md border border-amber-300/70 bg-amber-50/80 px-3 py-2 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100">
           {fastModeSupported
-            ? "Fast mode consumes credits/tokens much faster than standard Codex runs."
-            : `Fast mode currently only works on ${supportedModelsLabel}. Paperclip will ignore this toggle until the model is switched.`}
+            ? "빠른 모드는 일반 Codex 실행보다 크레딧/토큰을 훨씬 빠르게 소모합니다."
+            : `빠른 모드는 현재 ${supportedModelsLabel}에서만 작동합니다. 모델이 변경될 때까지 이 토글은 무시됩니다.`}
         </div>
       )}
       <LocalWorkspaceRuntimeFields

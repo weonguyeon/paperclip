@@ -9,7 +9,7 @@ import { timeAgo } from "../lib/timeAgo";
 import { Copy, ExternalLink, FolderOpen, GitBranch, Loader2, Play, Square } from "lucide-react";
 
 function workspaceKindLabel(kind: ProjectWorkspaceSummary["kind"]) {
-  return kind === "execution_workspace" ? "Execution workspace" : "Project workspace";
+  return kind === "execution_workspace" ? "실행 워크스페이스" : "프로젝트 워크스페이스";
 }
 
 function truncatePath(path: string) {
@@ -63,7 +63,7 @@ export function ProjectWorkspaceSummaryCard({
                 {workspaceKindLabel(summary.kind)}
               </span>
               <span className="inline-flex items-center rounded-full border border-border/70 bg-background px-2.5 py-1 text-xs text-muted-foreground">
-                Updated {timeAgo(summary.lastUpdatedAt)}
+                {timeAgo(summary.lastUpdatedAt)} 업데이트
               </span>
               {summary.serviceCount > 0 ? (
                 <span
@@ -80,7 +80,7 @@ export function ProjectWorkspaceSummaryCard({
                       hasRunningServices ? "bg-emerald-500" : "bg-muted-foreground/40",
                     )}
                   />
-                  {summary.runningServiceCount}/{summary.serviceCount} services
+                  {summary.runningServiceCount}/{summary.serviceCount} 서비스
                 </span>
               ) : null}
               {summary.executionWorkspaceStatus ? (
@@ -123,7 +123,7 @@ export function ProjectWorkspaceSummaryCard({
                 ) : (
                   <Play className="mr-2 h-3.5 w-3.5" />
                 )}
-                {hasRunningServices ? "Stop services" : "Start services"}
+                {hasRunningServices ? "서비스 중지" : "서비스 시작"}
               </Button>
             ) : null}
             {summary.kind === "execution_workspace" && summary.executionWorkspaceId && summary.executionWorkspaceStatus ? (
@@ -137,7 +137,7 @@ export function ProjectWorkspaceSummaryCard({
                   status: summary.executionWorkspaceStatus!,
                 })}
               >
-                {summary.executionWorkspaceStatus === "cleanup_failed" ? "Retry close" : "Close workspace"}
+                {summary.executionWorkspaceStatus === "cleanup_failed" ? "닫기 재시도" : "워크스페이스 닫기"}
               </Button>
             ) : null}
           </div>
@@ -149,7 +149,7 @@ export function ProjectWorkspaceSummaryCard({
               <div className="flex items-start gap-2">
                 <GitBranch className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <div className="min-w-0">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Branch</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">브랜치</div>
                   <div className="break-all font-mono text-xs text-foreground">{summary.branchName}</div>
                 </div>
               </div>
@@ -159,12 +159,12 @@ export function ProjectWorkspaceSummaryCard({
               <div className="flex items-start gap-2">
                 <FolderOpen className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <div className="min-w-0 flex-1">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Path</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">경로</div>
                   <div className="flex items-start gap-2">
                     <span className="min-w-0 break-all font-mono text-xs text-foreground" title={summary.cwd}>
                       {truncatePath(summary.cwd)}
                     </span>
-                    <CopyText text={summary.cwd} className="mt-0.5 shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="Path copied">
+                    <CopyText text={summary.cwd} className="mt-0.5 shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="경로 복사됨">
                       <Copy className="h-3.5 w-3.5" />
                     </CopyText>
                   </div>
@@ -176,7 +176,7 @@ export function ProjectWorkspaceSummaryCard({
               <div className="flex items-start gap-2">
                 <ExternalLink className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <div className="min-w-0">
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Service</div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">서비스</div>
                   <a
                     href={summary.primaryServiceUrl}
                     target="_blank"
@@ -194,7 +194,7 @@ export function ProjectWorkspaceSummaryCard({
         {summary.issues.length > 0 ? (
           <div className="space-y-2">
             <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              Linked issues
+              연결된 이슈
             </div>
             <div className="flex flex-wrap gap-2">
               {visibleIssues.map((issue) => (
@@ -205,7 +205,7 @@ export function ProjectWorkspaceSummaryCard({
                   to={workspaceHref}
                   className="inline-flex items-center rounded-full border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground hover:underline"
                 >
-                  +{hiddenIssueCount} more
+                  +{hiddenIssueCount} 더 보기
                 </Link>
               ) : null}
             </div>

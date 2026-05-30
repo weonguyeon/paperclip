@@ -209,7 +209,7 @@ function summarizeToolInput(name: string, input: unknown, density: TranscriptDen
   const record = asRecord(input);
   if (!record) {
     const serialized = compactWhitespace(formatUnknown(input));
-    return serialized ? truncate(serialized, compactMax) : `Inspect ${name} input`;
+    return serialized ? truncate(serialized, compactMax) : `${name} 입력 확인`;
   }
 
   const command = typeof record.command === "string"
@@ -230,14 +230,14 @@ function summarizeToolInput(name: string, input: unknown, density: TranscriptDen
   if (Array.isArray(record.paths) && record.paths.length > 0) {
     const first = record.paths.find((value): value is string => typeof value === "string" && value.trim().length > 0);
     if (first) {
-      return truncate(`${record.paths.length} paths, starting with ${first}`, compactMax);
+      return truncate(`경로 ${record.paths.length}개, 첫 번째: ${first}`, compactMax);
     }
   }
 
   const keys = Object.keys(record);
-  if (keys.length === 0) return `No ${name} input`;
-  if (keys.length === 1) return truncate(`${keys[0]} payload`, compactMax);
-  return truncate(`${keys.length} fields: ${keys.slice(0, 3).join(", ")}`, compactMax);
+  if (keys.length === 0) return `${name} 입력 없음`;
+  if (keys.length === 1) return truncate(`${keys[0]} 페이로드`, compactMax);
+  return truncate(`필드 ${keys.length}개: ${keys.slice(0, 3).join(", ")}`, compactMax);
 }
 
 function parseStructuredToolResult(result: string | undefined) {
@@ -279,20 +279,20 @@ function isCommandTool(name: string, input: unknown): boolean {
 }
 
 function displayToolName(name: string, input: unknown): string {
-  if (isCommandTool(name, input)) return "Executing command";
+  if (isCommandTool(name, input)) return "명령 실행 중";
   return humanizeLabel(name);
 }
 
 function summarizeToolResult(result: string | undefined, isError: boolean | undefined, density: TranscriptDensity): string {
-  if (!result) return isError ? "Tool failed" : "Waiting for result";
+  if (!result) return isError ? "도구 실패" : "결과 대기 중";
   const structured = parseStructuredToolResult(result);
   if (structured) {
     if (structured.body) {
       return truncate(structured.body.split("\n")[0] ?? structured.body, density === "compact" ? 84 : 140);
     }
-    if (structured.status === "completed") return "Completed";
+    if (structured.status === "completed") return "완료됨";
     if (structured.status === "failed" || structured.status === "error") {
-      return structured.exitCode ? `Failed with exit code ${structured.exitCode}` : "Failed";
+      return structured.exitCode ? `종료 코드 ${structured.exitCode}로 실패` : "실패";
     }
   }
   const lines = result
@@ -507,7 +507,7 @@ export function normalizeTranscript(entries: TranscriptEntry[], streaming: boole
         ts: entry.ts,
         label: "result",
         tone: entry.isError ? "error" : "info",
-        text: entry.text.trim() || entry.errors[0] || (entry.isError ? "Run failed" : "Completed"),
+        text: entry.text.trim() || entry.errors[0] || (entry.isError ? "실행 실패" : "완료됨"),
         detail:
           !entry.isError && entry.text.trim().length > 0
             ? `${formatTokens(entry.inputTokens)} / ${formatTokens(entry.outputTokens)} / $${entry.costUsd.toFixed(6)}`
@@ -643,7 +643,7 @@ function TranscriptMessageBlock({
       {!isAssistant && (
         <div className="mb-1.5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           <User className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
-          <span>User</span>
+          <span>사용자</span>
         </div>
       )}
       <MarkdownBody
@@ -660,7 +660,7 @@ function TranscriptMessageBlock({
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-70" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
           </span>
-          Streaming
+          스트리밍 중
         </div>
       )}
     </div>
@@ -701,10 +701,10 @@ function TranscriptToolCard({
   const parsedResult = parseStructuredToolResult(block.result);
   const statusLabel =
     block.status === "running"
-      ? "Running"
+      ? "실행 중"
       : block.status === "error"
-        ? "Errored"
-        : "Completed";
+        ? "오류"
+        : "완료";
   const statusTone =
     block.status === "running"
       ? "text-cyan-700 dark:text-cyan-300"
@@ -756,7 +756,7 @@ function TranscriptToolCard({
           type="button"
           className="mt-0.5 inline-flex h-5 w-5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
           onClick={() => setOpen((value) => !value)}
-          aria-label={open ? "Collapse tool details" : "Expand tool details"}
+          aria-label={open ? "도구 상세 접기" : "도구 상세 펼치기"}
         >
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -767,7 +767,7 @@ function TranscriptToolCard({
             <div className={cn("grid gap-3", compact ? "grid-cols-1" : "lg:grid-cols-2")}>
               <div>
                 <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Input
+                  입력
                 </div>
                 <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px] text-foreground/80">
                   {formatToolPayload(block.input) || "<empty>"}
@@ -775,13 +775,13 @@ function TranscriptToolCard({
               </div>
               <div>
                 <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Result
+                  결과
                 </div>
                 <pre className={cn(
                   "overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px]",
                   block.status === "error" ? "text-red-700 dark:text-red-300" : "text-foreground/80",
                 )}>
-                  {block.result ? formatToolPayload(block.result) : "Waiting for result..."}
+                  {block.result ? formatToolPayload(block.result) : "결과 대기 중..."}
                 </pre>
               </div>
             </div>
@@ -812,10 +812,10 @@ function TranscriptCommandGroup({
   const isRunning = Boolean(runningItem);
   const showExpandedErrorState = open && hasError;
   const title = isRunning
-    ? "Executing command"
+    ? "명령 실행 중"
     : block.items.length === 1
-      ? "Executed command"
-      : `Executed ${block.items.length} commands`;
+      ? "명령 실행됨"
+      : `명령 ${block.items.length}개 실행됨`;
   const subtitle = runningItem
     ? summarizeToolInput("command_execution", runningItem.input, density)
     : null;
@@ -868,7 +868,7 @@ function TranscriptCommandGroup({
           )}
           {!subtitle && latestItem?.status === "error" && open && (
             <div className={cn("mt-1", compact ? "text-xs" : "text-sm", statusTone)}>
-              Command failed
+              명령 실패
             </div>
           )}
         </div>
@@ -882,7 +882,7 @@ function TranscriptCommandGroup({
             event.stopPropagation();
             setOpen((value) => !value);
           }}
-          aria-label={open ? "Collapse command details" : "Expand command details"}
+          aria-label={open ? "명령 상세 접기" : "명령 상세 펼치기"}
         >
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -940,10 +940,10 @@ function TranscriptToolGroup({
       ? humanizeLabel(uniqueNames[0])
       : `${uniqueNames.length} tools`;
   const title = isRunning
-    ? `Using ${toolLabel}`
+    ? `${toolLabel} 사용 중`
     : block.items.length === 1
-      ? `Used ${toolLabel}`
-      : `Used ${toolLabel} (${block.items.length} calls)`;
+      ? `${toolLabel} 사용됨`
+      : `${toolLabel} 사용됨 (${block.items.length}회 호출)`;
   const subtitle = runningItem
     ? summarizeToolInput(runningItem.name, runningItem.input, density)
     : null;
@@ -997,7 +997,7 @@ function TranscriptToolGroup({
           type="button"
           className={cn("inline-flex h-5 w-5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground", subtitle && "mt-0.5")}
           onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
-          aria-label={open ? "Collapse tool details" : "Expand tool details"}
+          aria-label={open ? "도구 상세 접기" : "도구 상세 펼치기"}
         >
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -1025,19 +1025,19 @@ function TranscriptToolGroup({
                   : item.status === "error" ? "text-red-700 dark:text-red-300"
                   : "text-emerald-700 dark:text-emerald-300"
                 )}>
-                  {item.status === "running" ? "Running" : item.status === "error" ? "Errored" : "Completed"}
+                  {item.status === "running" ? "실행 중" : item.status === "error" ? "오류" : "완료"}
                 </span>
               </div>
               <div className={cn("grid gap-2 pl-7", compact ? "grid-cols-1" : "lg:grid-cols-2")}>
                 <div>
-                  <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Input</div>
+                  <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">입력</div>
                   <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px] text-foreground/80">
                     {formatToolPayload(item.input) || "<empty>"}
                   </pre>
                 </div>
                 {item.result && (
                   <div>
-                    <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Result</div>
+                    <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">결과</div>
                     <pre className={cn(
                       "overflow-x-auto whitespace-pre-wrap break-words font-mono text-[11px]",
                       item.status === "error" ? "text-red-700 dark:text-red-300" : "text-foreground/80",
@@ -1254,7 +1254,7 @@ function TranscriptStderrGroup({
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen((v) => !v); } }}
       >
         <span className={cn("text-[10px] font-semibold uppercase tracking-[0.14em]")}>
-          {block.lines.length} log {block.lines.length === 1 ? "line" : "lines"}
+          로그 {block.lines.length}줄
         </span>
         {open ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
       </div>
@@ -1291,7 +1291,7 @@ function TranscriptSystemGroup({
       >
         <TerminalSquare className="h-3.5 w-3.5 shrink-0" />
         <span className="text-[10px] font-semibold uppercase tracking-[0.14em]">
-          {block.lines.length} system {block.lines.length === 1 ? "message" : "messages"}
+          시스템 메시지 {block.lines.length}개
         </span>
         {open ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
       </div>
@@ -1330,7 +1330,7 @@ function TranscriptStdoutRow({
           type="button"
           className="inline-flex h-5 w-5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
           onClick={() => setOpen((value) => !value)}
-          aria-label={open ? "Collapse stdout" : "Expand stdout"}
+          aria-label={open ? "stdout 접기" : "stdout 펼치기"}
         >
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -1392,7 +1392,7 @@ export function RunTranscriptView({
   limit,
   streaming = false,
   collapseStdout = false,
-  emptyMessage = "No transcript yet.",
+  emptyMessage = "아직 실행 기록이 없습니다.",
   className,
   thinkingClassName,
 }: RunTranscriptViewProps) {

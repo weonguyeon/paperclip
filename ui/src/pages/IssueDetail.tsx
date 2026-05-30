@@ -256,9 +256,9 @@ function ActorIdentity({ evt, agentMap }: { evt: ActivityEvent; agentMap: Map<st
     const agent = agentMap.get(id);
     return <Identity name={agent?.name ?? id.slice(0, 8)} size="sm" />;
   }
-  if (evt.actorType === "system") return <Identity name="System" size="sm" />;
-  if (evt.actorType === "user") return <Identity name="Board" size="sm" />;
-  return <Identity name={id || "Unknown"} size="sm" />;
+  if (evt.actorType === "system") return <Identity name="시스템" size="sm" />;
+  if (evt.actorType === "user") return <Identity name="보드" size="sm" />;
+  return <Identity name={id || "알 수 없음"} size="sm" />;
 }
 
 function IssueSectionSkeleton({
@@ -334,7 +334,7 @@ function IssueDetailLoadingState({
               {headerSeed.originKind === "routine_execution" && headerSeed.originId ? (
                 <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/30 bg-violet-500/10 px-2 py-0.5 text-[10px] font-medium text-violet-600 dark:text-violet-400 shrink-0">
                   <Repeat className="h-3 w-3" />
-                  Routine
+                  루틴
                 </span>
               ) : null}
               {headerSeed.projectId ? (
@@ -461,14 +461,14 @@ function InboxMobileToolbar({
               onClick={() => { onCopy(); setMenuOpen(false); }}
             >
               <Copy className="h-3 w-3" />
-              Copy as markdown
+              마크다운으로 복사
             </button>
             <button
               className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50"
               onClick={() => { onProperties(); setMenuOpen(false); }}
             >
               <SlidersHorizontal className="h-3 w-3" />
-              Properties
+              속성
             </button>
             {issueIdProp && (
               <button
@@ -476,7 +476,7 @@ function InboxMobileToolbar({
                 onClick={() => { onHide(); setMenuOpen(false); }}
               >
                 <EyeOff className="h-3 w-3" />
-                Hide this issue
+                이슈 숨기기
               </button>
             )}
           </PopoverContent>
@@ -957,7 +957,7 @@ export function IssueDetail() {
   const resolvedHasActiveRun = issue ? shouldTrackIssueActiveRun(issue) && hasActiveRun : hasActiveRun;
   const hasLiveRuns = liveRunCount > 0 || resolvedHasActiveRun;
   const sourceBreadcrumb = useMemo(
-    () => readIssueDetailBreadcrumb(issueId, location.state, location.search) ?? { label: "Issues", href: "/issues" },
+    () => readIssueDetailBreadcrumb(issueId, location.state, location.search) ?? { label: "이슈", href: "/issues" },
     [issueId, location.state, location.search],
   );
 
@@ -1092,7 +1092,7 @@ export function IssueDetail() {
       options.push({ id: `agent:${agent.id}`, label: agent.name });
     }
     if (currentUserId) {
-      options.push({ id: `user:${currentUserId}`, label: "Me" });
+      options.push({ id: `user:${currentUserId}`, label: "나" });
     }
     return options;
   }, [agents, currentUserId]);
@@ -1116,7 +1116,7 @@ export function IssueDetail() {
     () => mergeIssueComments(comments ?? [], optimisticComments),
     [comments, optimisticComments],
   );
-  const breadcrumbTitle = issue?.title ?? issueId ?? "Issue";
+  const breadcrumbTitle = issue?.title ?? issueId ?? "이슈";
 
   const invalidateIssueDetail = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: queryKeys.issues.detail(issueId!) });
@@ -1593,8 +1593,8 @@ export function IssueDetail() {
     },
     onError: (err) => {
       pushToast({
-        title: "Cancel failed",
-        body: err instanceof Error ? err.message : "Unable to cancel the queued comment",
+        title: "취소 실패",
+        body: err instanceof Error ? err.message : "대기 중인 댓글을 취소할 수 없습니다",
         tone: "error",
       });
     },
@@ -1612,8 +1612,8 @@ export function IssueDetail() {
       if (cancelledCommentBody) {
         restoreQueuedCommentDraft(cancelledCommentBody);
         pushToast({
-          title: "Queued comment canceled",
-          body: "The queued message was restored to the composer.",
+          title: "대기 댓글 취소됨",
+          body: "대기 중인 메시지가 작성창으로 복원되었습니다.",
           tone: "success",
         });
       }
@@ -2235,7 +2235,7 @@ export function IssueDetail() {
           ) : (
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground opacity-50 px-1 -mx-1 py-0.5">
               <Hexagon className="h-3 w-3 shrink-0" />
-              No project
+              프로젝트 없음
             </span>
           )}
 
@@ -2286,7 +2286,7 @@ export function IssueDetail() {
               variant="ghost"
               size="icon-xs"
               onClick={copyIssueToClipboard}
-              title="Copy issue as markdown"
+              title="마크다운으로 이슈 복사"
             >
               {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
             </Button>
@@ -2397,7 +2397,7 @@ export function IssueDetail() {
       {showRichSubIssuesSection ? (
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="text-sm font-medium text-muted-foreground">Sub-issues</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">하위 이슈</h3>
           </div>
           <IssuesList
             issues={childIssues}
@@ -2409,7 +2409,7 @@ export function IssueDetail() {
             issueLinkState={resolvedIssueDetailState ?? location.state}
             searchFilters={{ parentId: issue.id }}
             baseCreateIssueDefaults={buildSubIssueDefaultsForViewer(issue, currentUserId)}
-            createIssueLabel="Sub-issue"
+            createIssueLabel="하위 이슈"
             onUpdateIssue={handleChildIssueUpdate}
           />
         </div>
@@ -2417,7 +2417,7 @@ export function IssueDetail() {
         <div className="flex flex-wrap items-center justify-end gap-2 min-w-0">
           <Button variant="outline" size="sm" onClick={openNewSubIssue} className="shrink-0 shadow-none">
             <Plus className="mr-1.5 h-3.5 w-3.5" />
-            New Sub-issue
+            새 하위 이슈
           </Button>
         </div>
       )}

@@ -160,7 +160,7 @@ export function validateField(
 
   // Required check
   if (isRequired && (value === undefined || value === null || value === "")) {
-    return "This field is required";
+    return "필수 항목입니다";
   }
 
   // Skip further validation if empty and not required
@@ -169,10 +169,10 @@ export function validateField(
   if (type === "string" || type === "secret-ref") {
     const str = String(value);
     if (schema.minLength != null && str.length < schema.minLength) {
-      return `Must be at least ${schema.minLength} characters`;
+      return `최소 ${schema.minLength}자 이상이어야 합니다`;
     }
     if (schema.maxLength != null && str.length > schema.maxLength) {
-      return `Must be at most ${schema.maxLength} characters`;
+      return `최대 ${schema.maxLength}자 이하여야 합니다`;
     }
     if (schema.pattern) {
       // Guard against ReDoS: reject overly complex patterns from plugin JSON Schemas.
@@ -182,7 +182,7 @@ export function validateField(
         try {
           const re = new RegExp(schema.pattern);
           if (!re.test(str)) {
-            return `Must match pattern: ${schema.pattern}`;
+            return `패턴과 일치해야 합니다: ${schema.pattern}`;
           }
         } catch {
           // Invalid regex in schema — skip
@@ -193,34 +193,34 @@ export function validateField(
 
   if (type === "number" || type === "integer") {
     const num = Number(value);
-    if (isNaN(num)) return "Must be a valid number";
+    if (isNaN(num)) return "유효한 숫자를 입력하세요";
     if (schema.minimum != null && num < schema.minimum) {
-      return `Must be at least ${schema.minimum}`;
+      return `${schema.minimum} 이상이어야 합니다`;
     }
     if (schema.maximum != null && num > schema.maximum) {
-      return `Must be at most ${schema.maximum}`;
+      return `${schema.maximum} 이하여야 합니다`;
     }
     if (schema.exclusiveMinimum != null && num <= schema.exclusiveMinimum) {
-      return `Must be greater than ${schema.exclusiveMinimum}`;
+      return `${schema.exclusiveMinimum}보다 커야 합니다`;
     }
     if (schema.exclusiveMaximum != null && num >= schema.exclusiveMaximum) {
-      return `Must be less than ${schema.exclusiveMaximum}`;
+      return `${schema.exclusiveMaximum}보다 작아야 합니다`;
     }
     if (type === "integer" && !Number.isInteger(num)) {
-      return "Must be a whole number";
+      return "정수를 입력하세요";
     }
     if (schema.multipleOf != null && num % schema.multipleOf !== 0) {
-      return `Must be a multiple of ${schema.multipleOf}`;
+      return `${schema.multipleOf}의 배수여야 합니다`;
     }
   }
 
   if (type === "array") {
     const arr = value as unknown[];
     if (schema.minItems != null && arr.length < schema.minItems) {
-      return `Must have at least ${schema.minItems} items`;
+      return `항목이 최소 ${schema.minItems}개 이상이어야 합니다`;
     }
     if (schema.maxItems != null && arr.length > schema.maxItems) {
-      return `Must have at most ${schema.maxItems} items`;
+      return `항목이 최대 ${schema.maxItems}개 이하여야 합니다`;
     }
   }
 
@@ -451,7 +451,7 @@ const EnumField = React.memo(({
       disabled={disabled}
     >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select an option" />
+        <SelectValue placeholder="옵션 선택" />
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
@@ -494,7 +494,7 @@ const SecretField = React.memo(({
       label={label}
       description={
         description ||
-        "This secret is stored securely via the Paperclip secret provider."
+        "이 시크릿은 Paperclip 시크릿 공급자를 통해 안전하게 저장됩니다."
       }
       required={isRequired}
       error={error}
@@ -524,7 +524,7 @@ const SecretField = React.memo(({
             <Eye className="h-4 w-4 text-muted-foreground" />
           )}
           <span className="sr-only">
-            {isVisible ? "Hide secret" : "Show secret"}
+            {isVisible ? "시크릿 숨기기" : "시크릿 표시"}
           </span>
         </Button>
       </div>
@@ -694,7 +694,7 @@ const ArrayField = React.memo(({
           }}
         >
           <Plus className="mr-2 h-4 w-4" />
-          {isComplex ? "Add item" : "Add"}
+          {isComplex ? "항목 추가" : "추가"}
         </Button>
       </div>
 
@@ -706,7 +706,7 @@ const ArrayField = React.memo(({
           >
             <div className="flex-1">
               <div className="mb-2 text-xs font-medium text-muted-foreground">
-                Item {index + 1}
+                항목 {index + 1}
               </div>
               <FormField
                 propSchema={itemSchema}
@@ -739,13 +739,13 @@ const ArrayField = React.memo(({
               }}
             >
               <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Remove item</span>
+              <span className="sr-only">항목 제거</span>
             </Button>
           </div>
         ))}
         {items.length === 0 && (
           <div className="rounded-lg border border-dashed p-4 text-center text-xs text-muted-foreground">
-            No items added yet.
+            아직 추가된 항목이 없습니다.
           </div>
         )}
       </div>
@@ -1014,7 +1014,7 @@ export function JsonSchemaForm({
           className,
         )}
       >
-        No configuration options available.
+        설정 옵션이 없습니다.
       </div>
     );
   }

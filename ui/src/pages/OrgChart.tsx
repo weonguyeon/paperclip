@@ -255,7 +255,7 @@ export function OrgChart() {
   }
 
   if (orgTree && orgTree.length === 0) {
-    return <EmptyState icon={Network} message="No organizational hierarchy defined." />;
+    return <EmptyState icon={Network} message="조직 계층 구조가 정의되지 않았습니다." />;
   }
 
   return (
@@ -264,13 +264,13 @@ export function OrgChart() {
       <Link to="/company/import">
         <Button variant="outline" size="sm">
           <Upload className="mr-1.5 h-3.5 w-3.5" />
-          Import company
+          회사 가져오기
         </Button>
       </Link>
       <Link to="/company/export">
         <Button variant="outline" size="sm">
           <Download className="mr-1.5 h-3.5 w-3.5" />
-          Export company
+          회사 내보내기
         </Button>
       </Link>
     </div>
@@ -299,7 +299,7 @@ export function OrgChart() {
             }
             setZoom(newZoom);
           }}
-          aria-label="Zoom in"
+          aria-label="확대"
         >
           +
         </button>
@@ -316,7 +316,7 @@ export function OrgChart() {
             }
             setZoom(newZoom);
           }}
-          aria-label="Zoom out"
+          aria-label="축소"
         >
           &minus;
         </button>
@@ -334,10 +334,10 @@ export function OrgChart() {
             setZoom(fitZoom);
             setPan({ x: (cW - chartW) / 2, y: (cH - chartH) / 2 });
           }}
-          title="Fit to screen"
-          aria-label="Fit chart to screen"
+          title="화면에 맞추기"
+          aria-label="조직도를 화면에 맞추기"
         >
-          Fit
+          맞춤
         </button>
       </div>
 

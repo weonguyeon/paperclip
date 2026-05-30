@@ -427,20 +427,20 @@ function generateReadmeFromSelection(
     lines.push("");
   }
 
-  lines.push("## What's Inside");
+  lines.push("## \ud328\ud0a4\uc9c0 \ub0b4\uc6a9");
   lines.push("");
-  lines.push("This is an [Agent Company](https://paperclip.ing) package.");
+  lines.push("\uc774 \ud328\ud0a4\uc9c0\ub294 [\uc5d0\uc774\uc804\ud2b8 \ud68c\uc0ac](https://paperclip.ing) \ud328\ud0a4\uc9c0\uc785\ub2c8\ub2e4.");
   lines.push("");
 
   const counts: Array<[string, number]> = [];
-  if (agents.length > 0) counts.push(["Agents", agents.length]);
-  if (projects.length > 0) counts.push(["Projects", projects.length]);
-  if (skills.length > 0) counts.push(["Skills", skills.length]);
-  if (tasks.length > 0) counts.push(["Tasks", tasks.length]);
+  if (agents.length > 0) counts.push(["\uc5d0\uc774\uc804\ud2b8", agents.length]);
+  if (projects.length > 0) counts.push(["\ud504\ub85c\uc81d\ud2b8", projects.length]);
+  if (skills.length > 0) counts.push(["\uc2a4\ud0ac", skills.length]);
+  if (tasks.length > 0) counts.push(["\uc774\uc288", tasks.length]);
 
   if (counts.length > 0) {
-    lines.push("| Content | Count |");
-    lines.push("|---------|-------|");
+    lines.push("| \ucf58\ud150\uce20 | \uac1c\uc218 |");
+    lines.push("|--------|------|");
     for (const [label, count] of counts) {
       lines.push(`| ${label} | ${count} |`);
     }
@@ -448,10 +448,10 @@ function generateReadmeFromSelection(
   }
 
   if (agents.length > 0) {
-    lines.push("### Agents");
+    lines.push("### \uc5d0\uc774\uc804\ud2b8");
     lines.push("");
-    lines.push("| Agent | Role | Reports To |");
-    lines.push("|-------|------|------------|");
+    lines.push("| \uc5d0\uc774\uc804\ud2b8 | \uc5ed\ud560 | \ubcf4\uace0 \ub300\uc0c1 |");
+    lines.push("|----------|------|-----------|");
     for (const agent of agents) {
       const roleLabel = ROLE_LABELS[agent.role] ?? agent.role;
       const reportsTo = agent.reportsToSlug ?? "\u2014";
@@ -461,7 +461,7 @@ function generateReadmeFromSelection(
   }
 
   if (projects.length > 0) {
-    lines.push("### Projects");
+    lines.push("### \ud504\ub85c\uc81d\ud2b8");
     lines.push("");
     for (const project of projects) {
       const desc = project.description ? ` \u2014 ${project.description}` : "";
@@ -470,16 +470,16 @@ function generateReadmeFromSelection(
     lines.push("");
   }
 
-  lines.push("## Getting Started");
+  lines.push("## \uc2dc\uc791\ud558\uae30");
   lines.push("");
   lines.push("```bash");
   lines.push("pnpm paperclipai company import this-github-url-or-folder");
   lines.push("```");
   lines.push("");
-  lines.push("See [Paperclip](https://paperclip.ing) for more information.");
+  lines.push("[Paperclip](https://paperclip.ing)\uc5d0\uc11c \uc790\uc138\ud55c \uc815\ubcf4\ub97c \ud655\uc778\ud558\uc138\uc694.");
   lines.push("");
   lines.push("---");
-  lines.push(`Exported from [Paperclip](https://paperclip.ing) on ${new Date().toISOString().split("T")[0]}`);
+  lines.push(`[Paperclip](https://paperclip.ing)\uc5d0\uc11c \ub0b4\ubcf4\ub0c4 \u2014 ${new Date().toISOString().split("T")[0]}`);
   lines.push("");
 
   return lines.join("\n");
@@ -500,7 +500,7 @@ function ExportPreviewPane({
 }) {
   if (!selectedFile || content === null) {
     return (
-      <EmptyState icon={Package} message="Select a file to preview its contents." />
+      <EmptyState icon={Package} message="파일을 선택하면 내용을 미리 볼 수 있습니다." />
     );
   }
 
@@ -546,7 +546,7 @@ function ExportPreviewPane({
           </pre>
         ) : (
           <div className="rounded-lg border border-border bg-accent/10 px-4 py-3 text-sm text-muted-foreground">
-            Binary asset preview is not available for this file type.
+            이 파일 형식은 바이너리 에셋 미리보기를 지원하지 않습니다.
           </div>
         )}
       </div>
@@ -672,8 +672,8 @@ export function CompanyExport() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Org Chart", href: "/org" },
-      { label: "Export" },
+      { label: "조직도", href: "/org" },
+      { label: "내보내기" },
     ]);
   }, [setBreadcrumbs]);
 
@@ -719,8 +719,8 @@ export function CompanyExport() {
     onError: (err) => {
       pushToast({
         tone: "error",
-        title: "Export failed",
-        body: err instanceof Error ? err.message : "Failed to load export data.",
+        title: "내보내기 실패",
+        body: err instanceof Error ? err.message : "내보내기 데이터를 불러오지 못했습니다.",
       });
     },
   });
@@ -737,15 +737,15 @@ export function CompanyExport() {
       downloadZip(result, resultCheckedFiles, result.files);
       pushToast({
         tone: "success",
-        title: "Export downloaded",
-        body: `${resultCheckedFiles.size} file${resultCheckedFiles.size === 1 ? "" : "s"} exported as ${result.rootPath}.zip`,
+        title: "내보내기 완료",
+        body: `파일 ${resultCheckedFiles.size}개를 ${result.rootPath}.zip으로 내보냈습니다.`,
       });
     },
     onError: (err) => {
       pushToast({
         tone: "error",
-        title: "Export failed",
-        body: err instanceof Error ? err.message : "Failed to build export package.",
+        title: "내보내기 실패",
+        body: err instanceof Error ? err.message : "내보내기 패키지를 생성하지 못했습니다.",
       });
     },
   });
@@ -911,7 +911,7 @@ export function CompanyExport() {
   }
 
   if (!selectedCompanyId) {
-    return <EmptyState icon={Package} message="Select a company to export." />;
+    return <EmptyState icon={Package} message="내보낼 회사를 선택하세요." />;
   }
 
   if (exportPreviewMutation.isPending && !exportData) {
@@ -919,7 +919,7 @@ export function CompanyExport() {
   }
 
   if (!exportData) {
-    return <EmptyState icon={Package} message="Loading export data..." />;
+    return <EmptyState icon={Package} message="내보내기 데이터 로딩 중..." />;
   }
 
   const previewContent = selectedFile
@@ -935,14 +935,14 @@ export function CompanyExport() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-4 text-sm">
             <span className="font-medium">
-              {selectedCompany?.name ?? "Company"} export
+              {selectedCompany?.name ?? "회사"} 내보내기
             </span>
             <span className="text-muted-foreground">
-              {selectedCount} / {totalFiles} file{totalFiles === 1 ? "" : "s"} selected
+              {selectedCount} / {totalFiles}개 파일 선택됨
             </span>
             {warnings.length > 0 && (
               <span className="text-amber-500">
-                {warnings.length} warning{warnings.length === 1 ? "" : "s"}
+                경고 {warnings.length}개
               </span>
             )}
           </div>
@@ -953,8 +953,8 @@ export function CompanyExport() {
           >
             <Download className="mr-1.5 h-3.5 w-3.5" />
             {downloadMutation.isPending
-              ? "Building export..."
-              : `Export ${selectedCount} file${selectedCount === 1 ? "" : "s"}`}
+              ? "내보내기 준비 중..."
+              : `파일 ${selectedCount}개 내보내기`}
           </Button>
         </div>
       </div>
@@ -972,7 +972,7 @@ export function CompanyExport() {
       <div className="grid h-[calc(100vh-12rem)] gap-0 xl:grid-cols-[19rem_minmax(0,1fr)]">
         <aside className="flex flex-col border-r border-border overflow-hidden">
           <div className="border-b border-border px-4 py-3 shrink-0">
-            <h2 className="text-base font-semibold">Package files</h2>
+            <h2 className="text-base font-semibold">패키지 파일</h2>
           </div>
           <div className="border-b border-border px-3 py-2 shrink-0">
             <div className="flex items-center gap-2 rounded-md border border-border px-2 py-1">
@@ -981,7 +981,7 @@ export function CompanyExport() {
                 type="text"
                 value={treeSearch}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                placeholder="Search files..."
+                placeholder="파일 검색..."
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 data-page-search-target="true"
               />
@@ -1004,7 +1004,7 @@ export function CompanyExport() {
                   onClick={() => setTaskLimit((prev) => prev + TASKS_PAGE_SIZE)}
                   className="w-full rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-colors"
                 >
-                  Show more issues ({visibleTaskChildren} of {totalTaskChildren})
+                  이슈 더 보기 ({visibleTaskChildren} / {totalTaskChildren})
                 </button>
               </div>
             )}

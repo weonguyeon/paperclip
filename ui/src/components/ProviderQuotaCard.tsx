@@ -138,16 +138,16 @@ export function ProviderQuotaCard({
               {providerDisplayName(provider)}
             </CardTitle>
             <CardDescription className="text-xs mt-0.5">
-              <span className="font-mono">{formatTokens(totalInputTokens)}</span> in
+              <span className="font-mono">{formatTokens(totalInputTokens)}</span> 입력
               {" · "}
-              <span className="font-mono">{formatTokens(totalOutputTokens)}</span> out
+              <span className="font-mono">{formatTokens(totalOutputTokens)}</span> 출력
               {(totalApiRuns > 0 || totalSubRuns > 0) && (
                 <span className="ml-1.5">
                   ·{" "}
                   {totalApiRuns > 0 && `~${totalApiRuns} api`}
                   {totalApiRuns > 0 && totalSubRuns > 0 && " / "}
                   {totalSubRuns > 0 && `~${totalSubRuns} sub`}
-                  {" runs"}
+                  {" 실행"}
                 </span>
               )}
             </CardDescription>
@@ -162,17 +162,17 @@ export function ProviderQuotaCard({
         {hasBudget && (
           <div className="space-y-3">
             <QuotaBar
-              label="Period spend"
+              label="기간 지출"
               percentUsed={budgetPct}
               leftLabel={formatCents(totalCostCents)}
-              rightLabel={`${Math.round(budgetPct)}% of allocation`}
+              rightLabel={`예산의 ${Math.round(budgetPct)}%`}
               showDeficitNotch={showDeficitNotch}
             />
             <QuotaBar
-              label="This week"
+              label="이번 주"
               percentUsed={weekPct}
               leftLabel={formatCents(weekSpendCents)}
-              rightLabel={`~${formatCents(Math.round(weeklyBudgetShare))} / wk`}
+              rightLabel={`~${formatCents(Math.round(weeklyBudgetShare))} / 주`}
               showDeficitNotch={weekPct >= 100}
             />
           </div>
@@ -184,7 +184,7 @@ export function ProviderQuotaCard({
             <div className="border-t border-border" />
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                Rolling windows
+                롤링 윈도우
               </p>
               <div className="space-y-2.5">
                 {ROLLING_WINDOWS.map((w) => {
@@ -199,7 +199,7 @@ export function ProviderQuotaCard({
                       <div className="flex items-center justify-between gap-2 text-xs">
                         <span className="font-mono text-muted-foreground w-6 shrink-0">{w}</span>
                         <span className="text-muted-foreground font-mono flex-1">
-                          {formatTokens(tokens)} tok
+                          {formatTokens(tokens)} 토큰
                         </span>
                         <span className="font-medium tabular-nums">{formatCents(cents)}</span>
                       </div>
@@ -223,20 +223,20 @@ export function ProviderQuotaCard({
             <div className="border-t border-border" />
             <div className="space-y-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                Subscription
+                구독
               </p>
               <p className="text-xs text-muted-foreground">
-                <span className="font-mono text-foreground">{totalSubRuns}</span> runs
+                <span className="font-mono text-foreground">{totalSubRuns}</span> 실행
                 {" · "}
                 {totalSubTokens > 0 && (
                   <>
-                    <span className="font-mono text-foreground">{formatTokens(totalSubTokens)}</span> total
+                    <span className="font-mono text-foreground">{formatTokens(totalSubTokens)}</span> 합계
                     {" · "}
                   </>
                 )}
-                <span className="font-mono text-foreground">{formatTokens(totalSubInputTokens)}</span> in
+                <span className="font-mono text-foreground">{formatTokens(totalSubInputTokens)}</span> 입력
                 {" · "}
-                <span className="font-mono text-foreground">{formatTokens(totalSubOutputTokens)}</span> out
+                <span className="font-mono text-foreground">{formatTokens(totalSubOutputTokens)}</span> 출력
               </p>
               {subSharePct > 0 && (
                 <>
@@ -247,7 +247,7 @@ export function ProviderQuotaCard({
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {Math.round(subSharePct)}% of token usage via subscription
+                    {Math.round(subSharePct)}% 토큰을 구독으로 사용
                   </p>
                 </>
               )}
@@ -278,7 +278,7 @@ export function ProviderQuotaCard({
                       </div>
                       <div className="flex items-center gap-3 shrink-0 tabular-nums text-xs">
                         <span className="text-muted-foreground">
-                          {formatTokens(rowTokens)} tok
+                          {formatTokens(rowTokens)} 토큰
                         </span>
                         <span className="font-medium">{formatCents(row.costCents)}</span>
                       </div>
@@ -288,13 +288,13 @@ export function ProviderQuotaCard({
                       <div
                         className="absolute inset-y-0 left-0 bg-primary/60 transition-[width] duration-150"
                         style={{ width: `${tokenPct}%` }}
-                        title={`${Math.round(tokenPct)}% of provider tokens`}
+                        title={`공급자 토큰의 ${Math.round(tokenPct)}%`}
                       />
                       {/* cost share overlay — narrower, opaque, shows relative cost weight */}
                       <div
                         className="absolute inset-y-0 left-0 bg-primary/85 transition-[width] duration-150"
                         style={{ width: `${costPct}%` }}
-                        title={`${Math.round(costPct)}% of provider cost`}
+                        title={`공급자 비용의 ${Math.round(costPct)}%`}
                       />
                     </div>
                   </div>
@@ -311,7 +311,7 @@ export function ProviderQuotaCard({
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Subscription quota
+                  구독 할당량
                 </p>
                 {quotaSource && !isClaudeQuotaPanel && !isCodexQuotaPanel ? (
                   <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
@@ -350,7 +350,7 @@ export function ProviderQuotaCard({
                             {qw.valueLabel != null ? (
                               <span className="font-medium tabular-nums">{qw.valueLabel}</span>
                             ) : qw.usedPercent != null ? (
-                              <span className="font-medium tabular-nums">{qw.usedPercent}% used</span>
+                              <span className="font-medium tabular-nums">{qw.usedPercent}% 사용됨</span>
                             ) : null}
                           </div>
                           {qw.usedPercent != null && fillColor != null && (
@@ -367,7 +367,7 @@ export function ProviderQuotaCard({
                             </p>
                           ) : qw.resetsAt ? (
                             <p className="text-xs text-muted-foreground">
-                              resets {new Date(qw.resetsAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                              초기화: {new Date(qw.resetsAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
                             </p>
                           ) : null}
                         </div>

@@ -20,43 +20,43 @@ import { AGENT_ROLE_LABELS } from "@paperclipai/shared";
 
 /* ---- Help text for (?) tooltips ---- */
 export const help: Record<string, string> = {
-  name: "Display name for this agent.",
-  title: "Job title shown in the org chart.",
-  role: "Organizational role. Determines position and capabilities.",
-  reportsTo: "The agent this one reports to in the org hierarchy.",
-  capabilities: "Describes what this agent can do. Shown in the org chart and used for task routing.",
-  adapterType: "How this agent runs: local CLI (Claude/Codex/OpenCode), OpenClaw Gateway, spawned process, or generic HTTP webhook.",
-  cwd: "Deprecated legacy working directory fallback for local adapters. Existing agents may still carry this value, but new configurations should use project workspaces instead.",
-  promptTemplate: "Sent on every heartbeat. Keep this small and dynamic. Use it for current-task framing, not large static instructions. Supports {{ agent.id }}, {{ agent.name }}, {{ agent.role }} and other template variables.",
-  model: "Override the default model used by the adapter.",
-  thinkingEffort: "Control model reasoning depth. Supported values vary by adapter/model.",
-  chrome: "Enable Claude's Chrome integration by passing --chrome.",
-  dangerouslySkipPermissions: "Run unattended by auto-approving adapter permission prompts when supported.",
-  dangerouslyBypassSandbox: "Run Codex without sandbox restrictions. Required for filesystem/network access.",
-  search: "Enable Codex web search capability during runs.",
-  fastMode: "Enable Codex Fast mode. This burns credits/tokens much faster and is currently supported on GPT-5.4 only.",
-  workspaceStrategy: "How Paperclip should realize an execution workspace for this agent. Keep project_primary for normal cwd execution, or use git_worktree for issue-scoped isolated checkouts.",
-  workspaceBaseRef: "Base git ref used when creating a worktree branch. Leave blank to use the resolved workspace ref or HEAD.",
-  workspaceBranchTemplate: "Template for naming derived branches. Supports {{issue.identifier}}, {{issue.title}}, {{agent.name}}, {{project.id}}, {{workspace.repoRef}}, and {{slug}}.",
-  worktreeParentDir: "Directory where derived worktrees should be created. Absolute, ~-prefixed, and repo-relative paths are supported.",
-  runtimeServicesJson: "Optional workspace runtime service definitions. Use this for shared app servers, workers, or other long-lived companion processes attached to the workspace.",
-  maxTurnsPerRun: "Maximum number of agentic turns (tool calls) per heartbeat run.",
-  command: "The command to execute (e.g. node, python).",
-  localCommand: "Override the path to the CLI command you want the adapter to call (e.g. /usr/local/bin/claude, codex, opencode).",
-  args: "Command-line arguments, comma-separated.",
-  extraArgs: "Extra CLI arguments for local adapters, comma-separated.",
-  envVars: "Environment variables injected into the adapter process. Use plain values or secret references.",
-  bootstrapPrompt: "Only sent when Paperclip starts a fresh session. Use this for stable setup guidance that should not be repeated on every heartbeat.",
-  payloadTemplateJson: "Optional JSON merged into remote adapter request payloads before Paperclip adds its standard wake and workspace fields.",
-  webhookUrl: "The URL that receives POST requests when the agent is invoked.",
-  heartbeatInterval: "Run this agent automatically on a timer. Useful for periodic tasks like checking for new work.",
-  intervalSec: "Seconds between automatic heartbeat invocations.",
-  timeoutSec: "Maximum seconds a run can take before being terminated. 0 means no timeout.",
-  graceSec: "Seconds to wait after sending interrupt before force-killing the process.",
-  wakeOnDemand: "Allow this agent to be woken by assignments, API calls, UI actions, or automated systems.",
-  cooldownSec: "Minimum seconds between consecutive heartbeat runs.",
-  maxConcurrentRuns: "Maximum number of heartbeat runs that can execute simultaneously for this agent.",
-  budgetMonthlyCents: "Monthly spending limit in cents. 0 means no limit.",
+  name: "이 에이전트의 표시 이름.",
+  title: "조직도에 표시되는 직함.",
+  role: "조직 역할. 위치와 권한을 결정합니다.",
+  reportsTo: "조직 계층에서 이 에이전트가 보고하는 상위 에이전트.",
+  capabilities: "이 에이전트가 할 수 있는 일을 설명합니다. 조직도에 표시되며 작업 라우팅에 활용됩니다.",
+  adapterType: "에이전트 실행 방식: 로컬 CLI(Claude/Codex/OpenCode), OpenClaw 게이트웨이, 스폰 프로세스, 일반 HTTP 웹훅 중 선택.",
+  cwd: "로컬 어댑터용 레거시 작업 디렉터리 폴백(지원 중단). 기존 에이전트에 값이 남아 있을 수 있으나, 새 설정에서는 프로젝트 워크스페이스를 사용하세요.",
+  promptTemplate: "매 하트비트마다 전송됩니다. 간결하고 동적으로 유지하세요. 대용량 정적 지시문 대신 현재 작업 컨텍스트 설정에 사용하세요. {{ agent.id }}, {{ agent.name }}, {{ agent.role }} 등 템플릿 변수를 지원합니다.",
+  model: "어댑터가 사용하는 기본 모델을 재정의합니다.",
+  thinkingEffort: "모델 추론 깊이를 제어합니다. 지원 값은 어댑터/모델마다 다릅니다.",
+  chrome: "--chrome 플래그를 전달하여 Claude의 Chrome 연동을 활성화합니다.",
+  dangerouslySkipPermissions: "지원되는 경우 어댑터 권한 요청을 자동 승인하여 무인 실행합니다.",
+  dangerouslyBypassSandbox: "샌드박스 제한 없이 Codex를 실행합니다. 파일시스템/네트워크 접근에 필요합니다.",
+  search: "실행 중 Codex 웹 검색 기능을 활성화합니다.",
+  fastMode: "Codex Fast 모드를 활성화합니다. 크레딧/토큰 소모가 훨씬 빠르며 현재 GPT-5.4 전용입니다.",
+  workspaceStrategy: "Paperclip이 이 에이전트의 실행 워크스페이스를 구성하는 방식. 일반 cwd 실행은 project_primary, 이슈별 격리 체크아웃은 git_worktree를 사용하세요.",
+  workspaceBaseRef: "워크트리 브랜치 생성 시 사용하는 기본 git 참조. 비워두면 해석된 워크스페이스 ref 또는 HEAD를 사용합니다.",
+  workspaceBranchTemplate: "파생 브랜치 이름 템플릿. {{issue.identifier}}, {{issue.title}}, {{agent.name}}, {{project.id}}, {{workspace.repoRef}}, {{slug}}를 지원합니다.",
+  worktreeParentDir: "파생 워크트리가 생성될 디렉터리. 절대 경로, ~ 접두사 경로, 저장소 상대 경로를 지원합니다.",
+  runtimeServicesJson: "선택적 워크스페이스 런타임 서비스 정의. 워크스페이스에 연결된 공유 앱 서버, 워커 등 장기 실행 보조 프로세스에 사용합니다.",
+  maxTurnsPerRun: "하트비트 실행당 최대 에이전트 턴(도구 호출) 수.",
+  command: "실행할 명령어(예: node, python).",
+  localCommand: "어댑터가 호출할 CLI 명령어 경로를 재정의합니다(예: /usr/local/bin/claude, codex, opencode).",
+  args: "명령줄 인수, 쉼표로 구분.",
+  extraArgs: "로컬 어댑터용 추가 CLI 인수, 쉼표로 구분.",
+  envVars: "어댑터 프로세스에 주입할 환경 변수. 일반 값 또는 시크릿 참조를 사용하세요.",
+  bootstrapPrompt: "Paperclip이 새 세션을 시작할 때만 전송됩니다. 매 하트비트마다 반복할 필요 없는 안정적인 설정 안내에 사용하세요.",
+  payloadTemplateJson: "Paperclip이 표준 wake 및 워크스페이스 필드를 추가하기 전에 원격 어댑터 요청 페이로드에 병합할 선택적 JSON.",
+  webhookUrl: "에이전트 호출 시 POST 요청을 수신할 URL.",
+  heartbeatInterval: "타이머로 이 에이전트를 자동 실행합니다. 새 작업 확인 등 주기적 작업에 유용합니다.",
+  intervalSec: "자동 하트비트 호출 간격(초).",
+  timeoutSec: "실행이 강제 종료되기까지의 최대 시간(초). 0은 제한 없음.",
+  graceSec: "인터럽트 전송 후 강제 종료 전 대기 시간(초).",
+  wakeOnDemand: "할당, API 호출, UI 동작 또는 자동화 시스템에 의해 이 에이전트를 깨울 수 있도록 허용합니다.",
+  cooldownSec: "연속 하트비트 실행 사이의 최소 간격(초).",
+  maxConcurrentRuns: "이 에이전트에서 동시에 실행할 수 있는 최대 하트비트 실행 수.",
+  budgetMonthlyCents: "월별 지출 한도(센트). 0은 제한 없음.",
 };
 
 import { getAdapterLabels } from "../adapters/adapter-display-registry";
@@ -379,54 +379,54 @@ export function ChoosePathButton() {
         className="inline-flex items-center rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground hover:bg-accent/50 transition-colors shrink-0"
         onClick={() => setOpen(true)}
       >
-        Choose
+        선택
       </button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Specify path manually</DialogTitle>
+            <DialogTitle>경로 직접 입력</DialogTitle>
             <DialogDescription>
-              Browser security blocks apps from reading full local paths via a file picker.
-              Copy the absolute path and paste it into the input.
+              브라우저 보안 정책으로 인해 파일 선택기로 전체 로컬 경로를 읽을 수 없습니다.
+              절대 경로를 복사하여 입력란에 붙여넣으세요.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 text-sm">
             <section className="space-y-1.5">
               <p className="font-medium">macOS (Finder)</p>
               <ol className="list-decimal space-y-1 pl-5 text-muted-foreground">
-                <li>Find the folder in Finder.</li>
-                <li>Hold <kbd>Option</kbd> and right-click the folder.</li>
-                <li>Click "Copy &lt;folder name&gt; as Pathname".</li>
-                <li>Paste the result into the path input.</li>
+                <li>Finder에서 폴더를 찾습니다.</li>
+                <li><kbd>Option</kbd>을 누른 채로 폴더를 우클릭합니다.</li>
+                <li>"&lt;폴더 이름&gt;의 경로 이름 복사"를 클릭합니다.</li>
+                <li>복사한 결과를 경로 입력란에 붙여넣습니다.</li>
               </ol>
               <p className="rounded-md bg-muted px-2 py-1 font-mono text-xs">
                 /Users/yourname/Documents/project
               </p>
             </section>
             <section className="space-y-1.5">
-              <p className="font-medium">Windows (File Explorer)</p>
+              <p className="font-medium">Windows (파일 탐색기)</p>
               <ol className="list-decimal space-y-1 pl-5 text-muted-foreground">
-                <li>Find the folder in File Explorer.</li>
-                <li>Hold <kbd>Shift</kbd> and right-click the folder.</li>
-                <li>Click "Copy as path".</li>
-                <li>Paste the result into the path input.</li>
+                <li>파일 탐색기에서 폴더를 찾습니다.</li>
+                <li><kbd>Shift</kbd>를 누른 채로 폴더를 우클릭합니다.</li>
+                <li>"경로로 복사"를 클릭합니다.</li>
+                <li>복사한 결과를 경로 입력란에 붙여넣습니다.</li>
               </ol>
               <p className="rounded-md bg-muted px-2 py-1 font-mono text-xs">
                 C:\Users\yourname\Documents\project
               </p>
             </section>
             <section className="space-y-1.5">
-              <p className="font-medium">Terminal fallback (macOS/Linux)</p>
+              <p className="font-medium">터미널 사용 (macOS/Linux)</p>
               <ol className="list-decimal space-y-1 pl-5 text-muted-foreground">
-                <li>Run <code>cd /path/to/folder</code>.</li>
-                <li>Run <code>pwd</code>.</li>
-                <li>Copy the output and paste it into the path input.</li>
+                <li><code>cd /path/to/folder</code>을 실행합니다.</li>
+                <li><code>pwd</code>를 실행합니다.</li>
+                <li>출력된 결과를 복사하여 경로 입력란에 붙여넣습니다.</li>
               </ol>
             </section>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
-              OK
+              확인
             </Button>
           </DialogFooter>
         </DialogContent>

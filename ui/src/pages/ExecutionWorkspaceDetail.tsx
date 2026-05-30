@@ -90,14 +90,14 @@ function parseWorkspaceRuntimeJson(value: string) {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       return {
         ok: false as const,
-        error: "Workspace commands JSON must be a JSON object.",
+        error: "워크스페이스 명령 JSON은 JSON 객체여야 합니다.",
       };
     }
     return { ok: true as const, value: parsed as Record<string, unknown> };
   } catch (error) {
     return {
       ok: false as const,
-      error: error instanceof Error ? error.message : "Invalid JSON.",
+      error: error instanceof Error ? error.message : "잘못된 JSON 형식입니다.",
     };
   }
 }
@@ -164,7 +164,7 @@ function validateForm(form: WorkspaceFormState) {
     try {
       new URL(repoUrl);
     } catch {
-      return "Repo URL must be a valid URL.";
+      return "저장소 URL은 유효한 URL이어야 합니다.";
     }
   }
 
@@ -220,7 +220,7 @@ function MonoValue({ value, copy }: { value: string; copy?: boolean }) {
     <div className="inline-flex max-w-full items-start gap-2">
       <span className="break-all font-mono text-xs">{value}</span>
       {copy ? (
-        <CopyText text={value} className="shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="Copied">
+        <CopyText text={value} className="shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="복사됨">
           <Copy className="h-3.5 w-3.5" />
         </CopyText>
       ) : null}
@@ -391,9 +391,9 @@ export function ExecutionWorkspaceDetail() {
   useEffect(() => {
     if (!workspace) return;
     const crumbs = [
-      { label: "Projects", href: "/projects" },
+      { label: "프로젝트", href: "/projects" },
       ...(project ? [{ label: project.name, href: `/projects/${projectRef}` }] : []),
-      ...(project ? [{ label: "Workspaces", href: `/projects/${projectRef}/workspaces` }] : []),
+      ...(project ? [{ label: "워크스페이스", href: `/projects/${projectRef}/workspaces` }] : []),
       { label: workspace.name },
     ];
     setBreadcrumbs(crumbs);
@@ -415,7 +415,7 @@ export function ExecutionWorkspaceDetail() {
       setErrorMessage(null);
     },
     onError: (error) => {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to save execution workspace.");
+      setErrorMessage(error instanceof Error ? error.message : "실행 워크스페이스 저장에 실패했습니다.");
     },
   });
   const workspaceOperationsQuery = useQuery({
@@ -433,25 +433,25 @@ export function ExecutionWorkspaceDetail() {
       setRuntimeActionErrorMessage(null);
       setRuntimeActionMessage(
         request.action === "run"
-          ? "Workspace job completed."
+          ? "워크스페이스 작업이 완료됐습니다."
           : request.action === "stop"
-            ? "Workspace service stopped."
+            ? "워크스페이스 서비스가 중지됐습니다."
             : request.action === "restart"
-              ? "Workspace service restarted."
-              : "Workspace service started.",
+              ? "워크스페이스 서비스가 재시작됐습니다."
+              : "워크스페이스 서비스가 시작됐습니다.",
       );
     },
     onError: (error) => {
       setRuntimeActionMessage(null);
-      setRuntimeActionErrorMessage(error instanceof Error ? error.message : "Failed to control workspace commands.");
+      setRuntimeActionErrorMessage(error instanceof Error ? error.message : "워크스페이스 명령 제어에 실패했습니다.");
     },
   });
 
-  if (workspaceQuery.isLoading) return <p className="text-sm text-muted-foreground">Loading workspace…</p>;
+  if (workspaceQuery.isLoading) return <p className="text-sm text-muted-foreground">워크스페이스 로딩 중…</p>;
   if (workspaceQuery.error) {
     return (
       <p className="text-sm text-destructive">
-        {workspaceQuery.error instanceof Error ? workspaceQuery.error.message : "Failed to load workspace"}
+        {workspaceQuery.error instanceof Error ? workspaceQuery.error.message : "워크스페이스를 불러오지 못했습니다"}
       </p>
     );
   }
@@ -496,7 +496,7 @@ export function ExecutionWorkspaceDetail() {
     try {
       patch = buildWorkspacePatch(initialState, form);
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Failed to build workspace update.");
+      setErrorMessage(error instanceof Error ? error.message : "워크스페이스 업데이트 생성에 실패했습니다.");
       return;
     }
 
@@ -511,7 +511,7 @@ export function ExecutionWorkspaceDetail() {
           <Button variant="ghost" size="sm" asChild>
             <Link to={project ? `/projects/${projectRef}/workspaces` : "/projects"}>
               <ArrowLeft className="mr-1 h-4 w-4" />
-              Back to all workspaces
+              모든 워크스페이스로 돌아가기
             </Link>
           </Button>
           <StatusPill>{workspace.mode}</StatusPill>
@@ -523,26 +523,26 @@ export function ExecutionWorkspaceDetail() {
 
         <div className="space-y-2">
           <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            Execution workspace
+            실행 워크스페이스
           </div>
           <h1 className="truncate text-xl font-semibold sm:text-2xl">{workspace.name}</h1>
           <p className="max-w-2xl text-sm text-muted-foreground">
-            Configure the concrete runtime workspace that Paperclip reuses for this issue flow.
-            <span className="hidden sm:inline"> These settings stay attached to the execution workspace so future runs can keep local paths, repo refs, provisioning, teardown, and runtime-service behavior in sync with the actual workspace being reused.</span>
+            Paperclip이 이 이슈 플로우에서 재사용할 구체적인 런타임 워크스페이스를 구성합니다.
+            <span className="hidden sm:inline"> 이 설정은 실행 워크스페이스에 연결되어, 향후 실행 시 로컬 경로·저장소 참조·프로비저닝·정리·런타임 서비스 동작이 실제 재사용 중인 워크스페이스와 동기화된 상태를 유지합니다.</span>
           </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-1">
-              <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Workspace commands</div>
-              <h2 className="text-lg font-semibold">Services and jobs</h2>
+              <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">워크스페이스 명령</div>
+              <h2 className="text-lg font-semibold">서비스 및 작업</h2>
               <p className="text-sm text-muted-foreground">
-                Source: {runtimeConfigSource === "execution_workspace"
-                  ? "execution workspace override"
+                출처: {runtimeConfigSource === "execution_workspace"
+                  ? "실행 워크스페이스 재정의"
                   : runtimeConfigSource === "project_workspace"
-                    ? "project workspace default"
-                    : "none"}
+                    ? "프로젝트 워크스페이스 기본값"
+                    : "없음"}
               </p>
             </div>
           </div>
@@ -553,14 +553,14 @@ export function ExecutionWorkspaceDetail() {
             pendingRequest={pendingRuntimeAction}
             serviceEmptyMessage={
               effectiveRuntimeConfig
-                ? "No services have been started for this execution workspace yet."
-                : "No workspace command config is defined for this execution workspace yet."
+                ? "이 실행 워크스페이스에서 아직 시작된 서비스가 없습니다."
+                : "이 실행 워크스페이스에 정의된 워크스페이스 명령 설정이 없습니다."
             }
-            jobEmptyMessage="No one-shot jobs are configured for this execution workspace yet."
+            jobEmptyMessage="이 실행 워크스페이스에 구성된 단발성 작업이 없습니다."
             disabledHint={
               canStartRuntimeServices
                 ? null
-                : "Execution workspaces need a working directory before local commands can run, and services also need runtime config."
+                : "실행 워크스페이스는 로컬 명령을 실행하기 전에 작업 디렉토리가 필요하며, 서비스는 런타임 설정도 필요합니다."
             }
             onAction={(request) => controlRuntimeServices.mutate(request)}
           />
@@ -571,9 +571,9 @@ export function ExecutionWorkspaceDetail() {
         <Tabs value={activeTab ?? "configuration"} onValueChange={(value) => handleTabChange(value as ExecutionWorkspaceTab)}>
           <PageTabBar
             items={[
-              { value: "configuration", label: "Configuration" },
-              { value: "runtime_logs", label: "Runtime logs" },
-              { value: "issues", label: "Issues" },
+              { value: "configuration", label: "설정" },
+              { value: "runtime_logs", label: "런타임 로그" },
+              { value: "issues", label: "이슈" },
             ]}
             align="start"
             value={activeTab ?? "configuration"}
@@ -587,11 +587,11 @@ export function ExecutionWorkspaceDetail() {
               <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="space-y-1">
                   <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    Configuration
+                    설정
                   </div>
-                  <h2 className="text-lg font-semibold">Workspace settings</h2>
+                  <h2 className="text-lg font-semibold">워크스페이스 설정</h2>
                   <p className="text-sm text-muted-foreground">
-                    Edit the concrete path, repo, branch, provisioning, teardown, and runtime overrides attached to this execution workspace.
+                    이 실행 워크스페이스에 연결된 경로, 저장소, 브랜치, 프로비저닝, 정리, 런타임 재정의를 수정합니다.
                   </p>
                 </div>
                 <Button
@@ -600,23 +600,23 @@ export function ExecutionWorkspaceDetail() {
                   onClick={() => setCloseDialogOpen(true)}
                   disabled={workspace.status === "archived"}
                 >
-                  {workspace.status === "cleanup_failed" ? "Retry close" : "Close workspace"}
+                  {workspace.status === "cleanup_failed" ? "닫기 재시도" : "워크스페이스 닫기"}
                 </Button>
               </div>
 
               <Separator className="my-5" />
 
               <div className="space-y-4">
-                <Field label="Workspace name">
+                <Field label="워크스페이스 이름">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none"
                     value={form.name}
                     onChange={(event) => setForm((current) => current ? { ...current, name: event.target.value } : current)}
-                    placeholder="Execution workspace name"
+                    placeholder="실행 워크스페이스 이름"
                   />
                 </Field>
 
-                <Field label="Branch name" hint="Useful for isolated worktrees">
+                <Field label="브랜치 이름" hint="격리된 worktree에 유용합니다">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none"
                     value={form.branchName}
@@ -625,7 +625,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Working directory">
+                <Field label="작업 디렉토리">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none"
                     value={form.cwd}
@@ -634,7 +634,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Provider path / ref">
+                <Field label="공급자 경로 / 참조">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none"
                     value={form.providerRef}
@@ -643,7 +643,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Repo URL">
+                <Field label="저장소 URL">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none"
                     value={form.repoUrl}
@@ -652,7 +652,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Base ref">
+                <Field label="베이스 참조">
                   <input
                     className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none"
                     value={form.baseRef}
@@ -661,7 +661,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Provision command" hint="Runs when Paperclip prepares this execution workspace">
+                <Field label="프로비저닝 명령" hint="Paperclip이 이 실행 워크스페이스를 준비할 때 실행됩니다">
                   <textarea
                     className="min-h-20 w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none sm:min-h-28"
                     value={form.provisionCommand}
@@ -670,7 +670,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Teardown command" hint="Runs when the execution workspace is archived or cleaned up">
+                <Field label="정리(teardown) 명령" hint="실행 워크스페이스가 보관되거나 정리될 때 실행됩니다">
                   <textarea
                     className="min-h-20 w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none sm:min-h-28"
                     value={form.teardownCommand}
@@ -679,7 +679,7 @@ export function ExecutionWorkspaceDetail() {
                   />
                 </Field>
 
-                <Field label="Cleanup command" hint="Workspace-specific cleanup before teardown">
+                <Field label="클린업 명령" hint="teardown 전 워크스페이스별 정리">
                   <textarea
                     className="min-h-16 w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none sm:min-h-24"
                     value={form.cleanupCommand}
@@ -692,14 +692,14 @@ export function ExecutionWorkspaceDetail() {
                   <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                     <div>
                       <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                        Runtime config source
+                        런타임 설정 출처
                       </div>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {runtimeConfigSource === "execution_workspace"
-                          ? "This execution workspace currently overrides the project workspace runtime config."
+                          ? "이 실행 워크스페이스가 현재 프로젝트 워크스페이스 런타임 설정을 재정의하고 있습니다."
                           : runtimeConfigSource === "project_workspace"
-                            ? "This execution workspace is inheriting the project workspace runtime config."
-                            : "No runtime config is currently defined on this execution workspace or its project workspace."}
+                            ? "이 실행 워크스페이스가 프로젝트 워크스페이스 런타임 설정을 상속받고 있습니다."
+                            : "이 실행 워크스페이스 또는 프로젝트 워크스페이스에 정의된 런타임 설정이 없습니다."}
                       </p>
                     </div>
                     <Button
@@ -715,18 +715,18 @@ export function ExecutionWorkspaceDetail() {
                         } : current)
                       }
                     >
-                      Reset to inherit
+                      상속으로 초기화
                     </Button>
                   </div>
                 </div>
 
                 <details className="rounded-xl border border-dashed border-border/70 bg-muted/20 px-3 py-3">
-                  <summary className="cursor-pointer text-sm font-medium">Advanced runtime JSON</summary>
+                  <summary className="cursor-pointer text-sm font-medium">고급 런타임 JSON</summary>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Override the inherited workspace command model only when this execution workspace truly needs different service or job behavior.
+                    이 실행 워크스페이스에 실제로 다른 서비스 또는 작업 동작이 필요한 경우에만 상속된 워크스페이스 명령 모델을 재정의하세요.
                   </p>
                   <div className="mt-3">
-                    <Field label="Workspace commands JSON" hint="Legacy `services` arrays still work, but `commands` supports both services and jobs.">
+                    <Field label="워크스페이스 명령 JSON" hint="기존 `services` 배열도 동작하지만, `commands`는 서비스와 작업 모두 지원합니다.">
                       <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
                         <input
                           id="inherit-runtime-config"
@@ -743,7 +743,7 @@ export function ExecutionWorkspaceDetail() {
                             });
                           }}
                         />
-                        <label htmlFor="inherit-runtime-config">Inherit project workspace runtime config</label>
+                        <label htmlFor="inherit-runtime-config">프로젝트 워크스페이스 런타임 설정 상속</label>
                       </div>
                       <textarea
                         className="min-h-64 w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-96"
@@ -760,7 +760,7 @@ export function ExecutionWorkspaceDetail() {
               <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button className="w-full sm:w-auto" disabled={!isDirty || updateWorkspace.isPending} onClick={saveChanges}>
                   {updateWorkspace.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Save changes
+                  변경사항 저장
                 </Button>
                 <Button
                   variant="outline"
@@ -773,32 +773,32 @@ export function ExecutionWorkspaceDetail() {
                     setRuntimeActionMessage(null);
                   }}
                 >
-                  Reset
+                  초기화
                 </Button>
                 {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}
-                {!errorMessage && !isDirty ? <p className="text-sm text-muted-foreground">No unsaved changes.</p> : null}
+                {!errorMessage && !isDirty ? <p className="text-sm text-muted-foreground">저장되지 않은 변경사항이 없습니다.</p> : null}
               </div>
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
               <div className="space-y-1">
-                <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Linked objects</div>
-                <h2 className="text-lg font-semibold">Workspace context</h2>
+                <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">연결된 객체</div>
+                <h2 className="text-lg font-semibold">워크스페이스 컨텍스트</h2>
               </div>
               <Separator className="my-4" />
-              <DetailRow label="Project">
+              <DetailRow label="프로젝트">
                 {project ? <Link to={`/projects/${projectRef}`} className="hover:underline">{project.name}</Link> : <MonoValue value={workspace.projectId} />}
               </DetailRow>
-              <DetailRow label="Project workspace">
+              <DetailRow label="프로젝트 워크스페이스">
                 {project && linkedProjectWorkspace ? (
                   <WorkspaceLink project={project} workspace={linkedProjectWorkspace} />
                 ) : workspace.projectWorkspaceId ? (
                   <MonoValue value={workspace.projectWorkspaceId} />
                 ) : (
-                  "None"
+                  "없음"
                 )}
               </DetailRow>
-              <DetailRow label="Source issue">
+              <DetailRow label="소스 이슈">
                 {sourceIssue ? (
                   <Link to={issueUrl(sourceIssue)} className="hover:underline">
                     {sourceIssue.identifier ?? sourceIssue.id} · {sourceIssue.title}
@@ -806,10 +806,10 @@ export function ExecutionWorkspaceDetail() {
                 ) : workspace.sourceIssueId ? (
                   <MonoValue value={workspace.sourceIssueId} />
                 ) : (
-                  "None"
+                  "없음"
                 )}
               </DetailRow>
-              <DetailRow label="Derived from">
+              <DetailRow label="파생 출처">
                 {derivedWorkspace ? (
                   <Link to={executionWorkspaceTabPath(derivedWorkspace.id, "configuration")} className="hover:underline">
                     {derivedWorkspace.name}
@@ -817,72 +817,72 @@ export function ExecutionWorkspaceDetail() {
                 ) : workspace.derivedFromExecutionWorkspaceId ? (
                   <MonoValue value={workspace.derivedFromExecutionWorkspaceId} />
                 ) : (
-                  "None"
+                  "없음"
                 )}
               </DetailRow>
-              <DetailRow label="Workspace ID">
+              <DetailRow label="워크스페이스 ID">
                 <MonoValue value={workspace.id} />
               </DetailRow>
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
               <div className="space-y-1">
-                <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Paths and refs</div>
-                <h2 className="text-lg font-semibold">Concrete location</h2>
+                <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">경로 및 참조</div>
+                <h2 className="text-lg font-semibold">실제 위치</h2>
               </div>
               <Separator className="my-4" />
-              <DetailRow label="Working dir">
-                {workspace.cwd ? <MonoValue value={workspace.cwd} copy /> : "None"}
+              <DetailRow label="작업 디렉토리">
+                {workspace.cwd ? <MonoValue value={workspace.cwd} copy /> : "없음"}
               </DetailRow>
-              <DetailRow label="Provider ref">
-                {workspace.providerRef ? <MonoValue value={workspace.providerRef} copy /> : "None"}
+              <DetailRow label="공급자 참조">
+                {workspace.providerRef ? <MonoValue value={workspace.providerRef} copy /> : "없음"}
               </DetailRow>
-              <DetailRow label="Repo URL">
+              <DetailRow label="저장소 URL">
                 {workspace.repoUrl && isSafeExternalUrl(workspace.repoUrl) ? (
                   <div className="inline-flex max-w-full items-start gap-2">
                     <a href={workspace.repoUrl} target="_blank" rel="noreferrer" className="inline-flex min-w-0 items-center gap-1 break-all hover:underline">
                       {workspace.repoUrl}
                       <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                     </a>
-                    <CopyText text={workspace.repoUrl} className="shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="Copied">
+                    <CopyText text={workspace.repoUrl} className="shrink-0 text-muted-foreground hover:text-foreground" copiedLabel="복사됨">
                       <Copy className="h-3.5 w-3.5" />
                     </CopyText>
                   </div>
                 ) : workspace.repoUrl ? (
                   <MonoValue value={workspace.repoUrl} copy />
                 ) : (
-                  "None"
+                  "없음"
                 )}
               </DetailRow>
-              <DetailRow label="Base ref">
-                {workspace.baseRef ? <MonoValue value={workspace.baseRef} copy /> : "None"}
+              <DetailRow label="베이스 참조">
+                {workspace.baseRef ? <MonoValue value={workspace.baseRef} copy /> : "없음"}
               </DetailRow>
-              <DetailRow label="Branch">
-                {workspace.branchName ? <MonoValue value={workspace.branchName} copy /> : "None"}
+              <DetailRow label="브랜치">
+                {workspace.branchName ? <MonoValue value={workspace.branchName} copy /> : "없음"}
               </DetailRow>
-              <DetailRow label="Opened">{formatDateTime(workspace.openedAt)}</DetailRow>
-              <DetailRow label="Last used">{formatDateTime(workspace.lastUsedAt)}</DetailRow>
-              <DetailRow label="Cleanup">
+              <DetailRow label="열린 시각">{formatDateTime(workspace.openedAt)}</DetailRow>
+              <DetailRow label="마지막 사용">{formatDateTime(workspace.lastUsedAt)}</DetailRow>
+              <DetailRow label="정리 일정">
                 {workspace.cleanupEligibleAt
                   ? `${formatDateTime(workspace.cleanupEligibleAt)}${workspace.cleanupReason ? ` · ${workspace.cleanupReason}` : ""}`
-                  : "Not scheduled"}
+                  : "예정 없음"}
               </DetailRow>
             </div>
           </div>
         ) : activeTab === "runtime_logs" ? (
           <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
             <div className="space-y-1">
-              <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">Recent operations</div>
-              <h2 className="text-lg font-semibold">Runtime and cleanup logs</h2>
+              <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">최근 작업</div>
+              <h2 className="text-lg font-semibold">런타임 및 정리 로그</h2>
             </div>
             <Separator className="my-4" />
             {workspaceOperationsQuery.isLoading ? (
-              <p className="text-sm text-muted-foreground">Loading workspace operations…</p>
+              <p className="text-sm text-muted-foreground">워크스페이스 작업 로딩 중…</p>
             ) : workspaceOperationsQuery.error ? (
               <p className="text-sm text-destructive">
                 {workspaceOperationsQuery.error instanceof Error
                   ? workspaceOperationsQuery.error.message
-                  : "Failed to load workspace operations."}
+                  : "워크스페이스 작업을 불러오지 못했습니다."}
               </p>
             ) : workspaceOperationsQuery.data && workspaceOperationsQuery.data.length > 0 ? (
               <div className="space-y-3">
@@ -907,7 +907,7 @@ export function ExecutionWorkspaceDetail() {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">No workspace operations have been recorded yet.</p>
+              <p className="text-sm text-muted-foreground">아직 기록된 워크스페이스 작업이 없습니다.</p>
             )}
           </div>
         ) : (

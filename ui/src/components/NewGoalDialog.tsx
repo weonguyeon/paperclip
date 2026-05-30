@@ -27,10 +27,10 @@ import { MarkdownEditor, type MarkdownEditorRef } from "./MarkdownEditor";
 import { StatusBadge } from "./StatusBadge";
 
 const levelLabels: Record<string, string> = {
-  company: "Company",
-  team: "Team",
-  agent: "Agent",
-  task: "Task",
+  company: "회사",
+  team: "팀",
+  agent: "에이전트",
+  task: "작업",
 };
 
 export function NewGoalDialog() {
@@ -128,7 +128,7 @@ export function NewGoalDialog() {
               </span>
             )}
             <span className="text-muted-foreground/60">&rsaquo;</span>
-            <span>{newGoalDefaults.parentId ? "New sub-goal" : "New goal"}</span>
+            <span>{newGoalDefaults.parentId ? "새 하위 목표" : "새 목표"}</span>
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -237,7 +237,7 @@ export function NewGoalDialog() {
             <PopoverTrigger asChild>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 <Target className="h-3 w-3 text-muted-foreground" />
-                {currentParent ? currentParent.title : "Parent goal"}
+                {currentParent ? currentParent.title : "상위 목표"}
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-48 p-1" align="start">
@@ -248,7 +248,7 @@ export function NewGoalDialog() {
                 )}
                 onClick={() => { setParentId(""); setParentOpen(false); }}
               >
-                No parent
+                상위 목표 없음
               </button>
               {(goals ?? []).map((g) => (
                 <button
@@ -273,7 +273,7 @@ export function NewGoalDialog() {
             disabled={!title.trim() || createGoal.isPending}
             onClick={handleSubmit}
           >
-            {createGoal.isPending ? "Creating…" : newGoalDefaults.parentId ? "Create sub-goal" : "Create goal"}
+            {createGoal.isPending ? "생성 중…" : newGoalDefaults.parentId ? "하위 목표 생성" : "목표 생성"}
           </Button>
         </div>
       </DialogContent>

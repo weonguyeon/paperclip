@@ -12,33 +12,33 @@ interface ShortcutSection {
 
 const sections: ShortcutSection[] = [
   {
-    title: "Inbox",
+    title: "받은 편지함",
     shortcuts: [
-      { keys: ["j"], label: "Move down" },
-      { keys: ["k"], label: "Move up" },
-      { keys: ["Enter"], label: "Open selected item" },
-      { keys: ["a"], label: "Archive item" },
-      { keys: ["y"], label: "Archive item" },
-      { keys: ["r"], label: "Mark as read" },
-      { keys: ["U"], label: "Mark as unread" },
+      { keys: ["j"], label: "아래로 이동" },
+      { keys: ["k"], label: "위로 이동" },
+      { keys: ["Enter"], label: "선택 항목 열기" },
+      { keys: ["a"], label: "항목 보관" },
+      { keys: ["y"], label: "항목 보관" },
+      { keys: ["r"], label: "읽음으로 표시" },
+      { keys: ["U"], label: "읽지 않음으로 표시" },
     ],
   },
   {
-    title: "Issue detail",
+    title: "이슈 상세",
     shortcuts: [
-      { keys: ["y"], label: "Quick-archive back to inbox" },
-      { keys: ["g", "i"], label: "Go to inbox" },
-      { keys: ["g", "c"], label: "Focus comment composer" },
+      { keys: ["y"], label: "받은 편지함으로 빠른 보관" },
+      { keys: ["g", "i"], label: "받은 편지함으로 이동" },
+      { keys: ["g", "c"], label: "댓글 작성 영역에 포커스" },
     ],
   },
   {
-    title: "Global",
+    title: "전체",
     shortcuts: [
-      { keys: ["/"], label: "Search current page or quick search" },
-      { keys: ["c"], label: "New issue" },
-      { keys: ["["], label: "Toggle sidebar" },
-      { keys: ["]"], label: "Toggle panel" },
-      { keys: ["?"], label: "Show keyboard shortcuts" },
+      { keys: ["/"], label: "현재 페이지 검색 또는 빠른 검색" },
+      { keys: ["c"], label: "새 이슈" },
+      { keys: ["["], label: "사이드바 토글" },
+      { keys: ["]"], label: "패널 토글" },
+      { keys: ["?"], label: "키보드 단축키 표시" },
     ],
   },
 ];
@@ -62,7 +62,7 @@ export function KeyboardShortcutsCheatsheet({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md gap-0 p-0 overflow-hidden" showCloseButton={false}>
         <DialogHeader className="px-5 pt-5 pb-3">
-          <DialogTitle className="text-base">Keyboard shortcuts</DialogTitle>
+          <DialogTitle className="text-base">키보드 단축키</DialogTitle>
         </DialogHeader>
         <div className="divide-y divide-border border-t border-border">
           {sections.map((section) => (
@@ -80,7 +80,7 @@ export function KeyboardShortcutsCheatsheet({
                     <div className="flex items-center gap-1">
                       {shortcut.keys.map((key, i) => (
                         <span key={key} className="flex items-center gap-1">
-                          {i > 0 && <span className="text-xs text-muted-foreground">then</span>}
+                          {i > 0 && <span className="text-xs text-muted-foreground">→</span>}
                           <KeyCap>{key}</KeyCap>
                         </span>
                       ))}
@@ -93,7 +93,7 @@ export function KeyboardShortcutsCheatsheet({
         </div>
         <div className="border-t border-border px-5 py-3">
           <p className="text-xs text-muted-foreground">
-            Press <KeyCap>Esc</KeyCap> to close &middot; Shortcuts are disabled in text fields
+            <KeyCap>Esc</KeyCap> 키로 닫기 &middot; 텍스트 입력 중에는 단축키가 비활성화됩니다
           </p>
         </div>
       </DialogContent>

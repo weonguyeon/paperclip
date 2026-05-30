@@ -23,25 +23,25 @@ import { StatusIcon } from "./StatusIcon";
 export const issueTrailingColumns: InboxIssueColumn[] = ["assignee", "project", "workspace", "parent", "labels", "updated"];
 
 const issueColumnLabels: Record<InboxIssueColumn, string> = {
-  status: "Status",
+  status: "상태",
   id: "ID",
-  assignee: "Assignee",
-  project: "Project",
-  workspace: "Workspace",
-  parent: "Parent issue",
-  labels: "Tags",
-  updated: "Last updated",
+  assignee: "담당자",
+  project: "프로젝트",
+  workspace: "워크스페이스",
+  parent: "상위 이슈",
+  labels: "태그",
+  updated: "최근 업데이트",
 };
 
 const issueColumnDescriptions: Record<InboxIssueColumn, string> = {
-  status: "Issue state chip on the left edge.",
-  id: "Ticket identifier like PAP-1009.",
-  assignee: "Assigned agent or board user.",
-  project: "Linked project pill with its color.",
-  workspace: "Execution or project workspace used for the issue.",
-  parent: "Parent issue identifier and title.",
-  labels: "Issue labels and tags.",
-  updated: "Latest visible activity time.",
+  status: "왼쪽 끝에 표시되는 이슈 상태 칩.",
+  id: "PAP-1009 형식의 티켓 식별자.",
+  assignee: "담당 에이전트 또는 보드 사용자.",
+  project: "색상이 적용된 연결 프로젝트 필.",
+  workspace: "이슈에 사용된 실행 또는 프로젝트 워크스페이스.",
+  parent: "상위 이슈 식별자 및 제목.",
+  labels: "이슈 레이블 및 태그.",
+  updated: "마지막으로 표시된 활동 시간.",
 };
 
 export function issueActivityText(issue: Issue): string {
@@ -84,17 +84,17 @@ export function IssueColumnPicker({
           variant={iconOnly ? "outline" : "ghost"}
           size={iconOnly ? "icon" : "sm"}
           className={iconOnly ? "h-8 w-8 shrink-0" : "hidden h-8 shrink-0 px-2 text-xs sm:inline-flex"}
-          title="Columns"
+          title="컬럼"
         >
           <Columns3 className={iconOnly ? "h-3.5 w-3.5" : "mr-1 h-3.5 w-3.5"} />
-          {!iconOnly && "Columns"}
+          {!iconOnly && "컬럼"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[300px] rounded-xl border-border/70 p-1.5 shadow-xl shadow-black/10">
         <DropdownMenuLabel className="px-2 pb-1 pt-1.5">
           <div className="space-y-1">
             <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Desktop issue rows
+              데스크탑 이슈 행
             </div>
             <div className="text-sm font-medium text-foreground">
               {title}
@@ -125,7 +125,7 @@ export function IssueColumnPicker({
           onSelect={onResetColumns}
           className="rounded-lg px-3 py-2 text-sm"
         >
-          Reset defaults
+          기본값으로 초기화
           <span className="ml-auto text-xs text-muted-foreground">status, id, updated</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -180,7 +180,7 @@ export function InboxIssueMetaLeading({
               "text-blue-600 dark:text-blue-400",
             )}
           >
-            Live
+            라이브
           </span>
         </span>
       )}
@@ -251,7 +251,7 @@ export function InboxIssueTrailingColumns({
 
           return (
             <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
-              Unassigned
+              담당자 없음
             </span>
           );
         }
@@ -276,7 +276,7 @@ export function InboxIssueTrailingColumns({
 
           return (
             <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
-              No project
+              프로젝트 없음
             </span>
           );
         }
@@ -333,7 +333,7 @@ export function InboxIssueTrailingColumns({
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="top" sideOffset={6}>
-                    Filter by workspace
+                    워크스페이스로 필터
                   </TooltipContent>
                 </Tooltip>
               ) : (
@@ -353,7 +353,7 @@ export function InboxIssueTrailingColumns({
               {parentIdentifier ? (
                 <span className="font-mono">{parentIdentifier}</span>
               ) : (
-                <span className="italic">Sub-issue</span>
+                <span className="italic">하위 이슈</span>
               )}
             </span>
           );

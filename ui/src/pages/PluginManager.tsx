@@ -40,7 +40,7 @@ function firstNonEmptyLine(value: string | null | undefined): string | null {
 }
 
 function getPluginErrorSummary(plugin: PluginRecord): string {
-  return firstNonEmptyLine(plugin.lastError) ?? "Plugin entered an error state without a stored error message.";
+  return firstNonEmptyLine(plugin.lastError) ?? "저장된 오류 메시지 없이 플러그인이 오류 상태에 진입했습니다.";
 }
 
 /**
@@ -75,8 +75,8 @@ export function PluginManager() {
   useEffect(() => {
     setBreadcrumbs([
       { label: selectedCompany?.name ?? "Company", href: "/dashboard" },
-      { label: "Settings", href: "/instance/settings/heartbeats" },
-      { label: "Plugins" },
+      { label: "설정", href: "/instance/settings/heartbeats" },
+      { label: "플러그인" },
     ]);
   }, [selectedCompany?.name, setBreadcrumbs]);
 
@@ -103,10 +103,10 @@ export function PluginManager() {
       invalidatePluginQueries();
       setInstallDialogOpen(false);
       setInstallPackage("");
-      pushToast({ title: "Plugin installed successfully", tone: "success" });
+      pushToast({ title: "플러그인이 설치되었습니다", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to install plugin", body: err.message, tone: "error" });
+      pushToast({ title: "플러그인 설치 실패", body: err.message, tone: "error" });
     },
   });
 
@@ -114,10 +114,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.uninstall(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin uninstalled successfully", tone: "success" });
+      pushToast({ title: "플러그인이 제거되었습니다", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to uninstall plugin", body: err.message, tone: "error" });
+      pushToast({ title: "플러그인 제거 실패", body: err.message, tone: "error" });
     },
   });
 
@@ -125,10 +125,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.enable(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin enabled", tone: "success" });
+      pushToast({ title: "플러그인이 활성화되었습니다", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to enable plugin", body: err.message, tone: "error" });
+      pushToast({ title: "플러그인 활성화 실패", body: err.message, tone: "error" });
     },
   });
 
@@ -136,10 +136,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.disable(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin disabled", tone: "info" });
+      pushToast({ title: "플러그인이 비활성화되었습니다", tone: "info" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to disable plugin", body: err.message, tone: "error" });
+      pushToast({ title: "플러그인 비활성화 실패", body: err.message, tone: "error" });
     },
   });
 
@@ -155,34 +155,34 @@ export function PluginManager() {
     [installedPlugins]
   );
 
-  if (isLoading) return <div className="p-4 text-sm text-muted-foreground">Loading plugins...</div>;
-  if (error) return <div className="p-4 text-sm text-destructive">Failed to load plugins.</div>;
+  if (isLoading) return <div className="p-4 text-sm text-muted-foreground">플러그인 로딩 중...</div>;
+  if (error) return <div className="p-4 text-sm text-destructive">플러그인을 불러오지 못했습니다.</div>;
 
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Puzzle className="h-6 w-6 text-muted-foreground" />
-          <h1 className="text-xl font-semibold">Plugin Manager</h1>
+          <h1 className="text-xl font-semibold">플러그인 관리자</h1>
         </div>
         
         <Dialog open={installDialogOpen} onOpenChange={setInstallDialogOpen}>
           <DialogTrigger asChild>
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Install Plugin
+              플러그인 설치
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Install Plugin</DialogTitle>
+              <DialogTitle>플러그인 설치</DialogTitle>
               <DialogDescription>
-                Enter the npm package name of the plugin you wish to install.
+                설치할 플러그인의 npm 패키지 이름을 입력하세요.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="packageName">npm Package Name</Label>
+                <Label htmlFor="packageName">npm 패키지 이름</Label>
                 <Input
                   id="packageName"
                   placeholder="@paperclipai/plugin-example"
@@ -192,12 +192,12 @@ export function PluginManager() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>취소</Button>
               <Button
                 onClick={() => installMutation.mutate({ packageName: installPackage })}
                 disabled={!installPackage || installMutation.isPending}
               >
-                {installMutation.isPending ? "Installing..." : "Install"}
+                {installMutation.isPending ? "설치 중..." : "설치"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -208,9 +208,9 @@ export function PluginManager() {
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
           <div className="space-y-1 text-sm">
-            <p className="font-medium text-foreground">Plugins are alpha.</p>
+            <p className="font-medium text-foreground">플러그인은 알파 단계입니다.</p>
             <p className="text-muted-foreground">
-              The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.
+              플러그인 런타임과 API 인터페이스는 아직 변경 중입니다. 이 기능이 안정화될 때까지 호환성이 깨지는 변경이 발생할 수 있습니다.
             </p>
           </div>
         </div>
@@ -219,17 +219,17 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Available Plugins</h2>
-          <Badge variant="outline">Examples</Badge>
+          <h2 className="text-base font-semibold">사용 가능한 플러그인</h2>
+          <Badge variant="outline">예제</Badge>
         </div>
 
         {examplesQuery.isLoading ? (
-          <div className="text-sm text-muted-foreground">Loading bundled examples...</div>
+          <div className="text-sm text-muted-foreground">내장 예제 로딩 중...</div>
         ) : examplesQuery.error ? (
-          <div className="text-sm text-destructive">Failed to load bundled examples.</div>
+          <div className="text-sm text-destructive">내장 예제를 불러오지 못했습니다.</div>
         ) : examples.length === 0 ? (
           <div className="rounded-md border border-dashed px-4 py-3 text-sm text-muted-foreground">
-            No bundled example plugins were found in this checkout.
+            이 빌드에서 내장 예제 플러그인을 찾을 수 없습니다.
           </div>
         ) : (
           <ul className="divide-y rounded-md border bg-card">
@@ -246,7 +246,7 @@ export function PluginManager() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-medium">{example.displayName}</span>
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">예제</Badge>
                         {installedPlugin ? (
                           <Badge
                             variant={installedPlugin.status === "ready" ? "default" : "secondary"}
@@ -255,7 +255,7 @@ export function PluginManager() {
                             {installedPlugin.status}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary">Not installed</Badge>
+                          <Badge variant="secondary">미설치</Badge>
                         )}
                       </div>
                       <p className="mt-1 text-sm text-muted-foreground">{example.description}</p>
@@ -271,12 +271,12 @@ export function PluginManager() {
                               disabled={enableMutation.isPending}
                               onClick={() => enableMutation.mutate(installedPlugin.id)}
                             >
-                              Enable
+                              활성화
                             </Button>
                           )}
                           <Button variant="outline" size="sm" asChild>
                             <Link to={`/instance/settings/plugins/${installedPlugin.id}`}>
-                              {installedPlugin.status === "ready" ? "Open Settings" : "Review"}
+                              {installedPlugin.status === "ready" ? "설정 열기" : "검토"}
                             </Link>
                           </Button>
                         </>
@@ -291,7 +291,7 @@ export function PluginManager() {
                             })
                           }
                         >
-                          {installPending ? "Installing..." : "Install Example"}
+                          {installPending ? "설치 중..." : "예제 설치"}
                         </Button>
                       )}
                     </div>
@@ -306,16 +306,16 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <Puzzle className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Installed Plugins</h2>
+          <h2 className="text-base font-semibold">설치된 플러그인</h2>
         </div>
 
         {!installedPlugins.length ? (
           <Card className="bg-muted/30">
             <CardContent className="flex flex-col items-center justify-center py-10">
               <Puzzle className="h-10 w-10 text-muted-foreground mb-4" />
-              <p className="text-sm font-medium">No plugins installed</p>
+              <p className="text-sm font-medium">설치된 플러그인 없음</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Install a plugin to extend functionality.
+                플러그인을 설치하여 기능을 확장하세요.
               </p>
             </CardContent>
           </Card>
@@ -334,7 +334,7 @@ export function PluginManager() {
                         {plugin.manifestJson.displayName ?? plugin.packageName}
                       </Link>
                       {examplePackageNames.has(plugin.packageName) && (
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">예제</Badge>
                       )}
                     </div>
                     <div>
@@ -343,7 +343,7 @@ export function PluginManager() {
                       </p>
                     </div>
                     <p className="text-sm text-muted-foreground truncate mt-0.5" title={plugin.manifestJson.description}>
-                      {plugin.manifestJson.description || "No description provided."}
+                      {plugin.manifestJson.description || "설명 없음."}
                     </p>
                     {plugin.status === "error" && (
                       <div className="mt-3 rounded-md border border-red-500/25 bg-red-500/[0.06] px-3 py-2">
@@ -351,7 +351,7 @@ export function PluginManager() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 text-sm font-medium text-red-700 dark:text-red-300">
                               <AlertTriangle className="h-4 w-4 shrink-0" />
-                              <span>Plugin error</span>
+                              <span>플러그인 오류</span>
                             </div>
                             <p
                               className="mt-1 text-sm text-red-700/90 dark:text-red-200/90 break-words"
@@ -366,7 +366,7 @@ export function PluginManager() {
                             className="border-red-500/30 bg-background/60 text-red-700 hover:bg-red-500/10 hover:text-red-800 dark:text-red-200 dark:hover:text-red-100"
                             onClick={() => setErrorDetailsPlugin(plugin)}
                           >
-                            View full error
+                            전체 오류 보기
                           </Button>
                         </div>
                       </div>
@@ -394,7 +394,7 @@ export function PluginManager() {
                           variant="outline"
                           size="icon-sm"
                           className="h-8 w-8"
-                          title={plugin.status === "ready" ? "Disable" : "Enable"}
+                          title={plugin.status === "ready" ? "비활성화" : "활성화"}
                           onClick={() => {
                             if (plugin.status === "ready") {
                               disableMutation.mutate(plugin.id);
@@ -410,7 +410,7 @@ export function PluginManager() {
                           variant="outline"
                           size="icon-sm"
                           className="h-8 w-8 text-destructive hover:text-destructive"
-                          title="Uninstall"
+                          title="제거"
                           onClick={() => {
                             setUninstallPluginId(plugin.id);
                             setUninstallPluginName(plugin.manifestJson.displayName ?? plugin.packageName);
@@ -423,7 +423,7 @@ export function PluginManager() {
                       <Button variant="outline" size="sm" className="mt-2 h-8" asChild>
                         <Link to={`/instance/settings/plugins/${plugin.id}`}>
                           <Settings className="h-4 w-4" />
-                          Configure
+                          설정
                         </Link>
                       </Button>
                     </div>
@@ -441,13 +441,13 @@ export function PluginManager() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Uninstall Plugin</DialogTitle>
+            <DialogTitle>플러그인 제거</DialogTitle>
             <DialogDescription>
-              Are you sure you want to uninstall <strong>{uninstallPluginName}</strong>? This action cannot be undone.
+              <strong>{uninstallPluginName}</strong>을(를) 정말 제거하시겠습니까? 이 작업은 되돌릴 수 없습니다.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>취소</Button>
             <Button
               variant="destructive"
               disabled={uninstallMutation.isPending}
@@ -459,7 +459,7 @@ export function PluginManager() {
                 }
               }}
             >
-              {uninstallMutation.isPending ? "Uninstalling..." : "Uninstall"}
+              {uninstallMutation.isPending ? "제거 중..." : "제거"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -471,9 +471,9 @@ export function PluginManager() {
       >
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Error Details</DialogTitle>
+            <DialogTitle>오류 상세 정보</DialogTitle>
             <DialogDescription>
-              {errorDetailsPlugin?.manifestJson.displayName ?? errorDetailsPlugin?.packageName ?? "Plugin"} hit an error state.
+              {errorDetailsPlugin?.manifestJson.displayName ?? errorDetailsPlugin?.packageName ?? "플러그인"}이(가) 오류 상태에 진입했습니다.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -482,24 +482,24 @@ export function PluginManager() {
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-red-700 dark:text-red-300" />
                 <div className="space-y-1 text-sm">
                   <p className="font-medium text-red-700 dark:text-red-300">
-                    What errored
+                    오류 내용
                   </p>
                   <p className="text-red-700/90 dark:text-red-200/90 break-words">
-                    {errorDetailsPlugin ? getPluginErrorSummary(errorDetailsPlugin) : "No error summary available."}
+                    {errorDetailsPlugin ? getPluginErrorSummary(errorDetailsPlugin) : "오류 요약 없음."}
                   </p>
                 </div>
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-medium">Full error output</p>
+              <p className="text-sm font-medium">전체 오류 출력</p>
               <pre className="max-h-[50vh] overflow-auto rounded-md border bg-muted/40 p-3 text-xs leading-5 whitespace-pre-wrap break-words">
-                {errorDetailsPlugin?.lastError ?? "No stored error message."}
+                {errorDetailsPlugin?.lastError ?? "저장된 오류 메시지 없음."}
               </pre>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setErrorDetailsPlugin(null)}>
-              Close
+              닫기
             </Button>
           </DialogFooter>
         </DialogContent>

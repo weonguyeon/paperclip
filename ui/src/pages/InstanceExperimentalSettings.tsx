@@ -34,7 +34,7 @@ export function InstanceExperimentalSettings() {
       ]);
     },
     onError: (error) => {
-      setActionError(error instanceof Error ? error.message : "Failed to update experimental settings.");
+      setActionError(error instanceof Error ? error.message : "실험적 설정 업데이트에 실패했습니다.");
     },
   });
 
@@ -76,17 +76,16 @@ export function InstanceExperimentalSettings() {
       <section className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <h2 className="text-sm font-semibold">Enable Isolated Workspaces</h2>
+            <h2 className="text-sm font-semibold">격리된 워크스페이스 활성화</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              Show execution workspace controls in project configuration and allow isolated workspace behavior for new
-              and existing issue runs.
+              프로젝트 설정에서 실행 워크스페이스 제어 항목을 표시하고, 신규 및 기존 이슈 실행 시 격리된 워크스페이스 동작을 허용합니다.
             </p>
           </div>
           <ToggleSwitch
             checked={enableIsolatedWorkspaces}
             onCheckedChange={() => toggleMutation.mutate({ enableIsolatedWorkspaces: !enableIsolatedWorkspaces })}
             disabled={toggleMutation.isPending}
-            aria-label="Toggle isolated workspaces experimental setting"
+            aria-label="격리된 워크스페이스 실험적 설정 토글"
           />
         </div>
       </section>
@@ -94,17 +93,16 @@ export function InstanceExperimentalSettings() {
       <section className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <h2 className="text-sm font-semibold">Auto-Restart Dev Server When Idle</h2>
+            <h2 className="text-sm font-semibold">유휴 시 개발 서버 자동 재시작</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              In `pnpm dev:once`, wait for all queued and running local agent runs to finish, then restart the server
-              automatically when backend changes or migrations make the current boot stale.
+              `pnpm dev:once` 실행 시 대기 중이거나 실행 중인 로컬 에이전트 작업이 모두 완료될 때까지 기다린 후, 백엔드 변경 또는 마이그레이션으로 현재 부팅이 오래된 경우 서버를 자동으로 재시작합니다.
             </p>
           </div>
           <ToggleSwitch
             checked={autoRestartDevServerWhenIdle}
             onCheckedChange={() => toggleMutation.mutate({ autoRestartDevServerWhenIdle: !autoRestartDevServerWhenIdle })}
             disabled={toggleMutation.isPending}
-            aria-label="Toggle guarded dev-server auto-restart"
+            aria-label="개발 서버 자동 재시작 토글"
           />
         </div>
       </section>

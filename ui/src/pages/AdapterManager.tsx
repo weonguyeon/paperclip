@@ -397,9 +397,9 @@ export function AdapterManager() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Cpu className="h-6 w-6 text-muted-foreground" />
-          <h1 className="text-xl font-semibold">Adapters</h1>
+          <h1 className="text-xl font-semibold">어댑터</h1>
           <Badge variant="outline" className="text-amber-600 border-amber-400">
-            Alpha
+            알파
           </Badge>
         </div>
 
@@ -568,9 +568,9 @@ export function AdapterManager() {
                   isToggling={isBuiltinOverride ? overrideMutation.isPending : toggleMutation.isPending}
                   isReloading={reloadMutation.isPending}
                   isReinstalling={reinstallMutation.isPending}
-                  toggleTitleDisabled={isBuiltinOverride ? "Pause external override" : undefined}
-                  toggleTitleEnabled={isBuiltinOverride ? "Resume external override" : undefined}
-                  disabledBadgeLabel={isBuiltinOverride ? "Override paused" : undefined}
+                  toggleTitleDisabled={isBuiltinOverride ? "외부 재정의 일시 중지" : undefined}
+                  toggleTitleEnabled={isBuiltinOverride ? "외부 재정의 재개" : undefined}
+                  disabledBadgeLabel={isBuiltinOverride ? "재정의 일시 중지됨" : undefined}
                 />
               );
             })}
@@ -634,18 +634,18 @@ export function AdapterManager() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Remove Adapter</DialogTitle>
+            <DialogTitle>어댑터 제거</DialogTitle>
             <DialogDescription>
-              Are you sure you want to remove the <strong>{removeType}</strong> adapter?
-              It will be unregistered and removed from the adapter store.
+              <strong>{removeType}</strong> 어댑터를 정말 제거하시겠습니까?
+              어댑터 스토어에서 등록 해제 및 삭제됩니다.
               {removeType && adapters?.find((a) => a.type === removeType)?.packageName && (
-                <> npm packages will be cleaned up from disk.</>
+                <> npm 패키지도 디스크에서 정리됩니다.</>
               )}
-              {" "}This action cannot be undone.
+              {" "}이 작업은 되돌릴 수 없습니다.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setRemoveType(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setRemoveType(null)}>취소</Button>
             <Button
               variant="destructive"
               disabled={removeMutation.isPending}
@@ -657,7 +657,7 @@ export function AdapterManager() {
                 }
               }}
             >
-              {removeMutation.isPending ? "Removing..." : "Remove"}
+              {removeMutation.isPending ? "제거 중..." : "제거"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -8,7 +8,7 @@ import { ChoosePathButton } from "../../components/PathInstructionsModal";
 const inputClass =
   "w-full rounded-md border border-border px-2.5 py-1.5 bg-transparent outline-none text-sm font-mono placeholder:text-muted-foreground/40";
 const instructionsFileHint =
-  "Absolute path to a markdown file (e.g. AGENTS.md) that defines this agent's behavior. Injected into the prompt at runtime.";
+  "에이전트 동작을 정의하는 마크다운 파일(예: AGENTS.md)의 절대 경로입니다. 런타임에 프롬프트에 주입됩니다.";
 
 export function CursorLocalConfigFields({
   isCreate,
@@ -21,7 +21,7 @@ export function CursorLocalConfigFields({
 }: AdapterConfigFieldsProps) {
   if (hideInstructionsFile) return null;
   return (
-    <Field label="Agent instructions file" hint={instructionsFileHint}>
+    <Field label="에이전트 지시 파일" hint={instructionsFileHint}>
       <div className="flex items-center gap-2">
         <DraftInput
           value={

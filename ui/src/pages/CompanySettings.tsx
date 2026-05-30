@@ -429,17 +429,17 @@ export function CompanySettings() {
             onChange={(enabled) => feedbackSharingMutation.mutate(enabled)}
           />
           <p className="text-sm text-muted-foreground">
-            Votes are always saved locally. This setting controls whether voted AI outputs may also be marked for sharing with Paperclip Labs.
+            투표는 항상 로컬에 저장됩니다. 이 설정은 투표한 AI 출력물을 Paperclip Labs와 공유하도록 표시할지 여부를 제어합니다.
           </p>
           <div className="space-y-1 text-xs text-muted-foreground">
             <div>
-              Terms version: {selectedCompany.feedbackDataSharingTermsVersion ?? DEFAULT_FEEDBACK_DATA_SHARING_TERMS_VERSION}
+              약관 버전: {selectedCompany.feedbackDataSharingTermsVersion ?? DEFAULT_FEEDBACK_DATA_SHARING_TERMS_VERSION}
             </div>
             {selectedCompany.feedbackDataSharingConsentAt ? (
               <div>
-                Enabled {new Date(selectedCompany.feedbackDataSharingConsentAt).toLocaleString()}
+                {new Date(selectedCompany.feedbackDataSharingConsentAt).toLocaleString()} 활성화됨
                 {selectedCompany.feedbackDataSharingConsentByUserId
-                  ? ` by ${selectedCompany.feedbackDataSharingConsentByUserId}`
+                  ? ` (${selectedCompany.feedbackDataSharingConsentByUserId})`
                   : ""}
               </div>
             ) : (
@@ -452,7 +452,7 @@ export function CompanySettings() {
                 rel="noreferrer"
                 className="inline-flex text-foreground underline underline-offset-4"
               >
-                Read our terms of service
+                서비스 약관 보기
               </a>
             ) : null}
           </div>
@@ -493,7 +493,7 @@ export function CompanySettings() {
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="text-xs text-muted-foreground">
-                  OpenClaw Invite Prompt
+                  OpenClaw 초대 프롬프트
                 </div>
                 {snippetCopied && (
                   <span
@@ -501,7 +501,7 @@ export function CompanySettings() {
                     className="flex items-center gap-1 text-xs text-green-600 animate-pulse"
                   >
                     <Check className="h-3 w-3" />
-                    Copied
+                    복사됨
                   </span>
                 )}
               </div>
@@ -540,24 +540,24 @@ export function CompanySettings() {
       {/* Import / Export */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Company Packages
+          회사 패키지
         </div>
         <div className="rounded-md border border-border px-4 py-4">
           <p className="text-sm text-muted-foreground">
-            Import and export have moved to dedicated pages accessible from the{" "}
-            <a href="/org" className="underline hover:text-foreground">Org Chart</a> header.
+            가져오기 및 내보내기는{" "}
+            <a href="/org" className="underline hover:text-foreground">조직도</a> 헤더에서 접근할 수 있는 전용 페이지로 이동했습니다.
           </p>
           <div className="mt-3 flex items-center gap-2">
             <Button size="sm" variant="outline" asChild>
               <Link to="/company/export">
                 <Download className="mr-1.5 h-3.5 w-3.5" />
-                Export
+                내보내기
               </Link>
             </Button>
             <Button size="sm" variant="outline" asChild>
               <Link to="/company/import">
                 <Upload className="mr-1.5 h-3.5 w-3.5" />
-                Import
+                가져오기
               </Link>
             </Button>
           </div>
@@ -567,12 +567,11 @@ export function CompanySettings() {
       {/* Danger Zone */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-destructive uppercase tracking-wide">
-          Danger Zone
+          위험 구역
         </div>
         <div className="space-y-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
           <p className="text-sm text-muted-foreground">
-            Archive this company to hide it from the sidebar. This persists in
-            the database.
+            이 회사를 보관하면 사이드바에서 숨겨집니다. 데이터는 데이터베이스에 유지됩니다.
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -585,7 +584,7 @@ export function CompanySettings() {
               onClick={() => {
                 if (!selectedCompanyId) return;
                 const confirmed = window.confirm(
-                  `Archive company "${selectedCompany.name}"? It will be hidden from the sidebar.`
+                  `"${selectedCompany.name}" 회사를 보관하시겠습니까? 사이드바에서 숨겨집니다.`
                 );
                 if (!confirmed) return;
                 const nextCompanyId =

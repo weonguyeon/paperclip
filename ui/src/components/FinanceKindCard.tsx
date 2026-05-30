@@ -10,12 +10,12 @@ export function FinanceKindCard({ rows }: FinanceKindCardProps) {
   return (
     <Card>
       <CardHeader className="px-4 pt-4 pb-1">
-        <CardTitle className="text-base">Financial event mix</CardTitle>
-        <CardDescription>Account-level charges grouped by event kind.</CardDescription>
+        <CardTitle className="text-base">재무 이벤트 구성</CardTitle>
+        <CardDescription>이벤트 종류별로 집계된 계정 수준 청구 내역.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2 px-4 pb-4 pt-3">
         {rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No finance events in this period.</p>
+          <p className="text-sm text-muted-foreground">이 기간에 재무 이벤트 없음.</p>
         ) : (
           rows.map((row) => (
             <div
@@ -25,13 +25,13 @@ export function FinanceKindCard({ rows }: FinanceKindCardProps) {
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium">{financeEventKindDisplayName(row.eventKind)}</div>
                 <div className="text-xs text-muted-foreground">
-                  {row.eventCount} event{row.eventCount === 1 ? "" : "s"} · {row.billerCount} biller{row.billerCount === 1 ? "" : "s"}
+                  {row.eventCount}건 · {row.billerCount}개 청구자
                 </div>
               </div>
               <div className="text-right tabular-nums">
                 <div className="text-sm font-medium">{formatCents(row.netCents)}</div>
                 <div className="text-xs text-muted-foreground">
-                  {formatCents(row.debitCents)} debits
+                  {formatCents(row.debitCents)} 차변
                 </div>
               </div>
             </div>

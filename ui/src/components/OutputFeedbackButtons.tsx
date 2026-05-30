@@ -124,7 +124,7 @@ export function OutputFeedbackButtons({
           onClick={() => handleVote("up")}
         >
           <ThumbsUp className="mr-1.5 h-3.5 w-3.5" />
-          Helpful
+          도움이 됨
         </Button>
         <Button
           type="button"
@@ -135,17 +135,17 @@ export function OutputFeedbackButtons({
           onClick={() => handleVote("down")}
         >
           <ThumbsDown className="mr-1.5 h-3.5 w-3.5" />
-          Needs work
+          개선 필요
         </Button>
         {rightSlot ? <div className="ml-auto">{rightSlot}</div> : null}
       </div>
       {collectingDownvoteReason ? (
         <div className="mt-2 rounded-md border border-border/60 bg-accent/20 p-3">
-          <div className="mb-2 text-sm font-medium">What could have been better?</div>
+          <div className="mb-2 text-sm font-medium">어떤 점이 아쉬우셨나요?</div>
           <Textarea
             value={downvoteReason}
             onChange={(event) => setDownvoteReason(event.target.value)}
-            placeholder="Add a short note"
+            placeholder="간단한 메모를 남겨주세요"
             className="min-h-20 resize-y bg-background"
             disabled={disabled || isSaving}
           />
@@ -161,7 +161,7 @@ export function OutputFeedbackButtons({
                 setDownvoteAllowSharing(undefined);
               }}
             >
-              Dismiss
+              닫기
             </Button>
             <Button
               type="button"
@@ -174,7 +174,7 @@ export function OutputFeedbackButtons({
                 });
               }}
             >
-              {isSaving ? "Saving..." : "Save note"}
+              {isSaving ? "저장 중..." : "메모 저장"}
             </Button>
           </div>
         </div>
@@ -191,24 +191,21 @@ export function OutputFeedbackButtons({
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Save your feedback sharing preference</DialogTitle>
+            <DialogTitle>피드백 공유 설정 저장</DialogTitle>
             <DialogDescription>
-              Choose whether voted AI outputs can be shared with Paperclip Labs. This
-              answer becomes the default for future thumbs up and thumbs down votes.
+              평가한 AI 출력물을 Paperclip Labs와 공유할지 선택하세요. 이 설정은 이후 좋아요·싫어요 평가의 기본값으로 적용됩니다.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
             <p>
-              This vote is always saved locally.
+              이 평가는 항상 로컬에 저장됩니다.
             </p>
             <p>
-              Choose <span className="font-medium text-foreground">Always allow</span> to share
-              this vote and future voted AI outputs. Choose{" "}
-              <span className="font-medium text-foreground">Don't allow</span> to keep this vote
-              and future votes local.
+              <span className="font-medium text-foreground">항상 허용</span>을 선택하면 이번 평가와 이후 AI 출력물을 공유합니다.{" "}
+              <span className="font-medium text-foreground">허용 안 함</span>을 선택하면 이번 평가와 이후 평가를 로컬에만 저장합니다.
             </p>
             <p>
-              You can change this later in Instance Settings &gt; General.
+              인스턴스 설정 &gt; 일반에서 나중에 변경할 수 있습니다.
             </p>
             {termsUrl ? (
               <a
@@ -217,7 +214,7 @@ export function OutputFeedbackButtons({
                 rel="noreferrer"
                 className="inline-flex text-sm text-foreground underline underline-offset-4"
               >
-                Read our terms of service
+                서비스 이용약관 읽기
               </a>
             ) : null}
           </div>
@@ -238,7 +235,7 @@ export function OutputFeedbackButtons({
                 );
               }}
             >
-              {isSaving ? "Saving..." : "Don't allow"}
+              {isSaving ? "저장 중..." : "허용 안 함"}
             </Button>
             <Button
               type="button"
@@ -258,7 +255,7 @@ export function OutputFeedbackButtons({
                 );
               }}
             >
-              {isSaving ? "Saving..." : "Always allow"}
+              {isSaving ? "저장 중..." : "항상 허용"}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -81,14 +81,14 @@ function OverviewContent({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <div>
-          <span className="text-muted-foreground">Status</span>
+          <span className="text-muted-foreground">상태</span>
           <div className="mt-1">
             <StatusBadge status={project.status} />
           </div>
         </div>
         {project.targetDate && (
           <div>
-            <span className="text-muted-foreground">Target Date</span>
+            <span className="text-muted-foreground">목표일</span>
             <p>{project.targetDate}</p>
           </div>
         )}
@@ -144,7 +144,7 @@ function ColorPicker({
                     : "hover:ring-2 hover:ring-foreground/30"
                 }`}
                 style={{ backgroundColor: color }}
-                aria-label={`Select color ${color}`}
+                aria-label={`색상 선택 ${color}`}
               />
             ))}
           </div>
@@ -445,7 +445,7 @@ export function ProjectDetail() {
       ),
     onSuccess: (updatedProject, archived) => {
       invalidateProject();
-      const name = updatedProject?.name ?? project?.name ?? "Project";
+      const name = updatedProject?.name ?? project?.name ?? "프로젝트";
       if (archived) {
         pushToast({ title: `"${name}"이(가) 보관되었습니다`, tone: "success" });
         navigate("/dashboard");
@@ -692,7 +692,7 @@ export function ProjectDetail() {
           {project.pauseReason === "budget" ? (
             <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-red-200">
               <span className="h-2 w-2 rounded-full bg-red-400" />
-              Paused by budget hard stop
+              예산 한도 초과로 일시 정지됨
             </div>
           ) : null}
         </div>

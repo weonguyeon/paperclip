@@ -258,23 +258,23 @@ export function RoutineRunVariablesDialog({
           {routineName && (
             <p className="text-muted-foreground text-sm">{routineName}</p>
           )}
-          <DialogTitle>Run routine</DialogTitle>
+          <DialogTitle>루틴 실행</DialogTitle>
           <DialogDescription>
-            Choose the agent and optional project for this one run. Routine defaults are prefilled and won&apos;t be changed.
+            이번 실행에 사용할 에이전트와 선택적 프로젝트를 지정하세요. 루틴 기본값은 미리 채워지며 변경되지 않습니다.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-1.5">
-              <Label className="text-xs">Agent *</Label>
+              <Label className="text-xs">에이전트 *</Label>
               <InlineEntitySelector
                 value={selection.assigneeAgentId}
                 options={assigneeOptions}
-                placeholder="Agent"
-                noneLabel="Select an agent"
-                searchPlaceholder="Search agents..."
-                emptyMessage="No agents found."
+                placeholder="에이전트"
+                noneLabel="에이전트 선택"
+                searchPlaceholder="에이전트 검색..."
+                emptyMessage="에이전트 없음."
                 disablePortal
                 openOnFocus={false}
                 onChange={(assigneeAgentId) => {
@@ -292,7 +292,7 @@ export function RoutineRunVariablesDialog({
                       <span className="truncate">{option.label}</span>
                     )
                   ) : (
-                    <span className="text-muted-foreground">Select an agent</span>
+                    <span className="text-muted-foreground">에이전트 선택</span>
                   )
                 }
                 renderOption={(option) => {
@@ -308,14 +308,14 @@ export function RoutineRunVariablesDialog({
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs">Project</Label>
+              <Label className="text-xs">프로젝트</Label>
               <InlineEntitySelector
                 value={selection.projectId}
                 options={projectOptions}
-                placeholder="Project"
-                noneLabel="No project"
-                searchPlaceholder="Search projects..."
-                emptyMessage="No projects found."
+                placeholder="프로젝트"
+                noneLabel="프로젝트 없음"
+                searchPlaceholder="프로젝트 검색..."
+                emptyMessage="프로젝트 없음."
                 disablePortal
                 openOnFocus={false}
                 onChange={(projectId) => {
@@ -334,7 +334,7 @@ export function RoutineRunVariablesDialog({
                       <span className="truncate">{option.label}</span>
                     </>
                   ) : (
-                    <span className="text-muted-foreground">No project</span>
+                    <span className="text-muted-foreground">프로젝트 없음</span>
                   )
                 }
                 renderOption={(option) => {
@@ -378,9 +378,9 @@ export function RoutineRunVariablesDialog({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="__unset__">No value</SelectItem>
-                    <SelectItem value="true">True</SelectItem>
-                    <SelectItem value="false">False</SelectItem>
+                    <SelectItem value="__unset__">값 없음</SelectItem>
+                    <SelectItem value="true">참</SelectItem>
+                    <SelectItem value="false">거짓</SelectItem>
                   </SelectContent>
                 </Select>
               ) : variable.type === "select" ? (
@@ -392,10 +392,10 @@ export function RoutineRunVariablesDialog({
                   }))}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose a value" />
+                    <SelectValue placeholder="값 선택" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="__unset__">No value</SelectItem>
+                    <SelectItem value="__unset__">값 없음</SelectItem>
                     {variable.options.map((option) => (
                       <SelectItem key={option} value={option}>{option}</SelectItem>
                     ))}
@@ -426,20 +426,20 @@ export function RoutineRunVariablesDialog({
 
         <DialogFooter showCloseButton={false}>
           {!selection.assigneeAgentId ? (
-            <p className="mr-auto text-xs text-amber-600">Default agent required for this run.</p>
+            <p className="mr-auto text-xs text-amber-600">이번 실행에 기본 에이전트가 필요합니다.</p>
           ) : missingRequired.length > 0 ? (
             <p className="mr-auto text-xs text-amber-600">
-              Missing: {missingRequired.join(", ")}
+              누락: {missingRequired.join(", ")}
             </p>
           ) : workspaceSelectionEnabled && !workspaceConfigValid ? (
             <p className="mr-auto text-xs text-amber-600">
-              Choose an existing workspace before running.
+              실행 전에 기존 워크스페이스를 선택하세요.
             </p>
           ) : (
             <span className="mr-auto" />
           )}
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={isPending}>
-            Cancel
+            취소
           </Button>
           <Button
             onClick={() => {
@@ -470,7 +470,7 @@ export function RoutineRunVariablesDialog({
             }}
             disabled={isPending || !canSubmit}
           >
-            {isPending ? "Running..." : "Run routine"}
+            {isPending ? "실행 중..." : "루틴 실행"}
           </Button>
         </DialogFooter>
       </DialogContent>

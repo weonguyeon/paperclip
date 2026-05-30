@@ -21,6 +21,22 @@ import {
 import { History } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
 
+const ENTITY_TYPE_LABELS: Record<string, string> = {
+  issue: "이슈",
+  agent: "에이전트",
+  project: "프로젝트",
+  goal: "목표",
+  approval: "승인",
+  heartbeat_run: "하트비트 실행",
+  cost: "비용",
+  company: "회사",
+  document: "문서",
+};
+
+function entityTypeLabel(type: string): string {
+  return ENTITY_TYPE_LABELS[type] ?? type.charAt(0).toUpperCase() + type.slice(1);
+}
+
 export function Activity() {
   const { selectedCompanyId } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
@@ -109,7 +125,7 @@ export function Activity() {
             <SelectItem value="all">전체 유형</SelectItem>
             {entityTypes.map((type) => (
               <SelectItem key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                {entityTypeLabel(type)}
               </SelectItem>
             ))}
           </SelectContent>

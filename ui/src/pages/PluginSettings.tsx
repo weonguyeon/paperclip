@@ -115,9 +115,9 @@ export function PluginSettings() {
   useEffect(() => {
     setBreadcrumbs([
       { label: selectedCompany?.name ?? "Company", href: "/dashboard" },
-      { label: "Settings", href: "/instance/settings/heartbeats" },
-      { label: "Plugins", href: "/instance/settings/plugins" },
-      { label: plugin?.manifestJson?.displayName ?? plugin?.packageName ?? "Plugin Details" },
+      { label: "설정", href: "/instance/settings/heartbeats" },
+      { label: "플러그인", href: "/instance/settings/plugins" },
+      { label: plugin?.manifestJson?.displayName ?? plugin?.packageName ?? "플러그인 상세" },
     ]);
   }, [selectedCompany?.name, setBreadcrumbs, companyPrefix, plugin]);
 
@@ -126,7 +126,7 @@ export function PluginSettings() {
   }, [pluginId]);
 
   if (pluginLoading) {
-    return <div className="p-4 text-sm text-muted-foreground">Loading plugin details...</div>;
+    return <div className="p-4 text-sm text-muted-foreground">플러그인 정보를 로딩 중...</div>;
   }
 
   if (!plugin) {
@@ -140,7 +140,7 @@ export function PluginSettings() {
       : plugin.status === "error"
         ? "destructive"
         : "secondary";
-  const pluginDescription = plugin.manifestJson.description || "No description provided.";
+  const pluginDescription = plugin.manifestJson.description || "설명이 없습니다.";
   const pluginCapabilities = plugin.manifestJson.capabilities ?? [];
 
   return (
@@ -167,8 +167,8 @@ export function PluginSettings() {
         <PageTabBar
           align="start"
           items={[
-            { value: "configuration", label: "Configuration" },
-            { value: "status", label: "Status" },
+            { value: "configuration", label: "설정" },
+            { value: "status", label: "상태" },
           ]}
           value={activeTab}
           onValueChange={(value) => setActiveTab(value as "configuration" | "status")}
@@ -177,19 +177,19 @@ export function PluginSettings() {
         <TabsContent value="configuration" className="space-y-6">
           <div className="space-y-8">
             <section className="space-y-5">
-              <h2 className="text-base font-semibold">About</h2>
+              <h2 className="text-base font-semibold">소개</h2>
               <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(220px,0.8fr)]">
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground">Description</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground">설명</h3>
                   <p className="text-sm leading-6 text-foreground/90">{pluginDescription}</p>
                 </div>
                 <div className="space-y-4 text-sm">
                   <div className="space-y-1.5">
-                    <h3 className="font-medium text-muted-foreground">Author</h3>
+                    <h3 className="font-medium text-muted-foreground">제작자</h3>
                     <p className="text-foreground">{plugin.manifestJson.author}</p>
                   </div>
                   <div className="space-y-2">
-                    <h3 className="font-medium text-muted-foreground">Categories</h3>
+                    <h3 className="font-medium text-muted-foreground">카테고리</h3>
                     <div className="flex flex-wrap gap-2">
                       {plugin.categories.length > 0 ? (
                         plugin.categories.map((category) => (
@@ -198,7 +198,7 @@ export function PluginSettings() {
                           </Badge>
                         ))
                       ) : (
-                        <span className="text-foreground">None</span>
+                        <span className="text-foreground">없음</span>
                       )}
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export function PluginSettings() {
 
             <section className="space-y-4">
               <div className="space-y-1">
-                <h2 className="text-base font-semibold">Settings</h2>
+                <h2 className="text-base font-semibold">설정</h2>
               </div>
               {hasCustomSettingsPage ? (
                 <div className="space-y-3">
@@ -237,7 +237,7 @@ export function PluginSettings() {
                 />
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  This plugin does not require any settings.
+                  이 플러그인은 별도 설정이 필요하지 않습니다.
                 </p>
               )}
             </section>
@@ -251,10 +251,10 @@ export function PluginSettings() {
                 <CardHeader>
                   <CardTitle className="text-base flex items-center gap-1.5">
                     <Cpu className="h-4 w-4" />
-                    Runtime Dashboard
+                    런타임 대시보드
                   </CardTitle>
                   <CardDescription>
-                    Worker process, scheduled jobs, and webhook deliveries
+                    워커 프로세스, 예약된 작업 및 웹훅 전달 현황
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -263,12 +263,12 @@ export function PluginSettings() {
                       <div>
                         <h3 className="text-sm font-medium mb-3 flex items-center gap-1.5">
                           <Cpu className="h-3.5 w-3.5 text-muted-foreground" />
-                          Worker Process
+                          워커 프로세스
                         </h3>
                         {dashboardData.worker ? (
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Status</span>
+                              <span className="text-muted-foreground">상태</span>
                               <Badge variant={dashboardData.worker.status === "running" ? "default" : "secondary"}>
                                 {dashboardData.worker.status}
                               </Badge>
@@ -278,11 +278,11 @@ export function PluginSettings() {
                               <span className="font-mono text-xs">{dashboardData.worker.pid ?? "—"}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Uptime</span>
+                              <span className="text-muted-foreground">업타임</span>
                               <span className="text-xs">{formatUptime(dashboardData.worker.uptime)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Pending RPCs</span>
+                              <span className="text-muted-foreground">대기 중인 RPC</span>
                               <span className="text-xs">{dashboardData.worker.pendingRequests}</span>
                             </div>
                             {dashboardData.worker.totalCrashes > 0 && (
@@ -290,15 +290,15 @@ export function PluginSettings() {
                                 <div className="flex justify-between col-span-2">
                                   <span className="text-muted-foreground flex items-center gap-1">
                                     <AlertTriangle className="h-3 w-3 text-amber-500" />
-                                    Crashes
+                                    크래시
                                   </span>
                                   <span className="text-xs">
-                                    {dashboardData.worker.consecutiveCrashes} consecutive / {dashboardData.worker.totalCrashes} total
+                                    연속 {dashboardData.worker.consecutiveCrashes}회 / 누적 {dashboardData.worker.totalCrashes}회
                                   </span>
                                 </div>
                                 {dashboardData.worker.lastCrashAt && (
                                   <div className="flex justify-between col-span-2">
-                                    <span className="text-muted-foreground">Last Crash</span>
+                                    <span className="text-muted-foreground">마지막 크래시</span>
                                     <span className="text-xs">{formatTimestamp(dashboardData.worker.lastCrashAt)}</span>
                                   </div>
                                 )}
@@ -306,7 +306,7 @@ export function PluginSettings() {
                             )}
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground italic">No worker process registered.</p>
+                          <p className="text-sm text-muted-foreground italic">등록된 워커 프로세스가 없습니다.</p>
                         )}
                       </div>
 
@@ -315,7 +315,7 @@ export function PluginSettings() {
                       <div>
                         <h3 className="text-sm font-medium mb-3 flex items-center gap-1.5">
                           <CalendarClock className="h-3.5 w-3.5 text-muted-foreground" />
-                          Recent Job Runs
+                          최근 작업 실행
                         </h3>
                         {dashboardData.recentJobRuns.length > 0 ? (
                           <div className="space-y-2">
@@ -341,7 +341,7 @@ export function PluginSettings() {
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground italic">No job runs recorded yet.</p>
+                          <p className="text-sm text-muted-foreground italic">아직 실행된 작업이 없습니다.</p>
                         )}
                       </div>
 
@@ -350,7 +350,7 @@ export function PluginSettings() {
                       <div>
                         <h3 className="text-sm font-medium mb-3 flex items-center gap-1.5">
                           <Webhook className="h-3.5 w-3.5 text-muted-foreground" />
-                          Recent Webhook Deliveries
+                          최근 웹훅 전달
                         </h3>
                         {dashboardData.recentWebhookDeliveries.length > 0 ? (
                           <div className="space-y-2">
@@ -373,18 +373,18 @@ export function PluginSettings() {
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-muted-foreground italic">No webhook deliveries recorded yet.</p>
+                          <p className="text-sm text-muted-foreground italic">아직 전달된 웹훅이 없습니다.</p>
                         )}
                       </div>
 
                       <div className="flex items-center gap-1.5 border-t border-border/50 pt-2 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        Last checked: {new Date(dashboardData.checkedAt).toLocaleTimeString()}
+                        마지막 확인: {new Date(dashboardData.checkedAt).toLocaleTimeString()}
                       </div>
                     </>
                   ) : (
                     <p className="text-sm text-muted-foreground">
-                      Runtime diagnostics are unavailable right now.
+                      현재 런타임 진단 정보를 사용할 수 없습니다.
                     </p>
                   )}
                 </CardContent>
@@ -395,9 +395,9 @@ export function PluginSettings() {
                   <CardHeader>
                     <CardTitle className="text-base flex items-center gap-1.5">
                       <ActivitySquare className="h-4 w-4" />
-                      Recent Logs
+                      최근 로그
                     </CardTitle>
-                    <CardDescription>Last {recentLogs.length} log entries</CardDescription>
+                    <CardDescription>최근 {recentLogs.length}개 로그 항목</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="max-h-64 space-y-1 overflow-y-auto font-mono text-xs">
@@ -430,16 +430,16 @@ export function PluginSettings() {
                 <CardHeader>
                   <CardTitle className="text-base flex items-center gap-1.5">
                     <ActivitySquare className="h-4 w-4" />
-                    Health Status
+                    상태 점검
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {healthLoading ? (
-                    <p className="text-sm text-muted-foreground">Checking health...</p>
+                    <p className="text-sm text-muted-foreground">상태 점검 중...</p>
                   ) : healthData ? (
                     <div className="space-y-4 text-sm">
                       <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Overall</span>
+                        <span className="text-muted-foreground">전체 상태</span>
                         <Badge variant={healthData.healthy ? "default" : "destructive"}>
                           {healthData.status}
                         </Badge>
@@ -471,10 +471,10 @@ export function PluginSettings() {
                   ) : (
                     <div className="space-y-3 text-sm text-muted-foreground">
                       <div className="flex items-center justify-between">
-                        <span>Lifecycle</span>
+                        <span>라이프사이클</span>
                         <Badge variant={statusVariant}>{displayStatus}</Badge>
                       </div>
-                      <p>Health checks run once the plugin is ready.</p>
+                      <p>플러그인이 준비되면 상태 점검이 실행됩니다.</p>
                       {plugin.lastError ? (
                         <div className="break-words rounded border border-destructive/20 bg-destructive/10 p-2 text-xs text-destructive">
                           {plugin.lastError}
@@ -487,25 +487,25 @@ export function PluginSettings() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Details</CardTitle>
+                  <CardTitle className="text-base">상세 정보</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-muted-foreground">
                   <div className="flex justify-between gap-3">
-                    <span>Plugin ID</span>
+                    <span>플러그인 ID</span>
                     <span className="font-mono text-xs text-right">{plugin.id}</span>
                   </div>
                   <div className="flex justify-between gap-3">
-                    <span>Plugin Key</span>
+                    <span>플러그인 키</span>
                     <span className="font-mono text-xs text-right">{plugin.pluginKey}</span>
                   </div>
                   <div className="flex justify-between gap-3">
-                    <span>NPM Package</span>
+                    <span>NPM 패키지</span>
                     <span className="max-w-[170px] truncate text-right text-xs" title={plugin.packageName}>
                       {plugin.packageName}
                     </span>
                   </div>
                   <div className="flex justify-between gap-3">
-                    <span>Version</span>
+                    <span>버전</span>
                     <span className="text-right text-foreground">v{plugin.manifestJson.version ?? plugin.version}</span>
                   </div>
                 </CardContent>
@@ -515,7 +515,7 @@ export function PluginSettings() {
                 <CardHeader>
                   <CardTitle className="text-base flex items-center gap-1.5">
                     <ShieldAlert className="h-4 w-4" />
-                    Permissions
+                    권한
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -528,7 +528,7 @@ export function PluginSettings() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-sm text-muted-foreground italic">No special permissions requested.</p>
+                    <p className="text-sm text-muted-foreground italic">요청된 특별 권한이 없습니다.</p>
                   )}
                 </CardContent>
               </Card>
@@ -600,14 +600,14 @@ function PluginConfigForm({ pluginId, schema, initialValues, isLoading, pluginSt
     mutationFn: (configJson: Record<string, unknown>) =>
       pluginsApi.saveConfig(pluginId, configJson),
     onSuccess: () => {
-      setSaveMessage({ type: "success", text: "Configuration saved." });
+      setSaveMessage({ type: "success", text: "설정이 저장되었습니다." });
       setTestResult(null);
       queryClient.invalidateQueries({ queryKey: queryKeys.plugins.config(pluginId) });
       // Clear success message after 3s
       setTimeout(() => setSaveMessage(null), 3000);
     },
     onError: (err: Error) => {
-      setSaveMessage({ type: "error", text: err.message || "Failed to save configuration." });
+      setSaveMessage({ type: "error", text: err.message || "설정 저장에 실패했습니다." });
     },
   });
 
@@ -617,13 +617,13 @@ function PluginConfigForm({ pluginId, schema, initialValues, isLoading, pluginSt
       pluginsApi.testConfig(pluginId, configJson),
     onSuccess: (result) => {
       if (result.valid) {
-        setTestResult({ type: "success", text: "Configuration test passed." });
+        setTestResult({ type: "success", text: "설정 테스트를 통과했습니다." });
       } else {
-        setTestResult({ type: "error", text: result.message || "Configuration test failed." });
+        setTestResult({ type: "error", text: result.message || "설정 테스트에 실패했습니다." });
       }
     },
     onError: (err: Error) => {
-      setTestResult({ type: "error", text: err.message || "Configuration test failed." });
+      setTestResult({ type: "error", text: err.message || "설정 테스트에 실패했습니다." });
     },
   });
 
@@ -661,7 +661,7 @@ function PluginConfigForm({ pluginId, schema, initialValues, isLoading, pluginSt
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading configuration...
+        설정을 로딩 중...
       </div>
     );
   }
@@ -711,10 +711,10 @@ function PluginConfigForm({ pluginId, schema, initialValues, isLoading, pluginSt
           {saveMutation.isPending ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              Saving...
+              저장 중...
             </>
           ) : (
-            "Save Configuration"
+            "설정 저장"
           )}
         </Button>
         {pluginStatus === "ready" && supportsConfigTest && (
@@ -727,10 +727,10 @@ function PluginConfigForm({ pluginId, schema, initialValues, isLoading, pluginSt
             {testMutation.isPending ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                Testing...
+                테스트 중...
               </>
             ) : (
-              "Test Configuration"
+              "설정 테스트"
             )}
           </Button>
         )}
@@ -775,15 +775,15 @@ function formatRelativeTime(isoString: string): string {
   const then = new Date(isoString).getTime();
   const diffMs = now - then;
 
-  if (diffMs < 0) return "just now";
+  if (diffMs < 0) return "방금 전";
   const seconds = Math.floor(diffMs / 1000);
-  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 60) return `${seconds}초 전`;
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `${minutes}분 전`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `${hours}시간 전`;
   const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  return `${days}일 전`;
 }
 
 /**

@@ -231,12 +231,12 @@ function TriggerEditor({
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        {trigger.lastResult && <span className="text-xs text-muted-foreground">Last: {trigger.lastResult}</span>}
+        {trigger.lastResult && <span className="text-xs text-muted-foreground">마지막: {trigger.lastResult}</span>}
         <div className="ml-auto flex items-center gap-2">
           {trigger.kind === "webhook" && (
             <Button variant="outline" size="sm" onClick={() => onRotate(trigger.id)}>
               <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
-              Rotate secret
+              시크릿 교체
             </Button>
           )}
           <Button
@@ -245,7 +245,7 @@ function TriggerEditor({
             onClick={() => onSave(trigger.id, buildRoutineTriggerPatch(trigger, draft, getLocalTimezone()))}
           >
             <Save className="mr-1.5 h-3.5 w-3.5" />
-            Save trigger
+            트리거 저장
           </Button>
           <Button
             variant="ghost"
@@ -399,10 +399,10 @@ export function RoutineDetail() {
   const copySecretValue = async (label: string, value: string) => {
     try {
       await navigator.clipboard.writeText(value);
-      pushToast({ title: `${label} copied`, tone: "success" });
+      pushToast({ title: `${label} 복사됨`, tone: "success" });
     } catch (error) {
       pushToast({
-        title: `Failed to copy ${label.toLowerCase()}`,
+        title: `${label} 복사 실패`,
         body: error instanceof Error ? error.message : "클립보드 접근이 거부되었습니다.",
         tone: "error",
       });
@@ -756,16 +756,16 @@ export function RoutineDetail() {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Input value={secretMessage.webhookUrl} readOnly className="flex-1" />
-              <Button variant="outline" size="sm" onClick={() => copySecretValue("Webhook URL", secretMessage.webhookUrl)}>
+              <Button variant="outline" size="sm" onClick={() => copySecretValue("웹훅 URL", secretMessage.webhookUrl)}>
                 <Copy className="h-3.5 w-3.5 mr-1" />
                 URL
               </Button>
             </div>
             <div className="flex items-center gap-2">
               <Input value={secretMessage.webhookSecret} readOnly className="flex-1" />
-              <Button variant="outline" size="sm" onClick={() => copySecretValue("Webhook secret", secretMessage.webhookSecret)}>
+              <Button variant="outline" size="sm" onClick={() => copySecretValue("웹훅 시크릿", secretMessage.webhookSecret)}>
                 <Copy className="h-3.5 w-3.5 mr-1" />
-                Secret
+                시크릿
               </Button>
             </div>
           </div>
@@ -826,7 +826,7 @@ export function RoutineDetail() {
               );
             }}
           />
-          <span>in</span>
+          <span>위치</span>
           <InlineEntitySelector
             ref={projectSelectorRef}
             value={editDraft.projectId}
@@ -985,7 +985,7 @@ export function RoutineDetail() {
                   <SelectContent>
                     {triggerKinds.map((kind) => (
                       <SelectItem key={kind} value={kind} disabled={kind === "webhook"}>
-                        {kind}{kind === "webhook" ? " — COMING SOON" : ""}
+                        {kind}{kind === "webhook" ? " — 출시 예정" : ""}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -1083,7 +1083,7 @@ export function RoutineDetail() {
 
         <TabsContent value="activity">
           {(activity ?? []).length === 0 ? (
-            <p className="text-xs text-muted-foreground">No activity yet.</p>
+            <p className="text-xs text-muted-foreground">아직 활동 없음.</p>
           ) : (
             <div className="border border-border rounded-lg divide-y divide-border">
               {(activity ?? []).map((event) => (

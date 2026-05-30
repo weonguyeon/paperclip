@@ -13,7 +13,7 @@ const inputClass =
   "w-full rounded-md border border-border px-2.5 py-1.5 bg-transparent outline-none text-sm font-mono placeholder:text-muted-foreground/40";
 
 const instructionsFileHint =
-  "Absolute path to a markdown file (e.g. AGENTS.md) that defines this agent's behavior. Injected into the system prompt at runtime.";
+  "에이전트 동작을 정의하는 마크다운 파일의 절대 경로입니다(예: AGENTS.md). 런타임 시 시스템 프롬프트에 주입됩니다.";
 
 export function ClaudeLocalConfigFields({
   mode,
@@ -30,7 +30,7 @@ export function ClaudeLocalConfigFields({
   return (
     <>
       {!hideInstructionsFile && (
-        <Field label="Agent instructions file" hint={instructionsFileHint}>
+        <Field label="에이전트 지시 파일" hint={instructionsFileHint}>
           <div className="flex items-center gap-2">
             <DraftInput
               value={
@@ -81,7 +81,7 @@ export function ClaudeLocalAdvancedFields({
   return (
     <>
       <ToggleField
-        label="Enable Chrome"
+        label="Chrome 활성화"
         hint={help.chrome}
         checked={
           isCreate
@@ -95,7 +95,7 @@ export function ClaudeLocalAdvancedFields({
         }
       />
       <ToggleField
-        label="Skip permissions"
+        label="권한 확인 건너뛰기"
         hint={help.dangerouslySkipPermissions}
         checked={
           isCreate
@@ -112,7 +112,7 @@ export function ClaudeLocalAdvancedFields({
             : mark("adapterConfig", "dangerouslySkipPermissions", v)
         }
       />
-      <Field label="Max turns per run" hint={help.maxTurnsPerRun}>
+      <Field label="실행당 최대 턴 수" hint={help.maxTurnsPerRun}>
         {isCreate ? (
           <input
             type="number"

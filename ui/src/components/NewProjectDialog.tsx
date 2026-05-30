@@ -38,11 +38,11 @@ import { StatusBadge } from "./StatusBadge";
 import { ChoosePathButton } from "./PathInstructionsModal";
 
 const projectStatuses = [
-  { value: "backlog", label: "Backlog" },
-  { value: "planned", label: "Planned" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
+  { value: "backlog", label: "백로그" },
+  { value: "planned", label: "계획됨" },
+  { value: "in_progress", label: "진행 중" },
+  { value: "completed", label: "완료" },
+  { value: "cancelled", label: "취소됨" },
 ];
 
 export function NewProjectDialog() {
@@ -152,11 +152,11 @@ export function NewProjectDialog() {
     const repoUrl = workspaceRepoUrl.trim();
 
     if (localPath && !isAbsolutePath(localPath)) {
-      setWorkspaceError("Local folder must be a full absolute path.");
+      setWorkspaceError("로컬 폴더는 절대 경로 전체를 입력해야 합니다.");
       return;
     }
     if (repoUrl && !looksLikeRepoUrl(repoUrl)) {
-      setWorkspaceError("Repo must use a valid GitHub or GitHub Enterprise repo URL.");
+      setWorkspaceError("유효한 GitHub 또는 GitHub Enterprise 저장소 URL을 입력해야 합니다.");
       return;
     }
 
@@ -368,7 +368,7 @@ export function NewProjectDialog() {
               <button
                 className="text-muted-foreground hover:text-foreground"
                 onClick={() => setGoalIds((prev) => prev.filter((id) => id !== goal.id))}
-                aria-label={`Remove goal ${goal.title}`}
+                aria-label={`목표 제거: ${goal.title}`}
                 type="button"
               >
                 <X className="h-3 w-3" />
@@ -383,7 +383,7 @@ export function NewProjectDialog() {
                 disabled={selectedGoals.length > 0 && availableGoals.length === 0}
               >
                 {selectedGoals.length > 0 ? <Plus className="h-3 w-3 text-muted-foreground" /> : <Target className="h-3 w-3 text-muted-foreground" />}
-                {selectedGoals.length > 0 ? "+ Goal" : "Goal"}
+                {selectedGoals.length > 0 ? "+ 목표" : "목표"}
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-56 p-1" align="start">
@@ -392,7 +392,7 @@ export function NewProjectDialog() {
                   className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-muted-foreground"
                   onClick={() => setGoalOpen(false)}
                 >
-                  No goal
+                  목표 없음
                 </button>
               )}
               {availableGoals.map((g) => (
@@ -409,7 +409,7 @@ export function NewProjectDialog() {
               ))}
               {selectedGoals.length > 0 && availableGoals.length === 0 && (
                 <div className="px-2 py-1.5 text-xs text-muted-foreground">
-                  All goals already selected.
+                  모든 목표가 이미 선택됨.
                 </div>
               )}
             </PopoverContent>
@@ -431,7 +431,7 @@ export function NewProjectDialog() {
         {/* Footer */}
         <div className="flex items-center justify-between px-4 py-2.5 border-t border-border">
           {createProject.isError ? (
-            <p className="text-xs text-destructive">Failed to create project.</p>
+            <p className="text-xs text-destructive">프로젝트 생성에 실패했습니다.</p>
           ) : (
             <span />
           )}
@@ -440,7 +440,7 @@ export function NewProjectDialog() {
             disabled={!name.trim() || createProject.isPending}
             onClick={handleSubmit}
           >
-            {createProject.isPending ? "Creating…" : "Create project"}
+            {createProject.isPending ? "생성 중…" : "프로젝트 생성"}
           </Button>
         </div>
       </DialogContent>

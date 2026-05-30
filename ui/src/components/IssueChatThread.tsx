@@ -300,9 +300,9 @@ function fallbackAuthorLabel(message: import("@assistant-ui/react").ThreadMessag
   const custom = message.metadata?.custom as Record<string, unknown> | undefined;
   if (typeof custom?.["authorName"] === "string") return custom["authorName"];
   if (typeof custom?.["runAgentName"] === "string") return custom["runAgentName"];
-  if (message.role === "assistant") return "Agent";
-  if (message.role === "user") return "You";
-  return "System";
+  if (message.role === "assistant") return "에이전트";
+  if (message.role === "user") return "나";
+  return "시스템";
 }
 
 function fallbackTextParts(message: import("@assistant-ui/react").ThreadMessage) {
@@ -313,9 +313,9 @@ function fallbackTextParts(message: import("@assistant-ui/react").ThreadMessage)
       continue;
     }
     if (part.type === "tool-call") {
-      const lines = [`Tool: ${part.toolName}`];
-      if (part.argsText?.trim()) lines.push(`Args:\n${part.argsText}`);
-      if (typeof part.result === "string" && part.result.trim()) lines.push(`Result:\n${part.result}`);
+      const lines = [`도구: ${part.toolName}`];
+      if (part.argsText?.trim()) lines.push(`인자:\n${part.argsText}`);
+      if (typeof part.result === "string" && part.result.trim()) lines.push(`결과:\n${part.result}`);
       contentLines.push(lines.join("\n\n"));
     }
   }
@@ -342,9 +342,9 @@ function IssueChatFallbackThread({
         <div className="flex items-start gap-2">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <div className="space-y-1">
-            <p className="font-medium">Chat renderer hit an internal state error.</p>
+            <p className="font-medium">채팅 렌더러에서 내부 상태 오류가 발생했습니다.</p>
             <p className="text-xs opacity-80">
-              Showing a safe fallback transcript instead of crashing the issues page.
+              이슈 페이지 충돌 방지를 위해 안전한 폴백 기록을 표시합니다.
             </p>
           </div>
         </div>
@@ -377,7 +377,7 @@ function IssueChatFallbackThread({
                   {lines.length > 0 ? lines.map((line, index) => (
                     <MarkdownBody key={`${message.id}:fallback:${index}`}>{line}</MarkdownBody>
                   )) : (
-                    <p className="text-sm text-muted-foreground">No message content.</p>
+                    <p className="text-sm text-muted-foreground">메시지 내용 없음.</p>
                   )}
                 </div>
               </div>
@@ -469,7 +469,7 @@ function IssueChatTextPart({ text, recessed }: { text: string; recessed?: boolea
 }
 
 function humanizeValue(value: string | null) {
-  if (!value) return "None";
+  if (!value) return "없음";
   return value.replace(/_/g, " ");
 }
 
@@ -482,9 +482,9 @@ function formatTimelineAssigneeLabel(
     return agentMap?.get(assignee.agentId)?.name ?? assignee.agentId.slice(0, 8);
   }
   if (assignee.userId) {
-    return formatAssigneeUserLabel(assignee.userId, currentUserId) ?? "Board";
+    return formatAssigneeUserLabel(assignee.userId, currentUserId) ?? "보드";
   }
-  return "Unassigned";
+  return "담당자 없음";
 }
 
 function initialsForName(name: string) {
@@ -534,8 +534,8 @@ function toolCountSummary(toolParts: ToolCallMessagePart[]): string | null {
     else other++;
   }
   const parts: string[] = [];
-  if (commands > 0) parts.push(`ran ${commands} command${commands === 1 ? "" : "s"}`);
-  if (other > 0) parts.push(`called ${other} tool${other === 1 ? "" : "s"}`);
+  if (commands > 0) parts.push(`명령어 ${commands}개 실행`);
+  if (other > 0) parts.push(`도구 ${other}개 호출`);
   return parts.join(", ");
 }
 
@@ -590,15 +590,15 @@ function IssueChatChainOfThought() {
   let headerVerb: string;
   let headerSuffix: string | null = null;
   if (isActive) {
-    headerVerb = "Working";
-    if (liveElapsed) headerSuffix = `for ${liveElapsed}`;
+    headerVerb = "작업 중";
+    if (liveElapsed) headerSuffix = `${liveElapsed} 경과`;
   } else if (segmentTiming) {
     const durationMs = segmentTiming.endMs - segmentTiming.startMs;
     const durationText = formatDurationWords(durationMs);
-    headerVerb = "Worked";
-    if (durationText) headerSuffix = `for ${durationText}`;
+    headerVerb = "작업 완료";
+    if (durationText) headerSuffix = `${durationText} 소요`;
   } else {
-    headerVerb = "Worked";
+    headerVerb = "작업 완료";
   }
 
   const toolSummary = toolCountSummary(toolParts);
@@ -780,8 +780,8 @@ function CopyablePreBlock({ children, className }: { children: string; className
           "absolute right-1.5 top-1.5 inline-flex h-6 w-6 items-center justify-center rounded-md bg-background/80 text-muted-foreground opacity-0 backdrop-blur-sm transition-opacity hover:text-foreground group-hover/pre:opacity-100",
           copied && "opacity-100",
         )}
-        title="Copy"
-        aria-label="Copy"
+        title="복사"
+        aria-label="복사"
         onClick={() => {
           void navigator.clipboard.writeText(children).then(() => {
             setCopied(true);
@@ -867,7 +867,7 @@ function IssueChatToolPart({
             {nonIntentDetails.length > 0 ? (
               <div>
                 <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/60">
-                  Input
+                  입력
                 </div>
                 <dl className="space-y-1.5">
                   {nonIntentDetails.map((detail) => (
@@ -885,7 +885,7 @@ function IssueChatToolPart({
             ) : rawArgsText ? (
               <div>
                 <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/60">
-                  Input
+                  입력
                 </div>
                 <CopyablePreBlock className="overflow-x-auto rounded-md bg-accent/30 p-2 text-[11px] leading-4 text-foreground/70">{rawArgsText}</CopyablePreBlock>
               </div>
@@ -893,7 +893,7 @@ function IssueChatToolPart({
             {result !== undefined ? (
               <div>
                 <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/60">
-                  Result
+                  결과
                 </div>
                 <CopyablePreBlock className="overflow-x-auto rounded-md bg-accent/30 p-2 text-[11px] leading-4 text-foreground/70">{resultText}</CopyablePreBlock>
               </div>
@@ -932,7 +932,7 @@ function IssueChatUserMessage() {
             {queued ? (
               <div className="mb-1.5 flex items-center gap-2">
                 <span className="inline-flex items-center rounded-full border border-amber-400/60 bg-amber-100/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-amber-800 dark:border-amber-400/40 dark:bg-amber-500/20 dark:text-amber-200">
-                  Queued
+                  대기 중
                 </span>
                 {queueTargetRunId && onInterruptQueued ? (
                   <Button
@@ -942,7 +942,7 @@ function IssueChatUserMessage() {
                     disabled={interruptingQueuedRunId === queueTargetRunId}
                     onClick={() => void onInterruptQueued(queueTargetRunId)}
                   >
-                    {interruptingQueuedRunId === queueTargetRunId ? "Interrupting..." : "Interrupt"}
+                    {interruptingQueuedRunId === queueTargetRunId ? "중단 중..." : "중단"}
                   </Button>
                 ) : null}
                 {onCancelQueued ? (
@@ -952,7 +952,7 @@ function IssueChatUserMessage() {
                     className="h-6 border-amber-300 px-2 text-[11px] text-amber-900 hover:bg-amber-100/80 hover:text-amber-950 dark:border-amber-500/40 dark:text-amber-100 dark:hover:bg-amber-500/10"
                     onClick={() => onCancelQueued(commentId)}
                   >
-                    Cancel
+                    취소
                   </Button>
                 ) : null}
               </div>
@@ -967,7 +967,7 @@ function IssueChatUserMessage() {
           </div>
 
           {pending ? (
-            <div className="mt-1 flex justify-end px-1 text-[11px] text-muted-foreground">Sending...</div>
+            <div className="mt-1 flex justify-end px-1 text-[11px] text-muted-foreground">전송 중...</div>
           ) : (
             <div className="mt-1 flex items-center justify-end gap-1.5 px-1 opacity-0 transition-opacity group-hover:opacity-100">
               <Tooltip>
@@ -986,8 +986,8 @@ function IssueChatUserMessage() {
               <button
                 type="button"
                 className="inline-flex h-6 w-6 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-                title="Copy message"
-                aria-label="Copy message"
+                title="메시지 복사"
+                aria-label="메시지 복사"
                 onClick={() => {
                   const text = message.content
                     .filter((p): p is { type: "text"; text: string } => p.type === "text")
@@ -1006,7 +1006,7 @@ function IssueChatUserMessage() {
         </div>
 
         <Avatar size="sm" className="mt-1 shrink-0">
-          <AvatarFallback>You</AvatarFallback>
+          <AvatarFallback>나</AvatarFallback>
         </Avatar>
       </div>
     </MessagePrimitive.Root>
@@ -1031,7 +1031,7 @@ function IssueChatAssistantMessage() {
     ? custom.authorName
     : typeof custom.runAgentName === "string"
       ? custom.runAgentName
-      : "Agent";
+      : "에이전트";
   const authorAgentId = typeof custom.authorAgentId === "string" ? custom.authorAgentId : null;
   const runId = typeof custom.runId === "string" ? custom.runId : null;
   const runAgentId = typeof custom.runAgentId === "string" ? custom.runAgentId : null;
@@ -1114,7 +1114,7 @@ function IssueChatAssistantMessage() {
               {isRunning ? (
                 <span className="inline-flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-cyan-700 dark:text-cyan-200">
                   <Loader2 className="h-3 w-3 animate-spin" />
-                  Running
+                  실행 중
                 </span>
               ) : null}
             </div>
@@ -1159,8 +1159,8 @@ function IssueChatAssistantMessage() {
                 <ActionBarPrimitive.Copy
                   copiedDuration={2000}
                   className="group inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[copied=true]:text-foreground"
-                  title="Copy message"
-                  aria-label="Copy message"
+                  title="메시지 복사"
+                  aria-label="메시지 복사"
                 >
                   <Copy className="h-3.5 w-3.5 group-data-[copied=true]:hidden" />
                   <Check className="hidden h-3.5 w-3.5 group-data-[copied=true]:block" />
@@ -1192,8 +1192,8 @@ function IssueChatAssistantMessage() {
                       variant="ghost"
                       size="icon-xs"
                       className="text-muted-foreground hover:text-foreground"
-                      title="More actions"
-                      aria-label="More actions"
+                      title="더 보기"
+                      aria-label="더 보기"
                     >
                       <MoreHorizontal className="h-3.5 w-3.5" />
                     </Button>
@@ -1209,7 +1209,7 @@ function IssueChatAssistantMessage() {
                       }}
                     >
                       <Copy className="mr-2 h-3.5 w-3.5" />
-                      Copy message
+                      메시지 복사
                     </DropdownMenuItem>
                     {canStopRun && onStopRun && runId ? (
                       <DropdownMenuItem
@@ -1220,14 +1220,14 @@ function IssueChatAssistantMessage() {
                         }}
                       >
                         <Square className="mr-2 h-3.5 w-3.5 fill-current" />
-                        {stoppingRunId === runId ? "Stopping…" : "Stop run"}
+                        {stoppingRunId === runId ? "중지 중…" : "실행 중지"}
                       </DropdownMenuItem>
                     ) : null}
                     {runHref ? (
                       <DropdownMenuItem asChild>
                         <Link to={runHref} target="_blank" rel="noreferrer noopener">
                           <Search className="mr-2 h-3.5 w-3.5" />
-                          View run
+                          실행 보기
                         </Link>
                       </DropdownMenuItem>
                     ) : null}
@@ -1332,8 +1332,8 @@ function IssueChatFeedbackButtons({
             ? "text-green-600 dark:text-green-400"
             : "text-muted-foreground hover:bg-accent hover:text-foreground",
         )}
-        title="Helpful"
-        aria-label="Helpful"
+        title="도움이 됨"
+        aria-label="도움이 됨"
         onClick={handleThumbsUp}
       >
         <ThumbsUp className="h-3.5 w-3.5" />
@@ -1349,15 +1349,15 @@ function IssueChatFeedbackButtons({
                 ? "text-amber-600 dark:text-amber-400"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
-            title="Needs work"
-            aria-label="Needs work"
+            title="개선 필요"
+            aria-label="개선 필요"
             onClick={handleThumbsDown}
           >
             <ThumbsDown className="h-3.5 w-3.5" />
           </button>
         </PopoverTrigger>
         <PopoverContent side="top" align="start" className="w-80 p-3">
-          <div className="mb-2 text-sm font-medium">What could have been better?</div>
+          <div className="mb-2 text-sm font-medium">어떤 점이 아쉬웠나요?</div>
           <Textarea
             value={downvoteReason}
             onChange={(event) => setDownvoteReason(event.target.value)}
@@ -1376,7 +1376,7 @@ function IssueChatFeedbackButtons({
                 setDownvoteReason("");
               }}
             >
-              Dismiss
+              닫기
             </Button>
             <Button
               type="button"
@@ -1384,7 +1384,7 @@ function IssueChatFeedbackButtons({
               disabled={isSaving || !downvoteReason.trim()}
               onClick={handleSubmitReason}
             >
-              {isSaving ? "Saving..." : "Save note"}
+              {isSaving ? "저장 중..." : "메모 저장"}
             </Button>
           </div>
         </PopoverContent>
@@ -1401,21 +1401,18 @@ function IssueChatFeedbackButtons({
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Save your feedback sharing preference</DialogTitle>
+            <DialogTitle>피드백 공유 설정 저장</DialogTitle>
             <DialogDescription>
-              Choose whether voted AI outputs can be shared with Paperclip Labs. This
-              answer becomes the default for future thumbs up and thumbs down votes.
+              투표한 AI 출력물을 Paperclip Labs와 공유할지 선택하세요. 이 설정은 이후 좋아요·싫어요 투표의 기본값이 됩니다.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm text-muted-foreground">
-            <p>This vote is always saved locally.</p>
+            <p>이 투표는 항상 로컬에 저장됩니다.</p>
             <p>
-              Choose <span className="font-medium text-foreground">Always allow</span> to share
-              this vote and future voted AI outputs. Choose{" "}
-              <span className="font-medium text-foreground">Don't allow</span> to keep this vote
-              and future votes local.
+              <span className="font-medium text-foreground">항상 허용</span>을 선택하면 이번 투표와 이후 투표한 AI 출력물을 공유합니다.{" "}
+              <span className="font-medium text-foreground">허용 안 함</span>을 선택하면 이번 투표와 이후 투표를 로컬에만 저장합니다.
             </p>
-            <p>You can change this later in Instance Settings &gt; General.</p>
+            <p>나중에 인스턴스 설정 &gt; 일반에서 변경할 수 있습니다.</p>
             {termsUrl ? (
               <a
                 href={termsUrl}
@@ -1423,7 +1420,7 @@ function IssueChatFeedbackButtons({
                 rel="noreferrer"
                 className="inline-flex text-sm text-foreground underline underline-offset-4"
               >
-                Read our terms of service
+                서비스 이용약관 읽기
               </a>
             ) : null}
           </div>
@@ -1440,7 +1437,7 @@ function IssueChatFeedbackButtons({
                 ).then(() => setPendingSharingDialog(null));
               }}
             >
-              {isSaving ? "Saving..." : "Don't allow"}
+              {isSaving ? "저장 중..." : "허용 안 함"}
             </Button>
             <Button
               type="button"
@@ -1453,7 +1450,7 @@ function IssueChatFeedbackButtons({
                 }).then(() => setPendingSharingDialog(null));
               }}
             >
-              {isSaving ? "Saving..." : "Always allow"}
+              {isSaving ? "저장 중..." : "항상 허용"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1493,7 +1490,7 @@ function IssueChatSystemMessage() {
       <div className="min-w-0 space-y-1">
         <div className={cn("flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs", isCurrentUser && "justify-end")}>
           <span className="font-medium text-foreground">{actorName}</span>
-          <span className="text-muted-foreground">updated this task</span>
+          <span className="text-muted-foreground">이 작업을 업데이트했습니다</span>
           <a
             href={anchorId ? `#${anchorId}` : undefined}
             className="text-xs text-muted-foreground transition-colors hover:text-foreground hover:underline"
@@ -1505,7 +1502,7 @@ function IssueChatSystemMessage() {
         {statusChange ? (
           <div className={cn("flex flex-wrap items-center gap-1.5 text-xs", isCurrentUser && "justify-end")}>
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Status
+              상태
             </span>
             <span className="text-muted-foreground">{humanizeValue(statusChange.from)}</span>
             <ArrowRight className="h-3 w-3 text-muted-foreground" />
@@ -1516,7 +1513,7 @@ function IssueChatSystemMessage() {
         {assigneeChange ? (
           <div className={cn("flex flex-wrap items-center gap-1.5 text-xs", isCurrentUser && "justify-end")}>
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Assignee
+              담당자
             </span>
             <span className="text-muted-foreground">
               {formatTimelineAssigneeLabel(assigneeChange.from, agentMap, currentUserId)}
@@ -1577,7 +1574,7 @@ function IssueChatSystemMessage() {
               <Link to={`/agents/${runAgentId}`} className="font-medium text-foreground transition-colors hover:underline">
                 {displayedRunAgentName}
               </Link>
-              <span className="text-muted-foreground">run</span>
+              <span className="text-muted-foreground">실행</span>
               <Link
                 to={`/agents/${runAgentId}/runs/${runId}`}
                 className="inline-flex items-center rounded-md border border-border bg-accent/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
@@ -1765,7 +1762,7 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
         ref={editorRef}
         value={body}
         onChange={setBody}
-        placeholder="Reply"
+        placeholder="답장"
         mentions={mentions}
         onSubmit={handleSubmit}
         imageUploadHandler={onImageUpload}
@@ -1799,14 +1796,14 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
           <InlineEntitySelector
             value={reassignTarget}
             options={reassignOptions}
-            placeholder="Assignee"
-            noneLabel="No assignee"
-            searchPlaceholder="Search assignees..."
-            emptyMessage="No assignees found."
+            placeholder="담당자"
+            noneLabel="담당자 없음"
+            searchPlaceholder="담당자 검색..."
+            emptyMessage="담당자를 찾을 수 없습니다."
             onChange={setReassignTarget}
             className="h-8 text-xs"
             renderTriggerValue={(option) => {
-              if (!option) return <span className="text-muted-foreground">Assignee</span>;
+              if (!option) return <span className="text-muted-foreground">담당자</span>;
               const agentId = option.id.startsWith("agent:") ? option.id.slice("agent:".length) : null;
               const agent = agentId ? agentMap?.get(agentId) : null;
               return (
@@ -1835,7 +1832,7 @@ const IssueChatComposer = forwardRef<IssueChatComposerHandle, IssueChatComposerP
         ) : null}
 
         <Button size="sm" disabled={!canSubmit} onClick={() => void handleSubmit()}>
-          {submitting ? "Posting..." : "Send"}
+          {submitting ? "전송 중..." : "전송"}
         </Button>
       </div>
     </div>
@@ -2067,8 +2064,8 @@ export function IssueChatThread({
   const resolvedShowJumpToLatest = showJumpToLatest ?? variant === "full";
   const resolvedEmptyMessage = emptyMessage
     ?? (variant === "embedded"
-      ? "No run output yet."
-      : "This issue conversation is empty. Start with a message below.");
+      ? "아직 실행 출력이 없습니다."
+      : "이슈 대화가 비어 있습니다. 아래에 메시지를 입력하세요.");
   const errorBoundaryResetKey = useMemo(
     () => messages.map((message) => `${message.id}:${message.role}:${message.content.length}:${message.status?.type ?? "none"}`).join("|"),
     [messages],
@@ -2085,7 +2082,7 @@ export function IssueChatThread({
               onClick={handleJumpToLatest}
               className="text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              Jump to latest
+              최신으로 이동
             </button>
           </div>
         ) : null}

@@ -100,7 +100,7 @@ export function CodexSubscriptionPanel({
         {modelWindows.length > 0 ? (
           <div className="space-y-3">
             <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Model windows
+              모델 창
             </div>
             <div className="space-y-3">
               {modelWindows.map((window) => (

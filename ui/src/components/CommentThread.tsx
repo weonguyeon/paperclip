@@ -140,7 +140,7 @@ function shouldImplicitlyReopenComment(issueStatus: string | undefined, assignee
 }
 
 function humanizeValue(value: string | null): string {
-  if (!value) return "None";
+  if (!value) return "없음";
   return value.replace(/_/g, " ");
 }
 
@@ -184,7 +184,7 @@ function initialsForName(name: string) {
 function formatRunStatusLabel(status: string) {
   switch (status) {
     case "timed_out":
-      return "timed out";
+      return "시간 초과";
     default:
       return status.replace(/_/g, " ");
   }
@@ -474,7 +474,7 @@ function TimelineEventCard({
         {event.statusChange ? (
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="w-14 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              Status
+              상태
             </span>
             <span className="text-muted-foreground">
               {humanizeValue(event.statusChange.from)}
@@ -489,7 +489,7 @@ function TimelineEventCard({
         {event.assigneeChange ? (
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="w-14 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              Assignee
+              담당자
             </span>
             <span className="text-muted-foreground">
               {formatTimelineAssigneeLabel(event.assigneeChange.from, agentMap, currentUserId)}
@@ -593,7 +593,7 @@ const TimelineList = memo(function TimelineList({
                   <Link to={`/agents/${run.agentId}`} className="font-medium text-foreground transition-colors hover:underline">
                     {actorName}
                   </Link>
-                  <span className="text-muted-foreground">run</span>
+                  <span className="text-muted-foreground">실행</span>
                   <Link
                     to={`/agents/${run.agentId}/runs/${run.runId}`}
                     className="inline-flex items-center rounded-md border border-border bg-accent/40 px-2 py-1 font-mono text-xs text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
@@ -886,7 +886,7 @@ export function CommentThread({
                 disabled={interruptingQueuedRunId === queuedComments[0].queueTargetRunId}
                 onClick={() => void onInterruptQueued(queuedComments[0]!.queueTargetRunId!)}
               >
-                {interruptingQueuedRunId === queuedComments[0].queueTargetRunId ? "Interrupting..." : "Interrupt"}
+                {interruptingQueuedRunId === queuedComments[0].queueTargetRunId ? "중단 중..." : "중단"}
               </Button>
             ) : null}
           </div>
@@ -937,7 +937,7 @@ export function CommentThread({
                   size="icon-sm"
                   onClick={() => attachInputRef.current?.click()}
                   disabled={attaching}
-                  title="Attach image"
+                  title="이미지 첨부"
                 >
                   <Paperclip className="h-4 w-4" />
                 </Button>
@@ -947,14 +947,14 @@ export function CommentThread({
               <InlineEntitySelector
                 value={reassignTarget}
                 options={reassignOptions}
-                placeholder="Assignee"
-                noneLabel="No assignee"
-                searchPlaceholder="Search assignees..."
-                emptyMessage="No assignees found."
+                placeholder="담당자"
+                noneLabel="담당자 없음"
+                searchPlaceholder="담당자 검색..."
+                emptyMessage="담당자를 찾을 수 없습니다."
                 onChange={setReassignTarget}
                 className="text-xs h-8"
                 renderTriggerValue={(option) => {
-                  if (!option) return <span className="text-muted-foreground">Assignee</span>;
+                  if (!option) return <span className="text-muted-foreground">담당자</span>;
                   const agentId = option.id.startsWith("agent:") ? option.id.slice("agent:".length) : null;
                   const agent = agentId ? agentMap?.get(agentId) : null;
                   return (
@@ -982,7 +982,7 @@ export function CommentThread({
               />
             )}
             <Button size="sm" disabled={!canSubmit} onClick={handleSubmit}>
-              {submitting ? "Posting..." : "Comment"}
+              {submitting ? "게시 중..." : "댓글 작성"}
             </Button>
           </div>
         </div>

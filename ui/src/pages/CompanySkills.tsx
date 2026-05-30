@@ -150,19 +150,19 @@ function sourceMeta(sourceBadge: CompanySkillSourceBadge, sourceLabel: string | 
 
   switch (sourceBadge) {
     case "skills_sh":
-      return { icon: VercelMark, label: sourceLabel ?? "skills.sh", managedLabel: "skills.sh managed" };
+      return { icon: VercelMark, label: sourceLabel ?? "skills.sh", managedLabel: "skills.sh 관리" };
     case "github":
       return isSkillsShManaged
-        ? { icon: VercelMark, label: sourceLabel ?? "skills.sh", managedLabel: "skills.sh managed" }
-        : { icon: Github, label: sourceLabel ?? "GitHub", managedLabel: "GitHub managed" };
+        ? { icon: VercelMark, label: sourceLabel ?? "skills.sh", managedLabel: "skills.sh 관리" }
+        : { icon: Github, label: sourceLabel ?? "GitHub", managedLabel: "GitHub 관리" };
     case "url":
-      return { icon: Link2, label: sourceLabel ?? "URL", managedLabel: "URL managed" };
+      return { icon: Link2, label: sourceLabel ?? "URL", managedLabel: "URL 관리" };
     case "local":
-      return { icon: Folder, label: sourceLabel ?? "Folder", managedLabel: "Folder managed" };
+      return { icon: Folder, label: sourceLabel ?? "Folder", managedLabel: "폴더 관리" };
     case "paperclip":
-      return { icon: Paperclip, label: sourceLabel ?? "Paperclip", managedLabel: "Paperclip managed" };
+      return { icon: Paperclip, label: sourceLabel ?? "Paperclip", managedLabel: "Paperclip 관리" };
     default:
-      return { icon: Boxes, label: sourceLabel ?? "Catalog", managedLabel: "Catalog managed" };
+      return { icon: Boxes, label: sourceLabel ?? "Catalog", managedLabel: "카탈로그 관리" };
   }
 }
 
@@ -260,31 +260,31 @@ function NewSkillForm({
         <Input
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Skill name"
+          placeholder="스킬 이름"
           className="h-9 rounded-none border-0 border-b border-border px-0 shadow-none focus-visible:ring-0"
         />
         <Input
           value={slug}
           onChange={(event) => setSlug(event.target.value)}
-          placeholder="optional-shortname"
+          placeholder="선택적-단축명"
           className="h-9 rounded-none border-0 border-b border-border px-0 shadow-none focus-visible:ring-0"
         />
         <Textarea
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          placeholder="Short description"
+          placeholder="간단한 설명"
           className="min-h-20 rounded-none border-0 border-b border-border px-0 shadow-none focus-visible:ring-0"
         />
         <div className="flex items-center justify-end gap-2">
           <Button variant="ghost" size="sm" onClick={onCancel} disabled={isPending}>
-            Cancel
+            취소
           </Button>
           <Button
             size="sm"
             onClick={() => onCreate({ name, slug: slug || null, description: description || null })}
             disabled={isPending || name.trim().length === 0}
           >
-            {isPending ? "Creating..." : "Create skill"}
+            {isPending ? "생성 중..." : "스킬 생성"}
           </Button>
         </div>
       </div>
@@ -411,7 +411,7 @@ function SkillList({
   if (filteredSkills.length === 0) {
     return (
       <div className="px-4 py-6 text-sm text-muted-foreground">
-        No skills match this filter.
+        필터에 맞는 스킬이 없습니다.
       </div>
     );
   }
@@ -456,7 +456,7 @@ function SkillList({
                 type="button"
                 className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-sm text-muted-foreground opacity-80 transition-[background-color,color,opacity] hover:bg-accent hover:text-foreground group-hover:opacity-100"
                 onClick={() => onToggleSkill(skill.id)}
-                aria-label={expanded ? `Collapse ${skill.name}` : `Expand ${skill.name}`}
+                aria-label={expanded ? `${skill.name} 접기` : `${skill.name} 펼치기`}
               >
                 {expanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
               </button>
@@ -539,7 +539,7 @@ function SkillPane({
     return (
       <EmptyState
         icon={Boxes}
-        message="Select a skill to inspect its files."
+        message="스킬을 선택하면 파일을 확인할 수 있습니다."
       />
     );
   }
@@ -552,7 +552,7 @@ function SkillPane({
   const latestPin = shortRef(updateStatus?.latestRef);
   const removeBlocked = usedBy.length > 0;
   const removeDisabledReason = removeBlocked
-    ? "Detach this skill from all agents before removing it."
+    ? "이 스킬을 모든 에이전트에서 분리한 후 제거하세요."
     : null;
 
   return (
@@ -577,7 +577,7 @@ function SkillPane({
               title={removeDisabledReason ?? undefined}
             >
               <Trash2 className="mr-1.5 h-3.5 w-3.5" />
-              {deletePending ? "Removing..." : "Remove"}
+              {deletePending ? "제거 중..." : "제거"}
             </Button>
             {detail.editable ? (
               <button
@@ -585,7 +585,7 @@ function SkillPane({
                 onClick={() => setEditMode(!editMode)}
               >
                 <Pencil className="h-3.5 w-3.5" />
-                {editMode ? "Stop editing" : "Edit"}
+                {editMode ? "편집 중지" : "수정"}
               </button>
             ) : (
               <div className="text-sm text-muted-foreground">{detail.editableReason}</div>
@@ -596,7 +596,7 @@ function SkillPane({
         <div className="mt-4 space-y-3 border-t border-border pt-4 text-sm">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Source</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">소스</span>
               <span className="flex items-center gap-2">
                 <SourceIcon className="h-3.5 w-3.5 text-muted-foreground" />
                 {detail.sourcePath ? (
@@ -604,7 +604,7 @@ function SkillPane({
                     className="truncate hover:text-foreground text-muted-foreground transition-colors cursor-pointer"
                     onClick={() => {
                       navigator.clipboard.writeText(detail.sourcePath!);
-                      pushToast({ title: "Copied path to workspace" });
+                      pushToast({ title: "워크스페이스 경로 복사됨" });
                     }}
                   >
                     {source.label}
@@ -616,10 +616,10 @@ function SkillPane({
             </div>
             {detail.sourceType === "github" && (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Pin</span>
-                <span className="font-mono text-xs">{currentPin ?? "untracked"}</span>
+                <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">핀</span>
+                <span className="font-mono text-xs">{currentPin ?? "미추적"}</span>
                 {updateStatus?.trackingRef && (
-                  <span className="text-xs text-muted-foreground">tracking {updateStatus.trackingRef}</span>
+                  <span className="text-xs text-muted-foreground">추적 중 {updateStatus.trackingRef}</span>
                 )}
                 <Button
                   variant="ghost"
@@ -628,7 +628,7 @@ function SkillPane({
                   disabled={checkUpdatesPending || updateStatusLoading}
                 >
                   <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", (checkUpdatesPending || updateStatusLoading) && "animate-spin")} />
-                  Check for updates
+                  업데이트 확인
                 </Button>
                 {updateStatus?.supported && updateStatus.hasUpdate && (
                   <Button
@@ -637,11 +637,11 @@ function SkillPane({
                     disabled={installUpdatePending}
                   >
                     <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", installUpdatePending && "animate-spin")} />
-                    Install update{latestPin ? ` ${latestPin}` : ""}
+                    업데이트 설치{latestPin ? ` ${latestPin}` : ""}
                   </Button>
                 )}
                 {updateStatus?.supported && !updateStatus.hasUpdate && !updateStatusLoading && (
-                  <span className="text-xs text-muted-foreground">Up to date</span>
+                  <span className="text-xs text-muted-foreground">최신 상태</span>
                 )}
                 {!updateStatus?.supported && updateStatus?.reason && (
                   <span className="text-xs text-muted-foreground">{updateStatus.reason}</span>
@@ -649,18 +649,18 @@ function SkillPane({
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Key</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">키</span>
               <span className="font-mono text-xs">{detail.key}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Mode</span>
-              <span>{detail.editable ? "Editable" : "Read only"}</span>
+              <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">모드</span>
+              <span>{detail.editable ? "편집 가능" : "읽기 전용"}</span>
             </div>
           </div>
           <div className="flex flex-wrap items-start gap-x-3 gap-y-1">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Used by</span>
+            <span className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">사용 중인 에이전트</span>
             {usedBy.length === 0 ? (
-              <span className="text-muted-foreground">No agents attached</span>
+              <span className="text-muted-foreground">연결된 에이전트 없음</span>
             ) : (
               <div className="flex flex-wrap gap-x-3 gap-y-1">
                 {usedBy.map((agent) => (
@@ -692,7 +692,7 @@ function SkillPane({
                 >
                   <span className="flex items-center gap-1.5">
                     <Eye className="h-3.5 w-3.5" />
-                    View
+                    미리보기
                   </span>
                 </button>
                 <button
@@ -701,7 +701,7 @@ function SkillPane({
                 >
                   <span className="flex items-center gap-1.5">
                     <Code2 className="h-3.5 w-3.5" />
-                    Code
+                    코드
                   </span>
                 </button>
               </div>
@@ -709,11 +709,11 @@ function SkillPane({
             {editMode && file?.editable && (
               <>
                 <Button variant="ghost" size="sm" onClick={() => setEditMode(false)} disabled={savePending}>
-                  Cancel
+                  취소
                 </Button>
                 <Button size="sm" onClick={onSave} disabled={savePending}>
                   <Save className="mr-1.5 h-3.5 w-3.5" />
-                  {savePending ? "Saving..." : "Save"}
+                  {savePending ? "저장 중..." : "저장"}
                 </Button>
               </>
             )}
@@ -725,7 +725,7 @@ function SkillPane({
         {fileLoading ? (
           <PageSkeleton variant="detail" />
         ) : !file ? (
-          <div className="text-sm text-muted-foreground">Select a file to inspect.</div>
+          <div className="text-sm text-muted-foreground">파일을 선택하면 내용을 확인할 수 있습니다.</div>
         ) : editMode && file.editable ? (
           file.markdown ? (
             <MarkdownEditor
@@ -781,8 +781,8 @@ export function CompanySkills() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Skills", href: "/skills" },
-      ...(routeSkillId ? [{ label: "Detail" }] : []),
+      { label: "스킬", href: "/skills" },
+      ...(routeSkillId ? [{ label: "상세" }] : []),
     ]);
   }, [routeSkillId, setBreadcrumbs]);
 
@@ -893,19 +893,19 @@ export function CompanySkills() {
       if (result.imported[0]) navigate(skillRoute(result.imported[0].id));
       pushToast({
         tone: "success",
-        title: "Skills imported",
-        body: `${result.imported.length} skill${result.imported.length === 1 ? "" : "s"} added.`,
+        title: "스킬 가져오기 완료",
+        body: `스킬 ${result.imported.length}개 추가됨.`,
       });
       if (result.warnings[0]) {
-        pushToast({ tone: "warn", title: "Import warnings", body: result.warnings[0] });
+        pushToast({ tone: "warn", title: "가져오기 경고", body: result.warnings[0] });
       }
       setSource("");
     },
     onError: (error) => {
       pushToast({
         tone: "error",
-        title: "Skill import failed",
-        body: error instanceof Error ? error.message : "Failed to import skill source.",
+        title: "스킬 가져오기 실패",
+        body: error instanceof Error ? error.message : "스킬 소스를 가져오지 못했습니다.",
       });
     },
   });
@@ -918,15 +918,15 @@ export function CompanySkills() {
       setCreateOpen(false);
       pushToast({
         tone: "success",
-        title: "Skill created",
-        body: `${skill.name} is now editable in the Paperclip workspace.`,
+        title: "스킬 생성됨",
+        body: `${skill.name}이(가) Paperclip 워크스페이스에서 편집 가능합니다.`,
       });
     },
     onError: (error) => {
       pushToast({
         tone: "error",
-        title: "Skill creation failed",
-        body: error instanceof Error ? error.message : "Failed to create skill.",
+        title: "스킬 생성 실패",
+        body: error instanceof Error ? error.message : "스킬을 생성하지 못했습니다.",
       });
     },
   });
@@ -934,28 +934,28 @@ export function CompanySkills() {
   const scanProjects = useMutation({
     mutationFn: () => companySkillsApi.scanProjects(selectedCompanyId!),
     onMutate: () => {
-      setScanStatusMessage("Scanning project workspaces for skills...");
+      setScanStatusMessage("프로젝트 워크스페이스에서 스킬 스캔 중...");
     },
     onSuccess: async (result) => {
-      setScanStatusMessage("Refreshing skills list...");
+      setScanStatusMessage("스킬 목록 새로고침 중...");
       await queryClient.invalidateQueries({ queryKey: queryKeys.companySkills.list(selectedCompanyId!) });
       const summary = formatProjectScanSummary(result);
       setScanStatusMessage(summary);
       pushToast({
         tone: "success",
-        title: "Project skill scan complete",
+        title: "프로젝트 스킬 스캔 완료",
         body: summary,
       });
       if (result.conflicts[0]) {
         pushToast({
           tone: "warn",
-          title: "Skill conflicts found",
+          title: "스킬 충돌 발견",
           body: result.conflicts[0].reason,
         });
       } else if (result.warnings[0]) {
         pushToast({
           tone: "warn",
-          title: "Scan warnings",
+          title: "스캔 경고",
           body: result.warnings[0],
         });
       }
@@ -964,8 +964,8 @@ export function CompanySkills() {
       setScanStatusMessage(null);
       pushToast({
         tone: "error",
-        title: "Project skill scan failed",
-        body: error instanceof Error ? error.message : "Failed to scan project workspaces.",
+        title: "프로젝트 스킬 스캔 실패",
+        body: error instanceof Error ? error.message : "프로젝트 워크스페이스를 스캔하지 못했습니다.",
       });
     },
   });
@@ -987,15 +987,15 @@ export function CompanySkills() {
       setEditMode(false);
       pushToast({
         tone: "success",
-        title: "Skill saved",
+        title: "스킬 저장됨",
         body: result.path,
       });
     },
     onError: (error) => {
       pushToast({
         tone: "error",
-        title: "Save failed",
-        body: error instanceof Error ? error.message : "Failed to save skill file.",
+        title: "저장 실패",
+        body: error instanceof Error ? error.message : "스킬 파일을 저장하지 못했습니다.",
       });
     },
   });
@@ -1012,15 +1012,15 @@ export function CompanySkills() {
       navigate(skillRoute(skill.id, selectedPath));
       pushToast({
         tone: "success",
-        title: "Skill updated",
-        body: skill.sourceRef ? `Pinned to ${shortRef(skill.sourceRef)}` : skill.name,
+        title: "스킬 업데이트됨",
+        body: skill.sourceRef ? `${shortRef(skill.sourceRef)}에 고정됨` : skill.name,
       });
     },
     onError: (error) => {
       pushToast({
         tone: "error",
-        title: "Update failed",
-        body: error instanceof Error ? error.message : "Failed to install skill update.",
+        title: "업데이트 실패",
+        body: error instanceof Error ? error.message : "스킬 업데이트를 설치하지 못했습니다.",
       });
     },
   });
@@ -1050,21 +1050,21 @@ export function CompanySkills() {
       navigate("/skills", { replace: true });
       pushToast({
         tone: "success",
-        title: "Skill removed",
-        body: `${skill.name} was removed from the company skill library.`,
+        title: "스킬 제거됨",
+        body: `${skill.name}이(가) 회사 스킬 라이브러리에서 제거되었습니다.`,
       });
     },
     onError: (error) => {
       pushToast({
         tone: "error",
-        title: "Remove failed",
-        body: error instanceof Error ? error.message : "Failed to remove skill.",
+        title: "제거 실패",
+        body: error instanceof Error ? error.message : "스킬을 제거하지 못했습니다.",
       });
     },
   });
 
   if (!selectedCompanyId) {
-    return <EmptyState icon={Boxes} message="Select a company to manage skills." />;
+    return <EmptyState icon={Boxes} message="스킬을 관리하려면 회사를 선택하세요." />;
   }
 
   function handleAddSkillSource() {
@@ -1081,44 +1081,44 @@ export function CompanySkills() {
       <Dialog open={deleteOpen} onOpenChange={closeDeleteDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Remove skill</DialogTitle>
+            <DialogTitle>스킬 제거</DialogTitle>
             <DialogDescription>
-              Remove this skill from the company library. If any agents still use it, removal will be blocked until it is detached.
+              회사 라이브러리에서 이 스킬을 제거합니다. 에이전트가 아직 사용 중이면 분리 전까지 제거가 차단됩니다.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
             <p>
               {deleteTargetDetail
-                ? `You are about to remove ${deleteTargetDetail.name}.`
-                : "You are about to remove this skill."}
+                ? `${deleteTargetDetail.name}을(를) 제거하려고 합니다.`
+                : "이 스킬을 제거하려고 합니다."}
             </p>
             {deleteTargetDetail?.usedByAgents?.length ? (
               <div className="rounded-md border border-border px-3 py-3 text-muted-foreground">
-                Currently used by {deleteTargetDetail.usedByAgents.map((agent) => agent.name).join(", ")}.
+                현재 사용 중인 에이전트: {deleteTargetDetail.usedByAgents.map((agent) => agent.name).join(", ")}.
               </div>
             ) : null}
             {(deleteTargetDetail?.usedByAgents.length ?? 0) > 0 ? (
               <p className="text-muted-foreground">
-                Detach this skill from all agents to enable removal.
+                제거하려면 모든 에이전트에서 이 스킬을 분리하세요.
               </p>
             ) : null}
           </div>
           <DialogFooter>
             {(deleteTargetDetail?.usedByAgents.length ?? 0) > 0 ? (
               <Button variant="ghost" onClick={() => closeDeleteDialog(false)}>
-                Close
+                닫기
               </Button>
             ) : (
               <>
                 <Button variant="ghost" onClick={() => closeDeleteDialog(false)} disabled={deleteSkill.isPending}>
-                  Cancel
+                  취소
                 </Button>
                 <Button
                   variant="destructive"
                   onClick={() => deleteSkill.mutate()}
                   disabled={deleteSkill.isPending || !deleteTargetSkillId}
                 >
-                  {deleteSkill.isPending ? "Removing..." : "Remove skill"}
+                  {deleteSkill.isPending ? "제거 중..." : "스킬 제거"}
                 </Button>
               </>
             )}
@@ -1129,9 +1129,9 @@ export function CompanySkills() {
       <Dialog open={emptySourceHelpOpen} onOpenChange={setEmptySourceHelpOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add a skill source</DialogTitle>
+            <DialogTitle>스킬 소스 추가</DialogTitle>
             <DialogDescription>
-              Paste a local path, GitHub URL, or `skills.sh` command into the field first.
+              먼저 로컬 경로, GitHub URL 또는 `skills.sh` 명령어를 입력란에 붙여넣으세요.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm">
@@ -1142,9 +1142,9 @@ export function CompanySkills() {
               className="flex items-start justify-between rounded-md border border-border px-3 py-3 text-foreground no-underline transition-colors hover:bg-accent/40"
             >
               <span>
-                <span className="block font-medium">Browse skills.sh</span>
+                <span className="block font-medium">skills.sh 둘러보기</span>
                 <span className="mt-1 block text-muted-foreground">
-                  Find install commands and paste one here.
+                  설치 명령어를 찾아 여기에 붙여넣으세요.
                 </span>
               </span>
               <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
@@ -1156,9 +1156,9 @@ export function CompanySkills() {
               className="flex items-start justify-between rounded-md border border-border px-3 py-3 text-foreground no-underline transition-colors hover:bg-accent/40"
             >
               <span>
-                <span className="block font-medium">Search GitHub</span>
+                <span className="block font-medium">GitHub 검색</span>
                 <span className="mt-1 block text-muted-foreground">
-                  Look for repositories with `SKILL.md`, then paste the repo URL here.
+                  `SKILL.md`가 있는 저장소를 찾아 저장소 URL을 여기에 붙여넣으세요.
                 </span>
               </span>
               <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
@@ -1173,9 +1173,9 @@ export function CompanySkills() {
           <div className="border-b border-border px-4 py-3">
             <div className="flex items-center justify-between gap-2">
               <div>
-                <h1 className="text-base font-semibold">Skills</h1>
+                <h1 className="text-base font-semibold">스킬</h1>
                 <p className="text-xs text-muted-foreground">
-                  {skillsQuery.data?.length ?? 0} available
+                  {skillsQuery.data?.length ?? 0}개 사용 가능
                 </p>
               </div>
               <div className="flex items-center gap-1">
@@ -1184,7 +1184,7 @@ export function CompanySkills() {
                   size="icon-sm"
                   onClick={() => scanProjects.mutate()}
                   disabled={scanProjects.isPending}
-                  title="Scan project workspaces for skills"
+                  title="프로젝트 워크스페이스에서 스킬 스캔"
                 >
                   <RefreshCw className={cn("h-4 w-4", scanProjects.isPending && "animate-spin")} />
                 </Button>
@@ -1199,7 +1199,7 @@ export function CompanySkills() {
               <input
                 value={skillFilter}
                 onChange={(event) => setSkillFilter(event.target.value)}
-                placeholder="Filter skills"
+                placeholder="스킬 필터"
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
@@ -1208,7 +1208,7 @@ export function CompanySkills() {
               <input
                 value={source}
                 onChange={(event) => setSource(event.target.value)}
-                placeholder="Paste path, GitHub URL, or skills.sh command"
+                placeholder="경로, GitHub URL 또는 skills.sh 명령어 붙여넣기"
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
               <Button
@@ -1217,7 +1217,7 @@ export function CompanySkills() {
                 onClick={handleAddSkillSource}
                 disabled={importSkill.isPending}
               >
-                {importSkill.isPending ? <RefreshCw className="h-4 w-4 animate-spin" /> : "Add"}
+                {importSkill.isPending ? <RefreshCw className="h-4 w-4 animate-spin" /> : "추가"}
               </Button>
             </div>
             {scanStatusMessage && (

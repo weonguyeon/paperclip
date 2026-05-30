@@ -43,7 +43,7 @@ export function ActivityRow({ event, agentMap, entityNameMap, entityTitleMap, cl
     : entityLink(event.entityType, event.entityId, name);
 
   const actor = event.actorType === "agent" ? agentMap.get(event.actorId) : null;
-  const actorName = actor?.name ?? (event.actorType === "system" ? "시스템" : event.actorType === "user" ? "보드" : event.actorId || "Unknown");
+  const actorName = actor?.name ?? (event.actorType === "system" ? "시스템" : event.actorType === "user" ? "보드" : event.actorId || "알 수 없음");
 
   const inner = (
     <div className="flex gap-3">
@@ -53,9 +53,9 @@ export function ActivityRow({ event, agentMap, entityNameMap, entityTitleMap, cl
           size="xs"
           className="align-baseline"
         />
-        <span className="text-muted-foreground ml-1">{verb} </span>
-        {name && <span className="font-medium">{name}</span>}
+        {name && <span className="font-medium ml-1">{name}</span>}
         {entityTitle && <span className="text-muted-foreground ml-1">— {entityTitle}</span>}
+        <span className="text-muted-foreground ml-1">{verb}</span>
       </p>
       <span className="text-xs text-muted-foreground shrink-0 pt-0.5">{timeAgo(event.createdAt)}</span>
     </div>
