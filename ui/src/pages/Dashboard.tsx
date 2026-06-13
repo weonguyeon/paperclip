@@ -23,6 +23,7 @@ import { Bot, CircleDot, DollarSign, ShieldCheck, LayoutDashboard, PauseCircle }
 import { ActiveAgentsPanel } from "../components/ActiveAgentsPanel";
 import { ChartCard, RunActivityChart, PriorityChart, IssueStatusChart, SuccessRateChart } from "../components/ActivityCharts";
 import { PageSkeleton } from "../components/PageSkeleton";
+import { HelpHint } from "../components/HelpHint";
 import type { Agent, Issue } from "@paperclipai/shared";
 import { PluginSlotOutlet } from "@/plugins/slots";
 
@@ -189,6 +190,7 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <HelpHint>이 화면은 회사 전체 현황을 한눈에 보는 대시보드입니다. 에이전트·작업·비용·승인 상태와 최근 활동을 요약해서 보여줍니다.</HelpHint>
       {error && <p className="text-sm text-destructive">{error.message}</p>}
 
       {hasNoAgents && (
@@ -231,6 +233,7 @@ export function Dashboard() {
             </div>
           ) : null}
 
+          <HelpHint>주요 지표 요약입니다. 각 카드를 누르면 해당 상세 화면(에이전트·작업·비용·승인)으로 이동합니다.</HelpHint>
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-1 sm:gap-2">
             <MetricCard
               icon={Bot}
@@ -285,6 +288,7 @@ export function Dashboard() {
             />
           </div>
 
+          <HelpHint>최근 14일간의 실행 활동·이슈 분포·성공률 추이를 보여주는 그래프입니다.</HelpHint>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <ChartCard title="실행 활동" subtitle="최근 14일">
               <RunActivityChart runs={runs ?? []} />
@@ -314,6 +318,7 @@ export function Dashboard() {
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
                   최근 활동
                 </h3>
+                <HelpHint className="mb-3 -mt-2">회사에서 최근 일어난 변경·작업 이벤트 기록입니다.</HelpHint>
                 <div className="border border-border divide-y divide-border overflow-hidden">
                   {recentActivity.map((event) => (
                     <ActivityRow
@@ -334,6 +339,7 @@ export function Dashboard() {
               <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
                 최근 작업
               </h3>
+              <HelpHint className="mb-3 -mt-2">가장 최근에 업데이트된 이슈(작업) 목록입니다. 클릭하면 상세 화면으로 이동합니다.</HelpHint>
               {recentIssues.length === 0 ? (
                 <div className="border border-border p-4">
                   <p className="text-sm text-muted-foreground">아직 작업이 없습니다.</p>
