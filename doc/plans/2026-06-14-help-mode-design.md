@@ -48,3 +48,18 @@ Paperclip 기능이 많고 진입장벽이 높다. 각 화면이 "무엇을 하�
 - `HelpHint` 단위 테스트: OFF→`null`, ON→파란 텍스트 렌더
 - `pnpm --filter @paperclipai/ui typecheck` + build 통과
 - 브라우저에서 토글 동작 + 대표 페이지 스팟체크
+
+---
+
+## 진행 현황 (2026-06-14 기준)
+- ✅ 인프라(HelpModeContext + HelpHint + 상단 💡 토글 + 단위테스트) 완료
+- ✅ Dashboard 예시 + 37개 기능 페이지 적용(약 97개 설명). typecheck + production build 통과
+- 커밋: `386fb7cd`(스펙) · `09a9038c`(인프라) · `b1fa289f`(Dashboard) · `e8dec9af`(37p) · `6a6de932`(.gitignore .omc)
+
+## 남은 작업 (TODO)
+1. **브라우저 실물 확인 미완** — `pnpm dev:full` 띄워 💡 토글 ON 시 파란 글씨 실제 모양/간격/가독성(light·dark) 눈으로 스팟체크. 어색하면 `HelpHint` 스타일(크기·색·여백) 미세조정.
+2. **설명 미적용 8개 페이지** — 의도적 제외분 중 필요 시 추가:
+   - 제외 유지 권장(내부/특수): `DesignGuide`, `IssueChatUxLab`, `RunTranscriptUxLab`(개발용 랩), `NotFound`(404)
+   - 검토 후 추가 가능: 나머지(현재 `ui/src/pages` 중 HelpHint 미적용 페이지) — 필요하면 동일 패턴으로 1줄씩.
+3. **문구 톤 2차 다듬기** — 사용자가 실제로 보고 어려운 표현/오해 소지 있는 설명 발견 시 해당 페이지 HelpHint 텍스트만 수정(로직 무관).
+4. (별개 트랙) 첨부 이미지 **Vision 완전 전달(B안)** — `.omc/plans/checklist-attachment-fixes.md` 참조. 에이전트 하니스/CLI 계층 + 라이브 런 검증 필요.
