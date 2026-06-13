@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Moon, Settings, Sun } from "lucide-react";
+import { BookOpen, Lightbulb, Moon, Settings, Sun } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate, useNavigationType, useParams } from "@/lib/router";
 import { CompanyRail } from "./CompanyRail";
 import { Sidebar } from "./Sidebar";
@@ -23,6 +23,7 @@ import { usePanel } from "../context/PanelContext";
 import { useCompany } from "../context/CompanyContext";
 import { useSidebar } from "../context/SidebarContext";
 import { useTheme } from "../context/ThemeContext";
+import { useHelpMode } from "../context/HelpModeContext";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { useCompanyPageMemory } from "../hooks/useCompanyPageMemory";
 import { healthApi } from "../api/health";
@@ -68,6 +69,7 @@ export function Layout() {
     setSelectedCompanyId,
   } = useCompany();
   const { theme, toggleTheme } = useTheme();
+  const { enabled: helpEnabled, toggle: toggleHelp } = useHelpMode();
   const { companyPrefix } = useParams<{ companyPrefix: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -379,6 +381,20 @@ export function Layout() {
                   type="button"
                   variant="ghost"
                   size="icon-sm"
+                  className={cn(
+                    "shrink-0",
+                    helpEnabled ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground",
+                  )}
+                  onClick={toggleHelp}
+                  aria-label={helpEnabled ? "기능 설명 끄기" : "기능 설명 켜기"}
+                  title={helpEnabled ? "기능 설명 끄기" : "기능 설명 켜기"}
+                >
+                  <Lightbulb className="h-4 w-4" />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
                   className="text-muted-foreground shrink-0"
                   onClick={toggleTheme}
                   aria-label={`${nextTheme === "dark" ? "다크" : "라이트"} 모드로 전환`}
@@ -433,6 +449,20 @@ export function Layout() {
                   >
                     <Settings className="h-4 w-4" />
                   </Link>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className={cn(
+                    "shrink-0",
+                    helpEnabled ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground",
+                  )}
+                  onClick={toggleHelp}
+                  aria-label={helpEnabled ? "기능 설명 끄기" : "기능 설명 켜기"}
+                  title={helpEnabled ? "기능 설명 끄기" : "기능 설명 켜기"}
+                >
+                  <Lightbulb className="h-4 w-4" />
                 </Button>
                 <Button
                   type="button"
