@@ -1337,7 +1337,18 @@ async function buildPaperclipWakePayload(input: {
       attachmentsSkipped += attachmentRows.length - attachments.length;
       break;
     }
-    const fullText = row.extractedText ?? "";
+    const contentPath = `/api/attachments/${row.id}/content`;
+    const isImage = (row.contentType ?? "").toLowerCase().startsWith("image/");
+    // Images are a Vision passthrough — they are never text-extracted, so
+    // extractedText is null. Surface a marker pointing at the fetchable
+    // content URL so the agent at least knows the image exists and how to
+    // inspect it, instead of silently receiving nothing.
+    const fullText =
+      row.extractedText && row.extractedText.length > 0
+        ? row.extractedText
+        : isImage
+          ? `[이미지 첨부 "${row.originalFilename ?? "image"}" (${row.contentType}). 텍스트로 추출하지 않았습니다. 시각적 내용을 확인하려면 ${contentPath} 를 직접 가져와(GET) 보세요.]`
+          : "";
     const allowed = Math.min(MAX_INLINE_WAKE_ATTACHMENT_TEXT_CHARS, attachmentTotalCharsRemaining);
     const trimmed = allowed > 0 && fullText.length > 0 ? fullText.slice(0, allowed) : "";
     const textTruncated = trimmed.length < fullText.length;
@@ -1349,6 +1360,7 @@ async function buildPaperclipWakePayload(input: {
       filename: row.originalFilename,
       contentType: row.contentType,
       byteSize: row.byteSize,
+      contentPath,
       extractionStatus: row.extractionStatus,
       extractionMeta: row.extractionMeta,
       extractedText: trimmed.length > 0 ? trimmed : null,

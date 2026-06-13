@@ -38,8 +38,9 @@ pnpm exec tsx src/index.ts
 - `assets.extracted_text/extraction_status/extraction_meta` 컬럼 + 0057 마이그레이션
 - `server/src/services/file-extractor/`: PDF/DOCX/XLSX/PPTX/HWPX/HWP/이미지/일반 어댑터
 - 업로드 직후 비동기 추출 → `extractionStatus`로 진행 표시
-- 에이전트 wake payload `attachments[]`로 텍스트 주입 (이슈당 12개·항목당 8KB·총 32KB 한도)
-- 이미지 추출은 **Vision passthrough 마커**만, OCR 안 함
+- **추출 완료(`done`) 시 담당 에이전트 자동 re-wake** (`queueIssueAssignmentWakeup`): 추출이 비동기라 첫 wake 때 `extractedText`가 아직 null일 수 있으므로, 텍스트가 준비되면 다시 깨워 실제로 읽게 함 (`routes/issues.ts runFileExtraction`)
+- 에이전트 wake payload `attachments[]`로 텍스트 주입 (이슈당 12개·항목당 8KB·총 32KB 한도). 각 항목에 `contentPath`(`/api/attachments/:id/content`) 포함
+- 이미지 추출은 **Vision passthrough 마커**만, OCR 안 함. wake payload에서 이미지 첨부는 `extractedText`에 "contentPath로 GET해서 확인" 마커를 실어 에이전트가 존재·경로 인지 (완전 Vision 바이트 전달은 미구현 — 후속 과제)
 
 ## 인코딩 원칙 (한글 깨짐 방지)
 

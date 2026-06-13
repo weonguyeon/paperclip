@@ -321,6 +321,7 @@ export function issueRoutes(
 
   async function runFileExtraction(input: {
     assetId: string;
+    issueId: string;
     buffer: Buffer;
     contentType: string;
     originalFilename: string | null;
@@ -341,6 +342,23 @@ export function issueRoutes(
         text: result.text,
         meta: result.meta as unknown as Record<string, unknown>,
       });
+      // Extraction runs async after the upload response, so the assignee may
+      // already have been woken (or never woken) while extractedText was still
+      // null. Re-wake once the text is available so the agent actually sees it.
+      if (result.status === "done") {
+        const issue = await svc.getById(input.issueId);
+        if (issue) {
+          void queueIssueAssignmentWakeup({
+            heartbeat,
+            issue,
+            reason: "attachment_extracted",
+            mutation: "update",
+            contextSource: "issue.attachment_extraction",
+            requestedByActorType: "system",
+            requestedByActorId: null,
+          });
+        }
+      }
     } catch (err) {
       logger.warn({ err, assetId: input.assetId }, "file extraction failed");
       try {
@@ -2765,6 +2783,7 @@ export function issueRoutes(
     // Async file extraction — does not block the upload response
     void runFileExtraction({
       assetId: attachment.assetId,
+      issueId,
       buffer: file.buffer,
       contentType: stored.contentType,
       originalFilename: stored.originalFilename,

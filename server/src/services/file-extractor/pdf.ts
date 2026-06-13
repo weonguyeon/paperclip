@@ -34,13 +34,13 @@ export async function extractPdf({ buffer }: ExtractionInput): Promise<Extractio
       .join("\n\n");
     const truncated = joined.length > EXTRACTED_TEXT_HARD_LIMIT;
     const text = truncated ? joined.slice(0, EXTRACTED_TEXT_HARD_LIMIT) : joined;
-    const trimmed = text.replace(/\s/g, "");
+    const isEmpty = text.trim().length === 0;
     return {
-      status: trimmed.length === 0 ? "skipped" : "done",
-      text: trimmed.length === 0 ? null : text,
+      status: isEmpty ? "skipped" : "done",
+      text: isEmpty ? null : text,
       meta: {
         extractor: "pdfjs-dist",
-        kind: trimmed.length === 0 ? "binary" : "text",
+        kind: isEmpty ? "binary" : "text",
         pages: doc.numPages,
         charCount: text.length,
         truncated,
