@@ -27,6 +27,7 @@ import {
   DollarSign,
   Calendar,
 } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 
 export function Companies() {
   const {
@@ -89,6 +90,7 @@ export function Companies() {
 
   return (
     <div className="space-y-6">
+      <HelpHint>이 화면은 이 인스턴스에 등록된 회사 목록입니다. 회사를 선택하면 해당 회사의 에이전트와 작업을 관리할 수 있습니다.</HelpHint>
       <div className="flex items-center justify-end">
         <Button size="sm" onClick={() => openOnboarding()}>
           <Plus className="h-3.5 w-3.5 mr-1.5" />

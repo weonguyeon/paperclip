@@ -12,6 +12,7 @@ import { PageSkeleton } from "../components/PageSkeleton";
 import { formatDate, projectUrl } from "../lib/utils";
 import { Button } from "@/components/ui/button";
 import { Hexagon, Plus } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 
 export function Projects() {
   const { selectedCompanyId } = useCompany();
@@ -42,6 +43,7 @@ export function Projects() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 회사의 프로젝트 목록입니다. 프로젝트를 눌러 이슈와 설정을 확인할 수 있습니다.</HelpHint>
       <div className="flex items-center justify-end">
         <Button size="sm" variant="outline" onClick={openNewProject}>
           <Plus className="h-4 w-4 mr-1" />

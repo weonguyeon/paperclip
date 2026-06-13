@@ -6,6 +6,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { Button } from "@/components/ui/button";
 import { AsciiArtAnimation } from "@/components/AsciiArtAnimation";
 import { Sparkles } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 
 type AuthMode = "sign_in" | "sign_up";
 
@@ -81,6 +82,7 @@ export function AuthPage() {
           <h1 className="text-xl font-semibold">
             {mode === "sign_in" ? "Paperclip 로그인" : "Paperclip 계정 생성"}
           </h1>
+          <HelpHint className="mt-2">이 화면은 Paperclip 인스턴스에 로그인하거나 새 계정을 생성하는 곳입니다.</HelpHint>
           <p className="mt-1 text-sm text-muted-foreground">
             {mode === "sign_in"
               ? "이메일과 비밀번호로 이 인스턴스에 접속하세요."

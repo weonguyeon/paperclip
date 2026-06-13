@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { accessApi } from "../api/access";
 import { authApi } from "../api/auth";
 import { queryKeys } from "../lib/queryKeys";
+import { HelpHint } from "../components/HelpHint";
 
 export function CliAuthPage() {
   const queryClient = useQueryClient();
@@ -121,6 +122,7 @@ export function CliAuthPage() {
     <div className="mx-auto max-w-xl py-10">
       <div className="rounded-lg border border-border bg-card p-6">
         <h1 className="text-xl font-semibold">Paperclip CLI 접근 승인</h1>
+        <HelpHint className="mt-2">이 화면은 로컬 CLI 프로세스의 보드 접근 요청을 승인하거나 취소하는 곳입니다.</HelpHint>
         <p className="mt-2 text-sm text-muted-foreground">
           로컬 Paperclip CLI 프로세스가 이 인스턴스의 보드 접근을 요청하고 있습니다.
         </p>

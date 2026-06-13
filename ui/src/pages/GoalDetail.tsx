@@ -19,6 +19,7 @@ import { cn, projectUrl } from "../lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, SlidersHorizontal } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 import type { Goal, Project } from "@paperclipai/shared";
 
 interface GoalPropertiesToggleButtonProps {
@@ -141,6 +142,7 @@ export function GoalDetail() {
 
   return (
     <div className="space-y-6">
+      <HelpHint>이 화면은 목표의 제목·설명·상태를 편집하고, 하위 목표와 연결된 프로젝트를 관리하는 곳입니다.</HelpHint>
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className="text-xs uppercase text-muted-foreground">
@@ -187,6 +189,7 @@ export function GoalDetail() {
         </TabsList>
 
         <TabsContent value="children" className="mt-4 space-y-3">
+          <HelpHint>이 탭은 이 목표 아래에 속하는 하위 목표를 추가하고 계층 구조로 확인하는 곳입니다.</HelpHint>
           <div className="flex items-center justify-start">
             <Button
               size="sm"
@@ -205,6 +208,7 @@ export function GoalDetail() {
         </TabsContent>
 
         <TabsContent value="projects" className="mt-4">
+          <HelpHint className="mb-3">이 탭은 이 목표와 연결된 프로젝트 목록을 보여줍니다. 프로젝트를 클릭하면 해당 프로젝트 상세 화면으로 이동합니다.</HelpHint>
           {linkedProjects.length === 0 ? (
             <p className="text-sm text-muted-foreground">연결된 프로젝트가 없습니다.</p>
           ) : (

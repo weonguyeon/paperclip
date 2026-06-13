@@ -32,6 +32,7 @@ import { billingTypeDisplayName, cn, formatCents, formatTokens, providerDisplayN
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HelpHint } from "../components/HelpHint";
 
 const NO_COMPANY = "__none__";
 
@@ -545,6 +546,7 @@ export function Costs() {
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
                   추론 지출, 플랫폼 요금, 크레딧, 실시간 할당량 현황.
                 </p>
+                <HelpHint className="mt-2">이 화면은 회사의 AI 추론 비용·예산·공급자별 사용량·재무 이벤트를 확인하고 관리하는 곳입니다.</HelpHint>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -627,6 +629,7 @@ export function Costs() {
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 space-y-4">
+          <HelpHint>이 탭은 선택 기간의 추론 지출·재무 원장 요약·에이전트별·프로젝트별 비용 분포를 한눈에 보여줍니다.</HelpHint>
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">데이터를 불러오려면 시작일과 종료일을 선택하세요.</p>
           ) : showOverviewLoading ? (
@@ -832,6 +835,7 @@ export function Costs() {
         </TabsContent>
 
         <TabsContent value="budgets" className="mt-4 space-y-4">
+          <HelpHint>이 탭은 에이전트·프로젝트·회사 단위의 지출 한도(예산 정책)와 초과 시 발생한 인시던트를 관리하는 곳입니다.</HelpHint>
           {budgetLoading ? (
             <PageSkeleton variant="costs" />
           ) : budgetError ? (
@@ -949,6 +953,7 @@ export function Costs() {
         </TabsContent>
 
         <TabsContent value="providers" className="mt-4 space-y-4">
+          <HelpHint>이 탭은 AI 추론 공급자(Anthropic, OpenAI 등)별 토큰 사용량·비용·할당량 현황을 확인하는 곳입니다.</HelpHint>
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">데이터를 불러오려면 시작일과 종료일을 선택하세요.</p>
           ) : (
@@ -1004,6 +1009,7 @@ export function Costs() {
         </TabsContent>
 
         <TabsContent value="billers" className="mt-4 space-y-4">
+          <HelpHint>이 탭은 청구 주체(청구자)별로 그룹화된 사용량과 비용을 확인하는 곳입니다.</HelpHint>
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">데이터를 불러오려면 시작일과 종료일을 선택하세요.</p>
           ) : (
@@ -1057,6 +1063,7 @@ export function Costs() {
         </TabsContent>
 
         <TabsContent value="finance" className="mt-4 space-y-4">
+          <HelpHint>이 탭은 청구서·크레딧·환불 등 계정 수준의 재무 이벤트(차변·대변·순액)를 확인하는 곳입니다.</HelpHint>
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">데이터를 불러오려면 시작일과 종료일을 선택하세요.</p>
           ) : financeLoading ? (

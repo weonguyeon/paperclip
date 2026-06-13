@@ -38,6 +38,7 @@ import { EntityRow } from "../components/EntityRow";
 import { Identity } from "../components/Identity";
 import { PageSkeleton } from "../components/PageSkeleton";
 import { RunButton, PauseResumeButton } from "../components/AgentActionButtons";
+import { HelpHint } from "../components/HelpHint";
 import { BudgetPolicyCard } from "../components/BudgetPolicyCard";
 import { PackageFileTree, buildFileTree } from "../components/PackageFileTree";
 import { ScrollToBottom } from "../components/ScrollToBottom";
@@ -1019,6 +1020,7 @@ export function AgentDetail() {
         </Tabs>
       )}
 
+      <HelpHint>이 화면은 에이전트의 상세 정보를 보고 관리하는 곳입니다. 탭으로 대시보드·지시사항·스킬·구성·실행 이력·예산을 각각 확인할 수 있습니다.</HelpHint>
       {actionError && <p className="text-sm text-destructive">{actionError}</p>}
       {isPendingApproval && (
         <p className="text-sm text-amber-500">
@@ -1298,6 +1300,7 @@ function AgentOverview({
             전체 보기 &rarr;
           </Link>
         </div>
+        <HelpHint className="mb-1 -mt-1">이 에이전트가 참여한 이슈(작업) 목록입니다.</HelpHint>
         {assignedIssues.length === 0 ? (
           <p className="text-sm text-muted-foreground">최근 이슈 없음.</p>
         ) : (
@@ -1323,6 +1326,7 @@ function AgentOverview({
       {/* Costs */}
       <div className="space-y-3">
         <h3 className="text-sm font-medium">비용</h3>
+        <HelpHint className="mb-1 -mt-1">이 에이전트의 토큰 사용량과 실행별 비용 내역입니다.</HelpHint>
         <CostsSection runtimeState={runtimeState} runs={runs} />
       </div>
     </div>
@@ -1460,6 +1464,7 @@ function AgentConfigurePage({
       />
       <div>
         <h3 className="text-sm font-medium mb-3">API 키</h3>
+        <HelpHint className="mb-3 -mt-1">이 에이전트가 외부 서비스를 호출할 때 사용하는 API 키 목록입니다.</HelpHint>
         <KeysTab agentId={agentId} companyId={companyId} />
       </div>
 
@@ -1621,6 +1626,7 @@ function ConfigurationTab({
 
       <div>
         <h3 className="text-sm font-medium mb-3">권한</h3>
+        <HelpHint className="mb-3 -mt-1">에이전트가 새 에이전트를 생성하거나 작업을 할당할 수 있는지 설정합니다.</HelpHint>
         <div className="border border-border rounded-lg p-4 space-y-4">
           <div className="flex items-center justify-between gap-4 text-sm">
             <div className="space-y-1">

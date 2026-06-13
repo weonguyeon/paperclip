@@ -23,6 +23,7 @@ import { getUIAdapter, listUIAdapters } from "../adapters";
 import { useDisabledAdaptersSync } from "../adapters/use-disabled-adapters";
 import { isValidAdapterType } from "../adapters/metadata";
 import { ReportsToPicker } from "../components/ReportsToPicker";
+import { HelpHint } from "../components/HelpHint";
 import { buildNewAgentRuntimeConfig } from "../lib/new-agent-runtime-config";
 import {
   DEFAULT_CODEX_LOCAL_BYPASS_APPROVALS_AND_SANDBOX,
@@ -202,6 +203,7 @@ export function NewAgent() {
         <p className="text-sm text-muted-foreground mt-1">
           고급 에이전트 구성
         </p>
+        <HelpHint className="mt-2">이 화면은 새 AI 에이전트를 만드는 폼입니다. 이름·역할·모델 설정을 입력한 뒤 하단 버튼으로 생성합니다.</HelpHint>
       </div>
 
       <div className="border border-border">
@@ -277,6 +279,7 @@ export function NewAgent() {
           <div className="space-y-3">
             <div>
               <h2 className="text-sm font-medium">회사 스킬</h2>
+              <HelpHint className="mb-1 -mt-0.5">에이전트에게 부여할 추가 스킬을 선택하는 곳입니다. Paperclip 기본 스킬은 자동으로 포함됩니다.</HelpHint>
               <p className="mt-1 text-xs text-muted-foreground">
                 Optional skills from the company library. Built-in Paperclip runtime skills are added automatically.
               </p>

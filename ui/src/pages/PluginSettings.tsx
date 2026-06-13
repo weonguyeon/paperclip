@@ -25,6 +25,7 @@ import {
   getDefaultValues,
   type JsonSchemaNode,
 } from "@/components/JsonSchemaForm";
+import { HelpHint } from "../components/HelpHint";
 
 /**
  * PluginSettings page component.
@@ -162,6 +163,7 @@ export function PluginSettings() {
           </Badge>
         </div>
       </div>
+      <HelpHint>이 화면은 설치된 플러그인의 설정과 상태를 관리하는 곳입니다.</HelpHint>
 
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "configuration" | "status")} className="space-y-6">
         <PageTabBar
@@ -178,6 +180,7 @@ export function PluginSettings() {
           <div className="space-y-8">
             <section className="space-y-5">
               <h2 className="text-base font-semibold">소개</h2>
+              <HelpHint className="mb-3 -mt-2">플러그인의 이름·설명·제작자·카테고리 정보입니다.</HelpHint>
               <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(220px,0.8fr)]">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground">설명</h3>
@@ -211,6 +214,7 @@ export function PluginSettings() {
             <section className="space-y-4">
               <div className="space-y-1">
                 <h2 className="text-base font-semibold">설정</h2>
+                <HelpHint>플러그인 동작에 필요한 값을 입력하는 설정 폼입니다.</HelpHint>
               </div>
               {hasCustomSettingsPage ? (
                 <div className="space-y-3">
@@ -256,6 +260,7 @@ export function PluginSettings() {
                   <CardDescription>
                     워커 프로세스, 예약된 작업 및 웹훅 전달 현황
                   </CardDescription>
+                  <HelpHint>플러그인 워커 프로세스·예약 작업 실행 내역·웹훅 전달 현황을 실시간으로 보여줍니다.</HelpHint>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {dashboardData ? (

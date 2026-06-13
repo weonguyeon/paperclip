@@ -9,6 +9,7 @@ import { StatusIcon } from "../components/StatusIcon";
 import { EntityRow } from "../components/EntityRow";
 import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
+import { HelpHint } from "../components/HelpHint";
 import { formatDate } from "../lib/utils";
 import { ListTodo } from "lucide-react";
 
@@ -41,6 +42,7 @@ export function MyIssues() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 에이전트에게 아직 할당되지 않은 내 이슈 목록입니다. 완료·취소된 이슈는 표시되지 않습니다.</HelpHint>
       {error && <p className="text-sm text-destructive">{error.message}</p>}
 
       {myIssues.length === 0 && (

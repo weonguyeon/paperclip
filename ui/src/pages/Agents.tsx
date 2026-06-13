@@ -21,6 +21,7 @@ import { Bot, Plus, List, GitBranch, SlidersHorizontal } from "lucide-react";
 import { AGENT_ROLE_LABELS, type Agent } from "@paperclipai/shared";
 
 import { getAdapterLabel } from "../adapters/adapter-display-registry";
+import { HelpHint } from "../components/HelpHint";
 
 const roleLabels = AGENT_ROLE_LABELS as Record<string, string>;
 
@@ -125,6 +126,7 @@ export function Agents() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 회사에 등록된 에이전트 목록입니다. 상태별로 필터링하거나 조직도(org chart) 형태로 볼 수 있습니다.</HelpHint>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Tabs value={tab} onValueChange={(v) => navigate(`/agents/${v}`)}>
           <PageTabBar

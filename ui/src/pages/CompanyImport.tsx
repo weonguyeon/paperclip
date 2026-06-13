@@ -30,6 +30,7 @@ import {
   Package,
   Upload,
 } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 import { Field, adapterLabels } from "../components/agent-config-primitives";
 import { getAdapterLabel } from "../adapters/adapter-display-registry";
 import { defaultCreateValues } from "../components/agent-config-defaults";
@@ -417,6 +418,9 @@ function ConflictResolutionList({
             {conflicts.length}개 항목
           </span>
         </div>
+        <div className="px-4 pt-2">
+          <HelpHint>기존 항목과 이름이 겹치는 항목 목록입니다. 새 이름을 입력하거나 건너뛰기를 선택하세요.</HelpHint>
+        </div>
         <div className="divide-y divide-border">
           {conflicts.map((item) => {
             const isSkipped = skippedSlugs.has(item.slug);
@@ -553,6 +557,9 @@ function AdapterPickerList({
           <span className="text-xs text-muted-foreground">
             {agents.length}개 에이전트
           </span>
+        </div>
+        <div className="px-4 pt-2">
+          <HelpHint>가져올 에이전트에 사용할 AI 어댑터(모델)를 지정합니다. 기본값은 현재 회사 CEO 에이전트의 어댑터 타입입니다.</HelpHint>
         </div>
         <div className="divide-y divide-border">
           {agents.map((agent) => {
@@ -1091,10 +1098,12 @@ export function CompanyImport() {
 
   return (
     <div>
+      <HelpHint className="px-5 pt-4">이 화면은 GitHub 저장소나 ZIP 파일에서 회사 패키지를 가져오는 곳입니다. 에이전트·프로젝트·이슈를 현재 인스턴스로 불러올 수 있습니다.</HelpHint>
       {/* Source form section */}
       <div className="border-b border-border px-5 py-5 space-y-4">
         <div>
           <h2 className="text-base font-semibold">가져오기 소스</h2>
+          <HelpHint>가져올 데이터의 출처를 선택합니다. GitHub URL을 직접 입력하거나, Paperclip에서 내보낸 zip 파일을 업로드하세요.</HelpHint>
           <p className="text-xs text-muted-foreground mt-1">
             GitHub 저장소를 선택하거나 로컬 Paperclip zip 패키지를 업로드하세요.
           </p>
@@ -1321,6 +1330,7 @@ export function CompanyImport() {
             <aside className="flex flex-col border-r border-border overflow-hidden">
               <div className="border-b border-border px-4 py-3 shrink-0">
                 <h2 className="text-base font-semibold">패키지 파일</h2>
+                <HelpHint>가져올 파일 목록입니다. 체크박스로 포함할 파일을 선택하고, 각 파일의 가져오기 동작(생성·업데이트·건너뜀)을 배지로 확인할 수 있습니다.</HelpHint>
               </div>
               <div className="flex-1 overflow-y-auto">
                 <PackageFileTree

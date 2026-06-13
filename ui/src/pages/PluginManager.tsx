@@ -28,6 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToastActions } from "@/context/ToastContext";
+import { HelpHint } from "@/components/HelpHint";
 import { cn } from "@/lib/utils";
 
 function firstNonEmptyLine(value: string | null | undefined): string | null {
@@ -204,6 +205,7 @@ export function PluginManager() {
         </Dialog>
       </div>
 
+      <HelpHint>이 화면은 Paperclip에 설치된 플러그인을 관리하는 곳입니다. 플러그인을 설치·활성화·비활성화·제거할 수 있습니다.</HelpHint>
       <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3">
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
@@ -222,6 +224,7 @@ export function PluginManager() {
           <h2 className="text-base font-semibold">사용 가능한 플러그인</h2>
           <Badge variant="outline">예제</Badge>
         </div>
+        <HelpHint className="-mt-1">Paperclip이 기본 제공하는 예제 플러그인 목록입니다. "예제 설치" 버튼으로 바로 설치할 수 있습니다.</HelpHint>
 
         {examplesQuery.isLoading ? (
           <div className="text-sm text-muted-foreground">내장 예제 로딩 중...</div>
@@ -308,6 +311,7 @@ export function PluginManager() {
           <Puzzle className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-base font-semibold">설치된 플러그인</h2>
         </div>
+        <HelpHint className="-mt-1">현재 이 Paperclip 인스턴스에 설치된 플러그인 목록입니다. 전원 버튼으로 활성화·비활성화하고, 휴지통 버튼으로 제거할 수 있습니다.</HelpHint>
 
         {!installedPlugins.length ? (
           <Card className="bg-muted/30">

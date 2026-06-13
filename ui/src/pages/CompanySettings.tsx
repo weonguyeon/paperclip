@@ -17,6 +17,7 @@ import {
   ToggleField,
   HintIcon
 } from "../components/agent-config-primitives";
+import { HelpHint } from "../components/HelpHint";
 
 type AgentSnippetInput = {
   onboardingTextUrl: string;
@@ -251,12 +252,14 @@ export function CompanySettings() {
         <Settings className="h-5 w-5 text-muted-foreground" />
         <h1 className="text-lg font-semibold">회사 설정</h1>
       </div>
+      <HelpHint>이 화면은 회사 기본 정보, 외관, 채용 정책, 피드백 공유, 에이전트 초대 스니펫 등을 설정하는 곳입니다.</HelpHint>
 
       {/* General */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           일반
         </div>
+        <HelpHint>회사 이름과 설명을 수정합니다. 변경 후 저장 버튼을 누르세요.</HelpHint>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <Field label="회사 이름" hint="회사의 표시 이름입니다.">
             <input
@@ -286,6 +289,7 @@ export function CompanySettings() {
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           외관
         </div>
+        <HelpHint>회사 로고와 브랜드 색상을 설정합니다. 로고를 업로드하거나 색상을 지정하면 사이드바 아이콘에 반영됩니다.</HelpHint>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <div className="flex items-start gap-4">
             <div className="shrink-0">
@@ -406,6 +410,7 @@ export function CompanySettings() {
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           채용
         </div>
+        <HelpHint>새 에이전트 채용 시 이사회 승인을 요구할지 여부를 설정합니다. 활성화하면 채용된 에이전트가 승인될 때까지 대기 상태로 유지됩니다.</HelpHint>
         <div className="rounded-md border border-border px-4 py-3">
           <ToggleField
             label="새 채용 시 이사회 승인 필요"
@@ -421,6 +426,7 @@ export function CompanySettings() {
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           피드백 공유
         </div>
+        <HelpHint>투표한 AI 출력물을 Paperclip Labs와 공유할지 선택합니다. 공유를 허용하면 모델 품질 개선에 기여할 수 있습니다.</HelpHint>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <ToggleField
             label="투표한 AI 출력을 Paperclip Labs와 공유 허용"
@@ -464,6 +470,7 @@ export function CompanySettings() {
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           초대
         </div>
+        <HelpHint>OpenClaw 에이전트가 이 회사에 합류할 수 있도록 단기 초대 프롬프트를 생성하고 복사하는 곳입니다.</HelpHint>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <div className="flex items-center gap-1.5">
             <span className="text-xs text-muted-foreground">
@@ -569,6 +576,7 @@ export function CompanySettings() {
         <div className="text-xs font-medium text-destructive uppercase tracking-wide">
           위험 구역
         </div>
+        <HelpHint>회사를 보관하면 사이드바에서 숨겨지지만 데이터는 삭제되지 않습니다. 신중하게 사용하세요.</HelpHint>
         <div className="space-y-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
           <p className="text-sm text-muted-foreground">
             이 회사를 보관하면 사이드바에서 숨겨집니다. 데이터는 데이터베이스에 유지됩니다.

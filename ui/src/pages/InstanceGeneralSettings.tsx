@@ -15,6 +15,7 @@ import { useBreadcrumbs } from "../context/BreadcrumbContext";
 import { queryKeys } from "../lib/queryKeys";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { cn } from "../lib/utils";
+import { HelpHint } from "../components/HelpHint";
 
 const FEEDBACK_TERMS_URL = import.meta.env.VITE_FEEDBACK_TERMS_URL?.trim() || "https://paperclip.ing/tos";
 
@@ -85,6 +86,7 @@ export function InstanceGeneralSettings() {
         <p className="text-sm text-muted-foreground">
           운영자에게 표시되는 로그 방식에 영향을 주는 인스턴스 전체 기본값을 설정합니다.
         </p>
+        <HelpHint>이 화면은 로그 표시 방식·키보드 단축키·백업 보존·AI 피드백 공유 등 인스턴스 전반의 일반 설정을 관리하는 곳입니다.</HelpHint>
       </div>
 
       {actionError && (
@@ -97,6 +99,7 @@ export function InstanceGeneralSettings() {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">로그에서 사용자명 가리기</h2>
+            <HelpHint>이 섹션은 에이전트 실행 로그에서 홈 디렉토리 경로의 사용자명을 자동으로 마스킹하는 옵션입니다.</HelpHint>
             <p className="max-w-2xl text-sm text-muted-foreground">
               홈 디렉토리 경로 및 유사한 운영자 표시 로그 출력에서 사용자명 부분을 숨깁니다. 경로 외부의 독립적인
               사용자명 언급은 아직 실시간 기록 뷰에서 마스킹되지 않습니다. 기본값은 꺼짐입니다.
@@ -115,6 +118,7 @@ export function InstanceGeneralSettings() {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">키보드 단축키</h2>
+            <HelpHint>이 섹션은 수신함 탐색(j/k), 이슈 생성, 패널 토글 등 앱 전반의 키보드 단축키 사용 여부를 설정합니다.</HelpHint>
             <p className="max-w-2xl text-sm text-muted-foreground">
               받은 편지함 탐색, 이슈 생성, 패널 토글 등 앱 키보드 단축키를 활성화합니다. 기본값은 꺼짐입니다.
             </p>
@@ -132,6 +136,7 @@ export function InstanceGeneralSettings() {
         <div className="space-y-5">
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">백업 보존 기간</h2>
+            <HelpHint>이 섹션은 일별·주별·월별 자동 데이터베이스 백업을 얼마나 오래 보관할지 기간을 설정합니다.</HelpHint>
             <p className="max-w-2xl text-sm text-muted-foreground">
               각 단계별 자동 데이터베이스 백업 보존 기간을 설정합니다. 일별 백업은 전체 보존 후
               주 1개, 월 1개로 축소됩니다. 백업은 gzip으로 압축됩니다.
@@ -233,6 +238,7 @@ export function InstanceGeneralSettings() {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">AI 피드백 공유</h2>
+            <HelpHint>이 섹션은 좋아요/싫어요 투표 시 AI 출력 데이터를 Paperclip Labs에 전송할지 여부를 결정합니다.</HelpHint>
             <p className="max-w-2xl text-sm text-muted-foreground">
               좋아요/싫어요 투표 시 투표된 AI 출력을 Paperclip Labs로 전송할지 여부를 제어합니다. 투표는 항상 로컬에 저장됩니다.
             </p>
@@ -308,6 +314,7 @@ export function InstanceGeneralSettings() {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <h2 className="text-sm font-semibold">로그아웃</h2>
+            <HelpHint>이 섹션은 현재 Paperclip 인스턴스에서 로그아웃하고 로그인 페이지로 이동합니다.</HelpHint>
             <p className="max-w-2xl text-sm text-muted-foreground">
               이 Paperclip 인스턴스에서 로그아웃합니다. 로그인 페이지로 이동됩니다.
             </p>

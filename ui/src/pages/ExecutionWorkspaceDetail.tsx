@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs } from "@/components/ui/tabs";
 import { CopyText } from "../components/CopyText";
+import { HelpHint } from "../components/HelpHint";
 import { ExecutionWorkspaceCloseDialog } from "../components/ExecutionWorkspaceCloseDialog";
 import { agentsApi } from "../api/agents";
 import { executionWorkspacesApi } from "../api/execution-workspaces";
@@ -526,6 +527,7 @@ export function ExecutionWorkspaceDetail() {
             실행 워크스페이스
           </div>
           <h1 className="truncate text-xl font-semibold sm:text-2xl">{workspace.name}</h1>
+          <HelpHint>이 화면은 특정 이슈 플로우에 연결된 실행 워크스페이스의 경로·저장소·런타임 서비스·로그·이슈를 관리하는 곳입니다.</HelpHint>
           <p className="max-w-2xl text-sm text-muted-foreground">
             Paperclip이 이 이슈 플로우에서 재사용할 구체적인 런타임 워크스페이스를 구성합니다.
             <span className="hidden sm:inline"> 이 설정은 실행 워크스페이스에 연결되어, 향후 실행 시 로컬 경로·저장소 참조·프로비저닝·정리·런타임 서비스 동작이 실제 재사용 중인 워크스페이스와 동기화된 상태를 유지합니다.</span>
@@ -537,6 +539,7 @@ export function ExecutionWorkspaceDetail() {
             <div className="space-y-1">
               <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">워크스페이스 명령</div>
               <h2 className="text-lg font-semibold">서비스 및 작업</h2>
+              <HelpHint>이 섹션은 워크스페이스에서 실행할 서비스(상시 구동)와 단발성 작업(Job)을 시작·중지·재시작하는 곳입니다.</HelpHint>
               <p className="text-sm text-muted-foreground">
                 출처: {runtimeConfigSource === "execution_workspace"
                   ? "실행 워크스페이스 재정의"
@@ -590,6 +593,7 @@ export function ExecutionWorkspaceDetail() {
                     설정
                   </div>
                   <h2 className="text-lg font-semibold">워크스페이스 설정</h2>
+                  <HelpHint>이 섹션은 이름·작업 디렉토리·저장소 URL·브랜치·프로비저닝 및 정리 명령·런타임 JSON을 수정하는 곳입니다.</HelpHint>
                   <p className="text-sm text-muted-foreground">
                     이 실행 워크스페이스에 연결된 경로, 저장소, 브랜치, 프로비저닝, 정리, 런타임 재정의를 수정합니다.
                   </p>
@@ -784,6 +788,7 @@ export function ExecutionWorkspaceDetail() {
               <div className="space-y-1">
                 <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">연결된 객체</div>
                 <h2 className="text-lg font-semibold">워크스페이스 컨텍스트</h2>
+                <HelpHint>이 섹션은 이 실행 워크스페이스가 연결된 프로젝트·프로젝트 워크스페이스·소스 이슈·파생 출처를 보여줍니다.</HelpHint>
               </div>
               <Separator className="my-4" />
               <DetailRow label="프로젝트">
@@ -829,6 +834,7 @@ export function ExecutionWorkspaceDetail() {
               <div className="space-y-1">
                 <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">경로 및 참조</div>
                 <h2 className="text-lg font-semibold">실제 위치</h2>
+                <HelpHint>이 섹션은 작업 디렉토리·저장소 URL·브랜치·열린 시각·정리 일정 등 워크스페이스의 실제 물리적 위치 정보를 보여줍니다.</HelpHint>
               </div>
               <Separator className="my-4" />
               <DetailRow label="작업 디렉토리">
@@ -874,6 +880,7 @@ export function ExecutionWorkspaceDetail() {
             <div className="space-y-1">
               <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">최근 작업</div>
               <h2 className="text-lg font-semibold">런타임 및 정리 로그</h2>
+              <HelpHint>이 섹션은 프로비저닝·정리·서비스 시작 등 워크스페이스에서 실행된 작업의 로그와 결과를 보여줍니다.</HelpHint>
             </div>
             <Separator className="my-4" />
             {workspaceOperationsQuery.isLoading ? (

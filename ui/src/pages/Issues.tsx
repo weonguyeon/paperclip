@@ -11,6 +11,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { createIssueDetailLocationState } from "../lib/issueDetailBreadcrumb";
 import { EmptyState } from "../components/EmptyState";
 import { IssuesList } from "../components/IssuesList";
+import { HelpHint } from "../components/HelpHint";
 import { CircleDot } from "lucide-react";
 
 export function buildIssuesSearchUrl(currentHref: string, search: string): string | null {
@@ -107,8 +108,10 @@ export function Issues() {
   }
 
   return (
-    <IssuesList
-      issues={issues ?? []}
+    <>
+      <HelpHint className="mb-3">이 화면은 회사의 모든 이슈(작업) 목록입니다. 필터·검색으로 원하는 이슈를 찾고, 클릭하면 상세 내용을 볼 수 있습니다.</HelpHint>
+      <IssuesList
+        issues={issues ?? []}
       isLoading={isLoading}
       error={error as Error | null}
       agents={agents}
@@ -123,5 +126,6 @@ export function Issues() {
       onUpdateIssue={(id, data) => updateIssue.mutate({ id, data })}
       searchFilters={participantAgentId ? { participantAgentId } : undefined}
     />
+    </>
   );
 }

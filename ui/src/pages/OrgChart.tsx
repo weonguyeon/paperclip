@@ -9,6 +9,7 @@ import { agentUrl } from "../lib/utils";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
+import { HelpHint } from "../components/HelpHint";
 import { AgentIcon } from "../components/AgentIconPicker";
 import { Download, Network, Upload } from "lucide-react";
 import { AGENT_ROLE_LABELS, type Agent } from "@paperclipai/shared";
@@ -260,6 +261,7 @@ export function OrgChart() {
 
   return (
     <div className="flex flex-col h-full">
+    <HelpHint className="mb-2">이 화면은 에이전트 간 보고 계층을 시각적 차트로 보여줍니다. 드래그로 이동하고 스크롤로 확대·축소할 수 있으며, 카드를 클릭하면 해당 에이전트 상세 화면으로 이동합니다.</HelpHint>
     <div className="mb-2 flex items-center justify-start gap-2 shrink-0">
       <Link to="/company/import">
         <Button variant="outline" size="sm">

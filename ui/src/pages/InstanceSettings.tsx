@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { queryKeys } from "../lib/queryKeys";
 import { formatDateTime, relativeTime } from "../lib/utils";
+import { HelpHint } from "../components/HelpHint";
 
 function asRecord(value: unknown): Record<string, unknown> | null {
   if (typeof value !== "object" || value === null || Array.isArray(value)) return null;
@@ -173,6 +174,7 @@ export function InstanceSettings() {
         <p className="text-sm text-muted-foreground">
           모든 회사에 걸쳐 타이머 하트비트가 활성화된 에이전트 목록입니다.
         </p>
+        <HelpHint>이 화면은 인스턴스 전체의 스케줄러 하트비트(타이머 기반 에이전트 자동 실행) 현황을 확인하고 활성화·비활성화하는 곳입니다.</HelpHint>
       </div>
 
       <div className="flex items-center gap-4 text-sm text-muted-foreground">

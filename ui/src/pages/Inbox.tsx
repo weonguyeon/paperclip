@@ -141,6 +141,7 @@ import {
   type InboxWorkItemGroupBy,
 } from "../lib/inbox";
 import { useDismissedInboxAlerts, useInboxDismissals, useReadInboxItems } from "../hooks/useInboxBadge";
+import { HelpHint } from "../components/HelpHint";
 
 export { InboxIssueMetaLeading, InboxIssueTrailingColumns } from "../components/IssueColumns";
 export { IssueGroupHeader as InboxGroupHeader } from "../components/IssueGroupHeader";
@@ -1789,6 +1790,7 @@ export function Inbox() {
   const activeIssueFilterCount = countActiveIssueFilters(issueFilters, true);
   return (
     <div className="space-y-6">
+      <HelpHint>이 화면은 수신함입니다. 내가 관여한 이슈·승인 요청·에이전트 실패 알림을 한곳에서 확인하고 처리할 수 있습니다.</HelpHint>
       <div className="space-y-2">
         {/* Search — full-width row on mobile, inline on desktop */}
         <div className="relative sm:hidden">
@@ -1973,6 +1975,7 @@ export function Inbox() {
         </div>
         </div>
       </div>
+      <HelpHint>"내 것" 탭은 내가 만들거나 배정받은 이슈, "최근"은 최근 활동 이슈, "읽지 않음"은 미확인 항목, "전체"는 모든 수신함 항목을 보여줍니다.</HelpHint>
 
       {tab === "all" && (
         <div className="flex flex-wrap items-center gap-2">
@@ -2405,9 +2408,10 @@ export function Inbox() {
         <>
           {showSeparatorBefore("alerts") && <Separator />}
           <div>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Alerts
             </h3>
+            <HelpHint className="mb-3">에이전트 오류나 예산 임박 등 즉각적인 주의가 필요한 알림입니다.</HelpHint>
             <div className="divide-y divide-border border border-border">
               {showAggregateAgentError && (
                 <div className="group/alert relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/50">

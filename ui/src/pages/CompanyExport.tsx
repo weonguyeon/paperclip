@@ -33,6 +33,7 @@ import {
   Package,
   Search,
 } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 import {
   type FileTreeNode,
   type FrontmatterData,
@@ -930,6 +931,7 @@ export function CompanyExport() {
 
   return (
     <div>
+      <HelpHint className="px-5 pt-4">이 화면은 현재 회사의 에이전트·프로젝트·이슈를 ZIP 패키지로 내보내는 곳입니다. 파일을 선택한 뒤 다운로드하면 다른 인스턴스로 이식하거나 백업으로 보관할 수 있습니다.</HelpHint>
       {/* Sticky top action bar */}
       <div className="sticky top-0 z-10 border-b border-border bg-background px-5 py-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -973,6 +975,7 @@ export function CompanyExport() {
         <aside className="flex flex-col border-r border-border overflow-hidden">
           <div className="border-b border-border px-4 py-3 shrink-0">
             <h2 className="text-base font-semibold">패키지 파일</h2>
+            <HelpHint>내보낼 파일 목록입니다. 체크박스로 포함할 파일을 선택하고, 파일을 클릭하면 오른쪽에서 내용을 미리 볼 수 있습니다.</HelpHint>
           </div>
           <div className="border-b border-border px-3 py-2 shrink-0">
             <div className="flex items-center gap-2 rounded-md border border-border px-2 py-1">

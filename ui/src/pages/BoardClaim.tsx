@@ -5,6 +5,7 @@ import { accessApi } from "../api/access";
 import { authApi } from "../api/auth";
 import { queryKeys } from "../lib/queryKeys";
 import { Button } from "@/components/ui/button";
+import { HelpHint } from "../components/HelpHint";
 
 export function BoardClaimPage() {
   const queryClient = useQueryClient();
@@ -102,6 +103,7 @@ export function BoardClaimPage() {
     <div className="mx-auto max-w-xl py-10">
       <div className="rounded-lg border border-border bg-card p-6">
         <h1 className="text-xl font-semibold">보드 소유권 클레임</h1>
+        <HelpHint className="mt-2">이 화면은 로컬 신뢰 모드의 보드를 인증된 계정에 연결하여 인스턴스 관리자 권한을 부여하는 곳입니다.</HelpHint>
         <p className="mt-2 text-sm text-muted-foreground">
           이 작업은 사용자를 인스턴스 관리자로 승격하고 로컬 신뢰 모드에서 회사 소유권 접근을 마이그레이션합니다.
         </p>

@@ -10,6 +10,7 @@ import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
 import { Button } from "@/components/ui/button";
 import { Target, Plus } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 
 export function Goals() {
   const { selectedCompanyId } = useCompany();
@@ -36,6 +37,7 @@ export function Goals() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 회사의 전략적 목표를 계층 구조로 관리하는 곳입니다. 목표를 추가하고 클릭하면 하위 목표와 연결 프로젝트를 확인할 수 있습니다.</HelpHint>
       {error && <p className="text-sm text-destructive">{error.message}</p>}
 
       {goals && goals.length === 0 && (

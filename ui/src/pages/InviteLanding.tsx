@@ -13,6 +13,7 @@ type JoinType = "human" | "agent";
 const joinAdapterOptions: AgentAdapterType[] = [...AGENT_ADAPTER_TYPES];
 
 import { getAdapterLabel } from "../adapters/adapter-display-registry";
+import { HelpHint } from "../components/HelpHint";
 
 const ENABLED_INVITE_ADAPTERS = new Set(["claude_local", "codex_local", "gemini_local", "opencode_local", "pi_local", "cursor"]);
 
@@ -223,6 +224,7 @@ export function InviteLandingPage() {
               ? `${companyName} 참가`
               : "이 Paperclip 회사에 참가"}
         </h1>
+        <HelpHint className="mt-2">이 화면은 초대 링크를 통해 Paperclip 회사에 사람 또는 에이전트로 참가 요청을 제출하는 곳입니다.</HelpHint>
         <p className="mt-2 text-sm text-muted-foreground">
           {invite.inviteType !== "bootstrap_ceo" && companyName
             ? `${companyName}에 초대되었습니다. `

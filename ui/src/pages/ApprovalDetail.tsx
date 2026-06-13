@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, ChevronRight, Sparkles } from "lucide-react";
 import type { ApprovalComment } from "@paperclipai/shared";
 import { MarkdownBody } from "../components/MarkdownBody";
+import { HelpHint } from "../components/HelpHint";
 
 export function ApprovalDetail() {
   const { approvalId } = useParams<{ approvalId: string }>();
@@ -172,6 +173,7 @@ export function ApprovalDetail() {
 
   return (
     <div className="space-y-6 max-w-3xl">
+      <HelpHint>이 화면은 에이전트가 요청한 승인 항목의 상세 내용을 확인하고 승인·거절·수정 요청을 처리하는 곳입니다.</HelpHint>
       {showApprovedBanner && (
         <div className="border border-green-300 dark:border-green-700/40 bg-green-50 dark:bg-green-900/20 rounded-lg px-4 py-3 animate-in fade-in zoom-in-95 duration-300">
           <div className="flex items-start justify-between gap-3">
@@ -325,6 +327,7 @@ export function ApprovalDetail() {
 
       <div className="border border-border rounded-lg p-4 space-y-3">
         <h3 className="text-sm font-medium">댓글 ({comments?.length ?? 0})</h3>
+        <HelpHint className="mb-1 -mt-1">에이전트 또는 운영진이 이 승인 항목에 남긴 댓글 목록입니다. 아래에서 새 댓글을 작성할 수 있습니다.</HelpHint>
         <div className="space-y-2">
           {(comments ?? []).map((comment: ApprovalComment) => (
             <div key={comment.id} className="border border-border/60 rounded-md p-3">

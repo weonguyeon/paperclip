@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils";
 import { ChoosePathButton } from "@/components/PathInstructionsModal";
 import { invalidateDynamicParser } from "@/adapters/dynamic-loader";
 import { invalidateConfigSchemaCache } from "@/adapters/schema-config-fields";
+import { HelpHint } from "../components/HelpHint";
 
 function AdapterRow({
   adapter,
@@ -393,6 +394,7 @@ export function AdapterManager() {
 
   return (
     <div className="space-y-6 max-w-5xl">
+      <HelpHint>이 화면은 Paperclip에 연결된 AI 어댑터(모델 제공자)를 설치·관리하는 곳입니다. 어댑터를 추가하면 에이전트가 해당 모델을 사용할 수 있습니다.</HelpHint>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -529,6 +531,7 @@ export function AdapterManager() {
           <Cpu className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-base font-semibold">외부 어댑터</h2>
         </div>
+        <HelpHint className="mb-1 -mt-1">npm 또는 로컬 경로에서 직접 설치한 서드파티 어댑터 목록입니다.</HelpHint>
 
         {externalAdapters.length === 0 ? (
           <Card className="bg-muted/30">
@@ -584,6 +587,7 @@ export function AdapterManager() {
           <Cpu className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-base font-semibold">내장 어댑터</h2>
         </div>
+        <HelpHint className="mb-1 -mt-1">Paperclip에 기본으로 내장된 어댑터 목록입니다. 제거할 수 없으며 표시 여부만 전환할 수 있습니다.</HelpHint>
 
         {builtinAdapters.length === 0 && overriddenBuiltins.length === 0 ? (
           <div className="text-sm text-muted-foreground">내장 어댑터를 찾을 수 없습니다.</div>

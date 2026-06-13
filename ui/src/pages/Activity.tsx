@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { History } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
+import { HelpHint } from "../components/HelpHint";
 
 const ENTITY_TYPE_LABELS: Record<string, string> = {
   issue: "이슈",
@@ -116,6 +117,7 @@ export function Activity() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 회사 내 모든 이벤트(이슈·에이전트·프로젝트·승인 등)의 변경 이력을 시간 순으로 보여주는 활동 로그입니다.</HelpHint>
       <div className="flex items-center justify-end">
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-[140px] h-8 text-xs">

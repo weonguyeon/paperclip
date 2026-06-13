@@ -12,6 +12,7 @@ import { Tabs } from "@/components/ui/tabs";
 import { ShieldCheck } from "lucide-react";
 import { ApprovalCard } from "../components/ApprovalCard";
 import { PageSkeleton } from "../components/PageSkeleton";
+import { HelpHint } from "../components/HelpHint";
 
 type StatusFilter = "pending" | "all";
 
@@ -84,6 +85,7 @@ export function Approvals() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 에이전트가 요청한 승인 항목을 검토하고 처리하는 곳입니다. 대기 중인 항목을 승인하거나 거절할 수 있습니다.</HelpHint>
       <div className="flex items-center justify-between">
         <Tabs value={statusFilter} onValueChange={(v) => navigate(`/approvals/${v}`)}>
           <PageTabBar items={[

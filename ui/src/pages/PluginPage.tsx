@@ -9,6 +9,7 @@ import { PluginSlotMount } from "@/plugins/slots";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { NotFoundPage } from "./NotFound";
+import { HelpHint } from "../components/HelpHint";
 
 /**
  * Company-context plugin page. Renders a plugin's `page` slot at
@@ -145,6 +146,7 @@ export function PluginPage() {
           </Link>
         </Button>
       </div>
+      <HelpHint>이 화면은 플러그인이 제공하는 전용 페이지입니다.</HelpHint>
       <PluginSlotMount
         slot={pageSlot}
         context={context}

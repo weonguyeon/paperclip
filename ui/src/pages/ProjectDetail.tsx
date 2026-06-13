@@ -31,6 +31,7 @@ import { Tabs } from "@/components/ui/tabs";
 import { PluginLauncherOutlet } from "@/plugins/launchers";
 import { PluginSlotMount, PluginSlotOutlet, usePluginSlots } from "@/plugins/slots";
 import { Loader2 } from "lucide-react";
+import { HelpHint } from "../components/HelpHint";
 
 /* ── Top-level tab types ── */
 
@@ -675,6 +676,7 @@ export function ProjectDetail() {
 
   return (
     <div className="space-y-6">
+      <HelpHint>이 화면은 프로젝트 상세 페이지입니다. 이슈·개요·구성·예산 탭으로 프로젝트를 관리합니다.</HelpHint>
       <div className="flex items-start gap-3">
         <div className="h-7 flex items-center">
           <ColorPicker
@@ -749,18 +751,24 @@ export function ProjectDetail() {
       </Tabs>
 
       {activeTab === "overview" && (
-        <OverviewContent
-          project={project}
-          onUpdate={(data) => updateProject.mutate(data)}
-          imageUploadHandler={async (file) => {
-            const asset = await uploadImage.mutateAsync(file);
-            return asset.contentPath;
-          }}
-        />
+        <>
+          <HelpHint>프로젝트 설명·상태·목표일을 한눈에 확인하고 편집하는 개요 탭입니다.</HelpHint>
+          <OverviewContent
+            project={project}
+            onUpdate={(data) => updateProject.mutate(data)}
+            imageUploadHandler={async (file) => {
+              const asset = await uploadImage.mutateAsync(file);
+              return asset.contentPath;
+            }}
+          />
+        </>
       )}
 
       {activeTab === "list" && project?.id && resolvedCompanyId && (
-        <ProjectIssuesList projectId={project.id} companyId={resolvedCompanyId} />
+        <>
+          <HelpHint>이 프로젝트에 속한 이슈(작업) 목록입니다.</HelpHint>
+          <ProjectIssuesList projectId={project.id} companyId={resolvedCompanyId} />
+        </>
       )}
 
       {activeTab === "workspaces" ? (
@@ -782,6 +790,7 @@ export function ProjectDetail() {
 
       {activeTab === "configuration" && (
         <div className="max-w-4xl">
+          <HelpHint className="mb-3">프로젝트 이름·색상·상태·목표일 등 세부 속성을 설정하는 구성 탭입니다.</HelpHint>
           <ProjectProperties
             project={project}
             onUpdate={(data) => updateProject.mutate(data)}
@@ -795,6 +804,7 @@ export function ProjectDetail() {
 
       {activeTab === "budget" && resolvedCompanyId ? (
         <div className="max-w-3xl">
+          <HelpHint className="mb-3">이 프로젝트의 예산 한도를 설정하고 사용량을 확인하는 탭입니다.</HelpHint>
           <BudgetPolicyCard
             summary={projectBudgetSummary}
             variant="plain"

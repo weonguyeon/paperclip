@@ -45,6 +45,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { HelpHint } from "../components/HelpHint";
 import {
   Select,
   SelectContent,
@@ -684,6 +685,7 @@ export function RoutineDetail() {
 
   return (
     <div className="max-w-2xl space-y-6">
+      <HelpHint>이 화면은 루틴(예약 자동 작업) 상세 페이지입니다. 제목·지시사항·트리거·실행 기록을 관리합니다.</HelpHint>
       {/* Header: editable title + actions */}
       <div className="flex items-start gap-4">
         <textarea
@@ -972,6 +974,7 @@ export function RoutineDetail() {
         </TabsList>
 
         <TabsContent value="triggers" className="space-y-4">
+          <HelpHint>루틴을 자동으로 실행할 스케줄 또는 웹훅 트리거를 설정하는 탭입니다.</HelpHint>
           {/* Add trigger form */}
           <div className="rounded-lg border border-border p-4 space-y-3">
             <p className="text-sm font-medium">트리거 추가</p>
@@ -1051,6 +1054,7 @@ export function RoutineDetail() {
         </TabsContent>
 
         <TabsContent value="runs" className="space-y-4">
+          <HelpHint>이 루틴의 실행 이력 목록입니다. 각 실행의 소스·상태·시간을 확인할 수 있습니다.</HelpHint>
           {hasLiveRun && activeIssueId && routine && (
             <LiveRunWidget issueId={activeIssueId} companyId={routine.companyId} />
           )}
@@ -1082,6 +1086,7 @@ export function RoutineDetail() {
         </TabsContent>
 
         <TabsContent value="activity">
+          <HelpHint>루틴과 관련된 이벤트(트리거 실행·상태 변경 등) 활동 기록입니다.</HelpHint>
           {(activity ?? []).length === 0 ? (
             <p className="text-xs text-muted-foreground">아직 활동 없음.</p>
           ) : (

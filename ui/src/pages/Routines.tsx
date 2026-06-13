@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import type { RoutineListItem, RoutineVariable } from "@paperclipai/shared";
+import { HelpHint } from "../components/HelpHint";
 
 const concurrencyPolicies = ["coalesce_if_active", "always_enqueue", "skip_if_active"];
 const catchUpPolicies = ["skip_missed", "enqueue_missed_with_cap"];
@@ -572,6 +573,7 @@ export function Routines() {
           <p className="text-sm text-muted-foreground">
             감사 가능한 실행 이슈로 구체화되는 반복 작업 정의.
           </p>
+          <HelpHint>이 화면은 루틴(예약 자동 작업) 목록입니다. 루틴을 생성하고 활성화·일시 중지·실행할 수 있습니다.</HelpHint>
         </div>
         <Button onClick={() => setComposerOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -590,6 +592,7 @@ export function Routines() {
           ]}
         />
         <TabsContent value="routines" className="space-y-4">
+          <HelpHint>생성된 루틴 목록입니다. 토글로 활성화·일시 중지하고, 메뉴에서 지금 실행하거나 보관할 수 있습니다.</HelpHint>
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm text-muted-foreground">
               루틴 {(routines ?? []).length}개
@@ -627,6 +630,7 @@ export function Routines() {
           </div>
         </TabsContent>
         <TabsContent value="runs">
+          <HelpHint>루틴 실행으로 생성된 이슈(작업) 목록입니다. 각 실행 결과를 이슈 형태로 추적합니다.</HelpHint>
           <IssuesList
             issues={routineExecutionIssues ?? []}
             isLoading={recentRunsLoading}

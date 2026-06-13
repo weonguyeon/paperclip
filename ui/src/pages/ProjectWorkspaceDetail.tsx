@@ -16,6 +16,7 @@ import { useBreadcrumbs } from "../context/BreadcrumbContext";
 import { useCompany } from "../context/CompanyContext";
 import { queryKeys } from "../lib/queryKeys";
 import { projectRouteRef, projectWorkspaceUrl } from "../lib/utils";
+import { HelpHint } from "../components/HelpHint";
 
 type WorkspaceFormState = {
   name: string;
@@ -377,6 +378,7 @@ export function ProjectWorkspaceDetail() {
           {workspace.isPrimary ? "기본 워크스페이스" : "보조 워크스페이스"}
         </div>
       </div>
+      <HelpHint>이 화면은 프로젝트 워크스페이스 상세 페이지입니다. 코드베이스 경로·저장소·런타임 서비스를 설정합니다.</HelpHint>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.9fr)]">
         <div className="space-y-6">
@@ -591,6 +593,7 @@ export function ProjectWorkspaceDetail() {
             <div className="space-y-1">
               <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">워크스페이스 정보</div>
               <h2 className="text-lg font-semibold">현재 상태</h2>
+              <HelpHint>워크스페이스 ID·로컬 경로·저장소 URL 등 현재 저장된 값을 보여줍니다.</HelpHint>
             </div>
             <Separator className="my-4" />
             <DetailRow label="프로젝트">
@@ -621,6 +624,7 @@ export function ProjectWorkspaceDetail() {
               <div className="space-y-1">
                 <div className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">워크스페이스 명령</div>
                 <h2 className="text-lg font-semibold">서비스 및 작업</h2>
+                <HelpHint>이 워크스페이스에서 실행 가능한 장기 서비스와 단발성 작업 목록입니다.</HelpHint>
                 <p className="text-sm text-muted-foreground">
                   장기 실행 서비스는 여기서 관리되고, 단발성 작업은 이 워크스페이스에서 필요할 때 실행됩니다. 실행 워크스페이스는 재정의하지 않는 한 이 설정을 상속합니다.
                 </p>

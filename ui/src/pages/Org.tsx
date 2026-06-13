@@ -8,6 +8,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { StatusBadge } from "../components/StatusBadge";
 import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
+import { HelpHint } from "../components/HelpHint";
 import { ChevronRight, GitBranch } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -113,6 +114,7 @@ export function Org() {
 
   return (
     <div className="space-y-4">
+      <HelpHint>이 화면은 회사 에이전트의 보고 체계를 트리 목록으로 보여주는 조직도입니다. 에이전트 이름을 클릭하면 상세 화면으로 이동합니다.</HelpHint>
       {error && <p className="text-sm text-destructive">{error.message}</p>}
 
       {data && data.length === 0 && (

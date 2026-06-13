@@ -12,6 +12,7 @@ import type {
   CompanySkillUpdateStatus,
 } from "@paperclipai/shared";
 import { companySkillsApi } from "../api/companySkills";
+import { HelpHint } from "../components/HelpHint";
 import { useCompany } from "../context/CompanyContext";
 import { useBreadcrumbs } from "../context/BreadcrumbContext";
 import { useToastActions } from "../context/ToastContext";
@@ -567,6 +568,7 @@ function SkillPane({
             {detail.description && (
               <p className="mt-2 max-w-3xl text-sm text-muted-foreground">{detail.description}</p>
             )}
+            <HelpHint className="mt-2">이 스킬의 파일 목록과 내용을 확인하고, 소스 출처·사용 중인 에이전트·업데이트 여부를 관리하는 상세 패널입니다.</HelpHint>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <Button
@@ -1177,6 +1179,7 @@ export function CompanySkills() {
                 <p className="text-xs text-muted-foreground">
                   {skillsQuery.data?.length ?? 0}개 사용 가능
                 </p>
+                <HelpHint>이 화면은 회사에 등록된 스킬(AI 에이전트용 지식 패키지)을 관리하는 곳입니다. 스킬을 추가·수정·삭제하고 에이전트에 연결할 수 있습니다.</HelpHint>
               </div>
               <div className="flex items-center gap-1">
                 <Button

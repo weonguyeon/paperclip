@@ -80,6 +80,7 @@ import { formatIssueActivityAction } from "@/lib/activity-format";
 import { buildIssuePropertiesPanelKey } from "../lib/issue-properties-panel-key";
 import { shouldRenderRichSubIssuesSection } from "../lib/issue-detail-subissues";
 import { buildSubIssueDefaultsForViewer } from "../lib/subIssueDefaults";
+import { HelpHint } from "../components/HelpHint";
 import {
   Activity as ActivityIcon,
   Archive,
@@ -2158,6 +2159,7 @@ export function IssueDetail() {
 
   return (
     <div className="max-w-2xl space-y-6">
+      <HelpHint>이 화면은 이슈(작업) 상세 페이지입니다. 이슈 설명·첨부파일·하위 이슈를 확인하고, 채팅 탭에서 에이전트와 대화하거나 활동 탭에서 변경 이력을 볼 수 있습니다.</HelpHint>
       {/* Parent chain breadcrumb */}
       {ancestors.length > 0 && (
         <nav className="flex items-center gap-1 text-xs text-muted-foreground flex-wrap">
@@ -2399,6 +2401,7 @@ export function IssueDetail() {
           <div className="flex items-center justify-between gap-2">
             <h3 className="text-sm font-medium text-muted-foreground">하위 이슈</h3>
           </div>
+          <HelpHint>이 섹션은 현재 이슈에 속한 하위 작업(서브태스크) 목록입니다. 새 하위 이슈를 만들거나 기존 항목을 클릭해 상세 내용을 확인할 수 있습니다.</HelpHint>
           <IssuesList
             issues={childIssues}
             isLoading={childIssuesLoading}
@@ -2471,6 +2474,7 @@ export function IssueDetail() {
           <h3 className="text-sm font-medium text-muted-foreground">첨부파일</h3>
           {attachmentUploadButton}
         </div>
+        <HelpHint>이 섹션은 이슈에 첨부된 이미지·문서 파일 목록입니다. 파일을 드래그하거나 업로드 버튼으로 새 파일을 추가할 수 있습니다.</HelpHint>
 
         {attachmentError && (
           <p className="text-xs text-destructive">{attachmentError}</p>
@@ -2617,6 +2621,7 @@ export function IssueDetail() {
         onOpenChange={setGalleryOpen}
       />
 
+      <HelpHint>이 섹션은 이슈가 실행되는 워크스페이스(실행 환경) 정보를 보여줍니다. 프로젝트와 연결된 작업 디렉토리를 확인하고 변경할 수 있습니다.</HelpHint>
       <IssueWorkspaceCard
         issue={issue}
         project={resolvedProject}
@@ -2641,6 +2646,7 @@ export function IssueDetail() {
             </TabsTrigger>
           ))}
         </TabsList>
+        <HelpHint>"채팅" 탭은 에이전트와 메시지를 주고받는 대화 공간이고, "활동" 탭은 이슈의 상태 변경·댓글·승인 등 모든 변경 이력을 시간순으로 보여줍니다.</HelpHint>
 
         <TabsContent value="chat">
           {detailTab === "chat" ? (
