@@ -1,5 +1,14 @@
 # Paperclip 로컬 개발 가이드
 
+Paperclip AI 에이전트 플랫폼의 로컬 개발 구현 (Claude CLI MAX 토큰 전용).
+
+## 프로젝트 정보
+
+- **스택**: TypeScript + Node.js + Express + 임베디드 PostgreSQL + pnpm
+- **포트**: 3100 (서버), 54329 (임베디드 PG)
+- **URL**: http://127.0.0.1:3100
+- **인증**: `local_trusted` 모드 — API 키 사용 금지 (Claude MAX 토큰 전용 원칙)
+
 ## ★ 필수: 개발 서버 기동 방법
 
 **1순위 (정상 케이스)**:
